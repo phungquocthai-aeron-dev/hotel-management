@@ -1,0 +1,54 @@
+# 🛑 1. Bỏ qua thư mục build và output
+/target/
+/build/
+out/
+
+# 🛑 2. Bỏ qua các file cấu hình IDE (IntelliJ, Eclipse, VS Code)
+.idea/
+*.iml
+*.class
+*.war
+*.jar
+.vscode/
+*.log
+
+# 🛑 3. Bỏ qua thư viện Maven
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+dependency-reduced-pom.xml
+release.properties
+target/
+!src/main/webapp/**
+
+# 🛑 4. Bỏ qua file tạm và hệ điều hành
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+*.bak
+
+# 🛑 5. Bỏ qua file môi trường (chứa thông tin nhạy cảm)
+.env
+application.properties
+application.yml
+config/
+
+# 🛑 6. Bỏ qua thư mục node_modules (nếu có dùng frontend)
+node_modules/
+npm-debug.log
+yarn.lock
+
+# 🛑 7. Bỏ qua thư viện của Gradle (nếu dùng Gradle thay vì Maven)
+/.gradle/
+/build/
+
+# 🛑 8. Bỏ qua file dump hoặc database tạm thời
+*.sql
+*.sqlite
+*.db
+
+# 🛑 9. Bỏ qua thư mục logs
+logs/
+*.log
