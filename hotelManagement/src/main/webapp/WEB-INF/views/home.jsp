@@ -9,9 +9,6 @@
 <title>Home</title>
 </head>
 <body>
-	<h1><c:out value="${title}" /></h1>
-    <p>Công nghệ: <c:out value="${techology}" /></p>
-    <p><c:out value="${message}" /></p>
-    <a href="<c:out value="${link}" />"><c:out value="${linkTitle}" /></a>
+	<h1>Home</h1>
 </body>
 </html>
