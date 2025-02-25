@@ -30,10 +30,10 @@ Thumbs.db
 *.bak
 
 # 🛑 5. Bỏ qua file môi trường (chứa thông tin nhạy cảm)
-.env
-application.properties
-application.yml
-config/
+# .env
+# application.properties
+# application.yml
+# config/
 
 # 🛑 6. Bỏ qua thư mục node_modules (nếu có dùng frontend)
 node_modules/
