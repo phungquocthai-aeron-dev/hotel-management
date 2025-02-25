@@ -23,4 +23,8 @@ public class Staff {
     
     @Column(name = "dob")
     private Date dateOfBirth;
+    
+    @Column(name = "password")
+    private String password;
+   
 }
