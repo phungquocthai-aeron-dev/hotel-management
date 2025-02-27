@@ -1,14 +1,10 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
-import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Room_Rental")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class RoomRental {
     @Id
     @Column(name = "rent_id")
@@ -33,4 +29,75 @@ public class RoomRental {
     @ManyToOne
     @JoinColumn(name = "customer_id", insertable = false, updatable = false)
     private Customer customer;
+    
+    public RoomRental() {}
+
+	public RoomRental(String rentId, Date rentalDate, Date checkInDate, Date checkOutDate, String rentalStatus,
+			Room room, Customer customer) {
+		super();
+		this.rentId = rentId;
+		this.rentalDate = rentalDate;
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.rentalStatus = rentalStatus;
+		this.room = room;
+		this.customer = customer;
+	}
+
+	public String getRentId() {
+		return rentId;
+	}
+
+	public void setRentId(String rentId) {
+		this.rentId = rentId;
+	}
+
+	public Date getRentalDate() {
+		return rentalDate;
+	}
+
+	public void setRentalDate(Date rentalDate) {
+		this.rentalDate = rentalDate;
+	}
+
+	public Date getCheckInDate() {
+		return checkInDate;
+	}
+
+	public void setCheckInDate(Date checkInDate) {
+		this.checkInDate = checkInDate;
+	}
+
+	public Date getCheckOutDate() {
+		return checkOutDate;
+	}
+
+	public void setCheckOutDate(Date checkOutDate) {
+		this.checkOutDate = checkOutDate;
+	}
+
+	public String getRentalStatus() {
+		return rentalStatus;
+	}
+
+	public void setRentalStatus(String rentalStatus) {
+		this.rentalStatus = rentalStatus;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+    
 }

@@ -1,13 +1,9 @@
 package com.quantridulieu.hotelManagement.entities;
 
-import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Room")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Room {
     @Id
     @Column(name = "room_id")
@@ -22,4 +18,47 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "category_id", insertable = false, updatable = false)
     private Category category;
+    
+    public Room() {}
+
+	public Room(String roomId, Integer roomNumber, String status, Category category) {
+		super();
+		this.roomId = roomId;
+		this.roomNumber = roomNumber;
+		this.status = status;
+		this.category = category;
+	}
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+
+	public Integer getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(Integer roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+    
 }

@@ -1,13 +1,9 @@
 package com.quantridulieu.hotelManagement.entities;
 
-import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Service")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Service {
     @Id
     @Column(name = "service_id")
@@ -18,4 +14,38 @@ public class Service {
     
     @Column(name = "service_price")
     private Float servicePrice;
+    
+    public Service() {}
+
+	public Service(String serviceId, String serviceName, Float servicePrice) {
+		super();
+		this.serviceId = serviceId;
+		this.serviceName = serviceName;
+		this.servicePrice = servicePrice;
+	}
+
+	public String getServiceId() {
+		return serviceId;
+	}
+
+	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public Float getServicePrice() {
+		return servicePrice;
+	}
+
+	public void setServicePrice(Float servicePrice) {
+		this.servicePrice = servicePrice;
+	}
+    
 }
