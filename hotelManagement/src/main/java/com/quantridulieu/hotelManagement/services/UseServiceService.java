@@ -1,0 +1,56 @@
+package com.quantridulieu.hotelManagement.services;
+
+import java.util.List;
+import java.util.Date;
+
+import com.quantridulieu.hotelManagement.repositories.UseServiceRepository;
+import com.quantridulieu.hotelManagement.entities.UseService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class UseServiceService {
+	@Autowired
+    UseServiceRepository useServiceRepository;
+
+    public void save(UseService useService) {
+        if (useService.getUsId() == null) useService.setUsId(generateId());
+        useServiceRepository.save(useService);
+    }
+
+    public void delete(String id) {
+        useServiceRepository.deleteById(id);
+    }
+
+    public List<UseService> getAllUseServices() {
+        return useServiceRepository.findAll();
+    }
+
+    public UseService getUseServiceById(String id) {
+        return useServiceRepository.findById(id).orElseThrow();
+    }
+
+    public List<UseService> getUseServiceByDate(Date usDate) {
+        return useServiceRepository.findByUsDate(usDate);
+    }
+
+    public List<UseService> getUseServiceByQuantity(int quantity) {
+        return useServiceRepository.findByQuantity(quantity);
+    }
+
+    public List<UseService> getUseServiceByServiceId(String serviceId) {
+        return useServiceRepository.findByServiceId(serviceId);
+    }
+
+    public List<UseService> getUseServiceByRentId(String rentId) {
+        return useServiceRepository.findByRentId(rentId);
+    }
+
+    public List<UseService> getUseServiceByPromotionId(String promotionId) {
+        return useServiceRepository.findByPromotionId(promotionId);
+    }
+
+    private String generateId() {
+        Long count = useServiceRepository.count();
+        return String.format("US%05d", count + 1);
+    }
+}
