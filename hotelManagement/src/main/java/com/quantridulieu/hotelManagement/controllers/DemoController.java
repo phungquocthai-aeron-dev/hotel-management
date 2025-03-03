@@ -1,10 +1,14 @@
 package com.quantridulieu.hotelManagement.controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,5 +74,26 @@ public class DemoController {
         Customer customer = customerService.getCustomerById(customerId);
         model.addAttribute("customer", customer);
         return "customer_detail";
+    }
+    
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportCustomerToExcel() {
+    	try {
+
+            byte[] excelData = customerService.exportCustomerToExcel();
+            
+            // Thiết lập header cho response
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danh_sach_khach_hang.xlsx");
+            
+            // Trả về file Excel
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .body(excelData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
