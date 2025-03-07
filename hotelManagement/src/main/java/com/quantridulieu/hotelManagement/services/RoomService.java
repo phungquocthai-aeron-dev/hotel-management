@@ -1,5 +1,6 @@
 package com.quantridulieu.hotelManagement.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,14 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    
+    @Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportRoomToExcel() throws IOException {
+		return excelExportUtil.exportToExcel(roomRepository.findAll(), null, "Danh sách bảo trì");
+    }
+	
     public void save(Room room) {
         if (room.getRoomId() == null) room.setRoomId(generateId());
         roomRepository.save(room);
