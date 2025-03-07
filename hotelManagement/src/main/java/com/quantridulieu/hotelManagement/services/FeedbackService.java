@@ -1,6 +1,7 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.Date;
 
 import com.quantridulieu.hotelManagement.repositories.FeedbackRepository;
@@ -11,6 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class FeedbackService {
 	@Autowired
     FeedbackRepository feedbackRepository;
+	
+	@Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportCustomerToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(feedbackRepository.findAll(), null, "Danh sách phản hồi");
+    }
 
     public void save(Feedback feedback) {
         if (feedback.getFeedbackId() == null) feedback.setFeedbackId(generateId());
