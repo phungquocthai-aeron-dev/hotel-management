@@ -54,7 +54,7 @@ public class CustomerService {
 	// C00001
 	private String generateId() {
 		Long count = customerRepository.count();
-		return String.format("S%05d", count + 1);
+		return String.format("C%05d", count + 1);
 	}
 	
 }
