@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.quantridulieu.hotelManagement.entities.HotelService;
 
 @Repository
-public interface ServiceRepository extends JpaRepository<HotelService, String> {
+public interface HotelServiceRepository extends JpaRepository<HotelService, String> {
     @Query(value = "SELECT * FROM service WHERE service_name = :serviceName", nativeQuery = true)
     List<HotelService> findServiceByName(@Param("serviceName") String serviceName);
 
