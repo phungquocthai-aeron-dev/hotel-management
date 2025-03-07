@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.quantridulieu.hotelManagement.entities.RoomRental;
 import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
@@ -19,13 +19,13 @@ public class RoomRentalService {
         this.roomRentalRepository = roomRentalRepository;
     }
 
-    @Transactional
+   
     public void save(RoomRental roomRental) {
         if (roomRental.getRentId() == null) roomRental.setRentId(generateId());
         roomRentalRepository.save(roomRental);
     }
 
-    @Transactional
+  
     public void delete(String rentalId) {
         roomRentalRepository.deleteById(rentalId);
     }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Maintenance;
 import com.quantridulieu.hotelManagement.repositories.MaintenanceRepository;
@@ -19,13 +18,13 @@ public class MaintenanceService {
         this.maintenanceRepository = maintenanceRepository;
     }
 
-    @Transactional
+    
     public void save(Maintenance maintenance) {
         if (maintenance.getMtnId() == null) maintenance.setMtnId(generateId());
         maintenanceRepository.save(maintenance);
     }
 
-    @Transactional
+    
     public void delete(String id) {
         maintenanceRepository.deleteById(id);
     }
