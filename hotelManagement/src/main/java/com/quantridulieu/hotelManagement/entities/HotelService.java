@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Service")
-public class Service {
+public class HotelService {
     @Id
     @Column(name = "service_id")
     private String serviceId;
@@ -15,9 +15,9 @@ public class Service {
     @Column(name = "service_price")
     private Float servicePrice;
     
-    public Service() {}
+    public HotelService() {}
 
-	public Service(String serviceId, String serviceName, Float servicePrice) {
+	public HotelService(String serviceId, String serviceName, Float servicePrice) {
 		super();
 		this.serviceId = serviceId;
 		this.serviceName = serviceName;

@@ -18,7 +18,7 @@ public class UseService {
     
     @ManyToOne
     @JoinColumn(name = "service_id", insertable = false, updatable = false)
-    private Service service;
+    private HotelService service;
     
     @ManyToOne
     @JoinColumn(name = "rent_id", insertable = false, updatable = false)
@@ -30,7 +30,7 @@ public class UseService {
     
     public UseService() {}
 
-	public UseService(String usId, Integer quantity, Date usDate, Service service, RoomRental roomRental,
+	public UseService(String usId, Integer quantity, Date usDate, HotelService service, RoomRental roomRental,
 			Promotion promotion) {
 		super();
 		this.usId = usId;
@@ -65,11 +65,11 @@ public class UseService {
 		this.usDate = usDate;
 	}
 
-	public Service getService() {
+	public HotelService getService() {
 		return service;
 	}
 
-	public void setService(Service service) {
+	public void setService(HotelService service) {
 		this.service = service;
 	}
 
