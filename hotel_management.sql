@@ -112,8 +112,3 @@ CREATE TABLE maintenance (
     FOREIGN KEY (room_id) REFERENCES room(room_id),
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
-
-INSERT INTO Customer (customer_id, customer_name, customer_phone, address) 
-VALUES 
-('C00001', 'Lý Gia Hân', '0901122334', '30/8 Huỳnh Mẫn Đạt, phường Bùi Hữu Nghĩa, quận Bình Thủy, thành phố Cần Thơ'),
-('C00002', 'Nguyễn Tấn Thành', '0934567890', '103 Lê Duẩn, phường Bến Thành, quận 1, thành phố Hồ Chí Minh');
