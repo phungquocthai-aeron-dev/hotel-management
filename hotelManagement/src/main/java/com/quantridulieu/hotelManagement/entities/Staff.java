@@ -23,6 +23,9 @@ public class Staff {
     @Column(name = "password")
     private String password;
     
+    @Column(name = "role")
+    private String role;
+    
     public Staff() {}
 
 	public Staff(String staffId, String staffName, String staffPhone, Date dateOfBirth, String password) {
