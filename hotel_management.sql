@@ -6,6 +6,7 @@ CREATE TABLE staff (
     staff_id VARCHAR(50) PRIMARY KEY,
     staff_name VARCHAR(255),
     staff_phone VARCHAR(20),
+    password VARCHAR(255),
     dob DATE
 );
 

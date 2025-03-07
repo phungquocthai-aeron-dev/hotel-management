@@ -1,37 +1,32 @@
 package com.quantridulieu.hotelManagement.entities;
 
-import jakarta.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "Staff")
-
-public class Staff {
-    @Id
-    @Column(name = "staff_id")
+public class StaffDTO {
     private String staffId;
     
-    @Column(name = "staff_name")
     private String staffName;
     
-    @Column(name = "staff_phone")
     private String staffPhone;
     
-    @Column(name = "dob")
     private Date dateOfBirth;
     
-    @Column(name = "password")
-    private String password;
     
-    public Staff() {}
+    public StaffDTO() {}
+    
+    public StaffDTO(Staff staff) {
+    	this.staffId = staff.getStaffId();
+		this.staffName = staff.getStaffName();
+		this.staffPhone = staff.getStaffPhone();
+		this.dateOfBirth = staff.getDateOfBirth();
+    }
 
-	public Staff(String staffId, String staffName, String staffPhone, Date dateOfBirth, String password) {
+	public StaffDTO(String staffId, String staffName, String staffPhone, Date dateOfBirth, String password) {
 		super();
 		this.staffId = staffId;
 		this.staffName = staffName;
 		this.staffPhone = staffPhone;
 		this.dateOfBirth = dateOfBirth;
-		this.password = password;
 	}
 
 	public String getStaffId() {
@@ -64,14 +59,6 @@ public class Staff {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
    
 }
