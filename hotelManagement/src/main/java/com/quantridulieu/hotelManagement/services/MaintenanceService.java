@@ -1,5 +1,6 @@
 package com.quantridulieu.hotelManagement.services;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,14 @@ public class MaintenanceService {
         this.maintenanceRepository = maintenanceRepository;
     }
 
-    
+    @Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportMaintenanceToExcel() throws IOException {
+		return excelExportUtil.exportToExcel(maintenanceRepository.findAll(), null, "Danh sách bảo trì");
+    }
+	
     public void save(Maintenance maintenance) {
         if (maintenance.getMtnId() == null) maintenance.setMtnId(generateId());
         maintenanceRepository.save(maintenance);

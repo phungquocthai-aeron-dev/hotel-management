@@ -1,5 +1,6 @@
 package com.quantridulieu.hotelManagement.services;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,7 +25,14 @@ public class RoomRentalService {
         if (roomRental.getRentId() == null) roomRental.setRentId(generateId());
         roomRentalRepository.save(roomRental);
     }
-
+    
+    @Autowired
+   	ExcelExportUtil excelExportUtil;
+   	
+   	// Xuất file excel
+   	public byte[] exportRoomRentalToExcel() throws IOException {
+   		return excelExportUtil.exportToExcel(roomRentalRepository.findAll(), null, "Danh sách mượn phòng");
+       }
   
     public void delete(String rentalId) {
         roomRentalRepository.deleteById(rentalId);
