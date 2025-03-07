@@ -1,14 +1,10 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
-import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Promotion")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Promotion {
     @Id
     @Column(name = "promotion_id")
@@ -28,4 +24,66 @@ public class Promotion {
     
     @Column(name = "promotion_end")
     private Date promotionEnd;
+    
+    public Promotion() {}
+
+	public Promotion(String promotionId, String promotionName, Float promotionValue, String promotionDescription,
+			Date promotionStart, Date promotionEnd) {
+		super();
+		this.promotionId = promotionId;
+		this.promotionName = promotionName;
+		this.promotionValue = promotionValue;
+		this.promotionDescription = promotionDescription;
+		this.promotionStart = promotionStart;
+		this.promotionEnd = promotionEnd;
+	}
+
+	public String getPromotionId() {
+		return promotionId;
+	}
+
+	public void setPromotionId(String promotionId) {
+		this.promotionId = promotionId;
+	}
+
+	public String getPromotionName() {
+		return promotionName;
+	}
+
+	public void setPromotionName(String promotionName) {
+		this.promotionName = promotionName;
+	}
+
+	public Float getPromotionValue() {
+		return promotionValue;
+	}
+
+	public void setPromotionValue(Float promotionValue) {
+		this.promotionValue = promotionValue;
+	}
+
+	public String getPromotionDescription() {
+		return promotionDescription;
+	}
+
+	public void setPromotionDescription(String promotionDescription) {
+		this.promotionDescription = promotionDescription;
+	}
+
+	public Date getPromotionStart() {
+		return promotionStart;
+	}
+
+	public void setPromotionStart(Date promotionStart) {
+		this.promotionStart = promotionStart;
+	}
+
+	public Date getPromotionEnd() {
+		return promotionEnd;
+	}
+
+	public void setPromotionEnd(Date promotionEnd) {
+		this.promotionEnd = promotionEnd;
+	}
+    
 }

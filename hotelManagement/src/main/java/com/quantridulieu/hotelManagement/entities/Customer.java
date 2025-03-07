@@ -1,15 +1,11 @@
 package com.quantridulieu.hotelManagement.entities;
 
-import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Customer")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Customer {
-	@Id
+    @Id
     @Column(name = "customer_id")
     private String customerId;
     
@@ -21,6 +17,16 @@ public class Customer {
     
     @Column(name = "address")
     private String address;
+    
+    public Customer() {}
+
+	public Customer(String customerId, String customerName, String customerPhone, String address) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.customerPhone = customerPhone;
+		this.address = address;
+	}
 
 	public String getCustomerId() {
 		return customerId;
@@ -53,6 +59,5 @@ public class Customer {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-    
     
 }
