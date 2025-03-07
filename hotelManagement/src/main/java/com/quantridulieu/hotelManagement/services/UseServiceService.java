@@ -1,6 +1,7 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.Date;
 
 import com.quantridulieu.hotelManagement.repositories.UseServiceRepository;
@@ -11,6 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UseServiceService {
 	@Autowired
     UseServiceRepository useServiceRepository;
+	
+	@Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportCustomerToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(useServiceRepository.findAll(), null, "Danh sách sử dụng dịch vụ");
+    }
 
     public void save(UseService useService) {
         if (useService.getUsId() == null) useService.setUsId(generateId());
