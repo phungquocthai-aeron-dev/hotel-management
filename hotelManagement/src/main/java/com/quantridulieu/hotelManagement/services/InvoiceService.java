@@ -1,6 +1,7 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.Date;
 
 import com.quantridulieu.hotelManagement.repositories.InvoiceRepository;
@@ -12,6 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class InvoiceService {
 	@Autowired
     InvoiceRepository invoiceRepository;
+	
+	@Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportCustomerToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(invoiceRepository.findAll(), null, "Danh sách hóa đơn");
+    }
 
     public void save(Invoice invoice) {
         if (invoice.getInvoiceId() == null) invoice.setInvoiceId(generateId());
