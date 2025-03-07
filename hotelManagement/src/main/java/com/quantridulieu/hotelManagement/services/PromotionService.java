@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.quantridulieu.hotelManagement.entities.Promotion;
 import com.quantridulieu.hotelManagement.repositories.PromotionRepository;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
@@ -15,7 +16,13 @@ public class PromotionService {
     @Autowired
     private PromotionRepository promotionRepository;
 
-   
+	@Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportPromotionToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(promotionRepository.findAll(), null, "Danh sách khuyến mãi");
+    }
     public List<Promotion> getAllPromotions() {
         return promotionRepository.findAll();
     }

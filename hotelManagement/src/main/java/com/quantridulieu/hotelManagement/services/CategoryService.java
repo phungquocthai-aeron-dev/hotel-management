@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.quantridulieu.hotelManagement.entities.Category;
 import com.quantridulieu.hotelManagement.repositories.CategoryRepository;
 
-
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -16,7 +16,13 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
   
-
+	@Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportCategoryToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(categoryRepository.findAll(), null, "Danh sách loại");
+    }
 
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();

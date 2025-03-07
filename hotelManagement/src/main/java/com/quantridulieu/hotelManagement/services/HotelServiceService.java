@@ -3,18 +3,25 @@ package com.quantridulieu.hotelManagement.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.quantridulieu.hotelManagement.entities.HotelService;
-import com.quantridulieu.hotelManagement.repositories.ServiceRepository;
+import com.quantridulieu.hotelManagement.repositories.HotelServiceRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class HotelServiceService {
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private HotelServiceRepository serviceRepository;
 
  
-
+	@Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportHotelServiceToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(getAllServices(), null, "Danh sách dịch vụ khách sạn");
+    }
     public List<HotelService> getAllServices() {
         return serviceRepository.findAll();
     }
