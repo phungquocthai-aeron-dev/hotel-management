@@ -20,4 +20,8 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
 	
 	@Query(value = "SELECT * FROM staff WHERE dob = :dob", nativeQuery = true)
 	List<Staff> findStaffByDOB(@Param("dob") Date dob);
+	
+	@Query(value = "SELECT COUNT(*) FROM staff", nativeQuery = true)
+	Long getTotalStaff();
+
 }
