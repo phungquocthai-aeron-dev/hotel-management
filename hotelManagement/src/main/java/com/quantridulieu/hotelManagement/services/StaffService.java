@@ -29,6 +29,11 @@ public class StaffService {
 		return null;
     }
 	
+	// Lấy nhân viên theo số điện thoại
+	public Staff getStaffByPhone(String phone) {
+        return staffRepository.findStaffByPhone(phone); 
+    }
+	
 	public void save(Staff staff) {
 		if(staff.getStaffId() == null) staff.setStaffId(generateId());
 		staffRepository.save(staff);
