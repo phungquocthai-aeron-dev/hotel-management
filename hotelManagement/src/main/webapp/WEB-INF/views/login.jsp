@@ -190,7 +190,7 @@ prefix="c" %>
         <p class="description">
           Chào mừng bạn trở lại với Blue Heaven. Hãy đăng nhập để tiếp tục!
         </p>
-        <form action="/login" method="POST">
+        <form action="login" method="POST">
           <div class="input-group">
             <i class="bi bi-phone"></i>
             <input
@@ -210,14 +210,19 @@ prefix="c" %>
             />
           </div>
           <button type="submit" class="btn-login">Đăng Nhập</button>
-        </form>
+        </form action="login" method="oost">
         <p class="register-link">
-          Chưa có tài khoản? <a href="../views/register.html">Đăng ký ngay</a>
+          Chưa có tài khoản? <a href="register">Đăng ký ngay</a>
         </p>
 
         <!-- Hiển thị thông báo lỗi nếu đăng nhập thất bại -->
-        <c:if test="${not empty error}">
-          <div class="alert alert-danger">${error}</div>
+        <c:if test="${param.error == 'true'}">
+          <div class="alert alert-danger">
+            Sai số điện thoại hoặc mật khẩu. Vui lòng thử lại!
+          </div>
+        </c:if>
+        <c:if test="${param.error != null}">
+          <div class="alert alert-danger">${param.error}</div>
         </c:if>
       </div>
     </div>
