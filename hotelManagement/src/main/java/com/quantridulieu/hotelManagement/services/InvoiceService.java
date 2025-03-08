@@ -18,7 +18,7 @@ public class InvoiceService {
 	ExcelExportUtil excelExportUtil;
 	
 	// Xuất file excel
-	public byte[] exportCustomerToExcel() throws IOException {
+	public byte[] exportStaffToExcel() throws IOException {
         return excelExportUtil.exportToExcel(invoiceRepository.findAll(), null, "Danh sách hóa đơn");
     }
 

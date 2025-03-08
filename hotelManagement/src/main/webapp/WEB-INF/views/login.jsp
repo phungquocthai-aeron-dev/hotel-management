@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+prefix="c" %>
 <!DOCTYPE html>
 <html lang="vi">
   <head>
@@ -177,11 +180,7 @@
     <div class="login-wrapper">
       <!-- Phần bên trái: Logo + Thương hiệu -->
       <div class="login-left">
-        <img
-          class="logo"
-          src="../../../resources/static/logo.png"
-          alt="Blue Heaven Logo"
-        />
+        <img class="logo" src="logo.png/" alt="Blue Heaven Logo" />
         <div class="brand-name">Blue Heaven</div>
       </div>
 
@@ -191,20 +190,35 @@
         <p class="description">
           Chào mừng bạn trở lại với Blue Heaven. Hãy đăng nhập để tiếp tục!
         </p>
-        <form action="#" method="POST">
+        <form action="/login" method="POST">
           <div class="input-group">
             <i class="bi bi-phone"></i>
-            <input type="staff_number" placeholder="Số điện thoại" required />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Số điện thoại"
+              required
+            />
           </div>
           <div class="input-group">
             <i class="bi bi-lock"></i>
-            <input type="password" placeholder="Mật khẩu" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Mật khẩu"
+              required
+            />
           </div>
           <button type="submit" class="btn-login">Đăng Nhập</button>
         </form>
         <p class="register-link">
           Chưa có tài khoản? <a href="../views/register.html">Đăng ký ngay</a>
         </p>
+
+        <!-- Hiển thị thông báo lỗi nếu đăng nhập thất bại -->
+        <c:if test="${not empty error}">
+          <div class="alert alert-danger">${error}</div>
+        </c:if>
       </div>
     </div>
   </body>
