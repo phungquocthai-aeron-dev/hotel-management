@@ -55,4 +55,9 @@ public class StaffService {
 		Long count = staffRepository.count();
 		return String.format("ST%05d", count + 1);
 	}
+	
+	public Long getTotalStaff() {
+	    return staffRepository.getTotalStaff();
+	}
+
 }

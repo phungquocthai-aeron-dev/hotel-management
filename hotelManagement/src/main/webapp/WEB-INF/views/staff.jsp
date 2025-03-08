@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -86,33 +89,6 @@
         border-left: 5px solid var(--primary);
       }
 
-      .room-available {
-        background-color: #dcfce7;
-        color: #166534;
-      }
-
-      .room-occupied {
-        background-color: #fee2e2;
-        color: #b91c1c;
-      }
-
-      .room-maintenance {
-        background-color: #fef3c7;
-        color: #92400e;
-      }
-
-      .room-reserved {
-        background-color: #dbeafe;
-        color: #1e40af;
-      }
-
-      .status-badge {
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
       .btn-primary {
         background-color: var(--primary);
         border-color: var(--primary);
@@ -160,11 +136,7 @@
         <div class="p-3">
           <div class="d-flex align-items-center mb-4 mt-2">
             <div class="bg-white p-2 rounded me-2">
-              <img
-                src="../../../resources/static/logo.png"
-                alt="Blue Heaven Logo"
-                class="hotel-logo"
-              />
+              <img src="logo.png" alt="Blue Heaven Logo" class="hotel-logo" />
             </div>
             <h4 class="mb-0">Blue Heaven</h4>
           </div>
@@ -182,19 +154,19 @@
             </div>
           </div>
           <div class="mb-4">
-            <a href="/logout" class="btn bg-white text-primary fw-bolder"
+            <a href="logout" class="btn bg-white text-primary fw-bolder"
               >Đăng xuất</a
             >
           </div>
 
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a href="/home" class="nav-link" data-bs-toggle="pill">
+              <a href="home" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-speedometer2"></i> Tổng quan
               </a>
             </li>
             <li class="nav-item">
-              <a href="/room" class="nav-link" data-bs-toggle="pill">
+              <a href="room" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-house-door"></i> Quản lý phòng
               </a>
             </li>
@@ -204,37 +176,37 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="/customer" class="nav-link" data-bs-toggle="pill">
+              <a href="customer" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-people"></i> Khách hàng
               </a>
             </li>
             <li class="nav-item">
-              <a href="/service" class="nav-link" data-bs-toggle="pill">
+              <a href="service" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-basket"></i> Dịch vụ
               </a>
             </li>
             <li class="nav-item">
-              <a href="/staff" class="nav-link active" data-bs-toggle="pill">
+              <a href="staff" class="nav-link active" data-bs-toggle="pill">
                 <i class="bi bi-person-badge"></i> Nhân viên
               </a>
             </li>
             <li class="nav-item">
-              <a href="/invoice" class="nav-link" data-bs-toggle="pill">
+              <a href="invoice" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-receipt"></i> Hóa đơn
               </a>
             </li>
             <li class="nav-item">
-              <a href="/maintenance" class="nav-link" data-bs-toggle="pill">
+              <a href="maintenance" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-tools"></i> Bảo trì
               </a>
             </li>
             <li class="nav-item">
-              <a href="/promotion" class="nav-link" data-bs-toggle="pill">
+              <a href="promotion" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-tag"></i> Khuyến mãi
               </a>
             </li>
             <li class="nav-item">
-              <a href="/statistics" class="nav-link" data-bs-toggle="pill">
+              <a href="statistics" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-bar-chart"></i> Báo cáo
               </a>
             </li>
@@ -310,31 +282,7 @@
                 <div class="card stat-card">
                   <div class="card-body">
                     <h5 class="card-title">Tổng nhân viên</h5>
-                    <p class="card-text fs-4 fw-bold">50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="card stat-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Quản lý</h5>
-                    <p class="card-text fs-4 fw-bold">5</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="card stat-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Lễ tân</h5>
-                    <p class="card-text fs-4 fw-bold">15</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="card stat-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Nhân viên phòng</h5>
-                    <p class="card-text fs-4 fw-bold">30</p>
+                    <p class="card-text fs-4 fw-bold">${totalStaff}</p>
                   </div>
                 </div>
               </div>
@@ -351,14 +299,6 @@
               </div>
               <div class="col-md-3">
                 <select class="form-select">
-                  <option selected>Chọn phòng ban</option>
-                  <option>Quản lý</option>
-                  <option>Lễ tân</option>
-                  <option>Nhân viên phòng</option>
-                </select>
-              </div>
-              <div class="col-md-3">
-                <select class="form-select">
                   <option selected>Chọn trạng thái</option>
                   <option>Đang làm việc</option>
                   <option>Nghỉ phép</option>
@@ -368,6 +308,11 @@
               <div class="col-md-2">
                 <button class="btn btn-primary w-100">Tìm kiếm</button>
               </div>
+              <div class="col-md-2">
+                <button id="exportExcel" class="btn btn-success mb-3">
+                  Xuất Excel
+                </button>
+              </div>
             </div>
 
             <!-- Danh sách nhân viên -->
@@ -376,44 +321,33 @@
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Mã nhân viên</th>
                     <th>Tên nhân viên</th>
-                    <th>Chức vụ</th>
                     <th>Số điện thoại</th>
-                    <th>Trạng thái</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>Quản lý</td>
-                    <td>0123 456 789</td>
-                    <td><span class="badge bg-success">Đang làm việc</span></td>
-                    <td>
-                      <button class="btn btn-warning btn-sm">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Trần Thị B</td>
-                    <td>Lễ tân</td>
-                    <td>0987 654 321</td>
-                    <td><span class="badge bg-secondary">Nghỉ phép</span></td>
-                    <td>
-                      <button class="btn btn-warning btn-sm">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
+                  <c:forEach
+                    var="staff"
+                    items="${staffList}"
+                    varStatus="status"
+                  >
+                    <tr>
+                      <td>${status.index + 1}</td>
+                      <td>${staff.staffId}</td>
+                      <td>${staff.staffName}</td>
+                      <td>${staff.staffPhone}</td>
+                      <td>
+                        <button class="btn btn-warning btn-sm">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </c:forEach>
                 </tbody>
               </table>
             </div>
