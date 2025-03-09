@@ -1,6 +1,5 @@
 package com.quantridulieu.hotelManagement.controllers;
 
-import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
