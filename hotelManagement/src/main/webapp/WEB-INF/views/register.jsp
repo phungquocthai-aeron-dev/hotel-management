@@ -180,11 +180,7 @@ prefix="c" %>
     <div class="register-wrapper">
       <!-- Phần bên trái: Logo + Thương hiệu -->
       <div class="register-left">
-        <img
-          class="logo"
-          src="../../../resources/static/logo.png"
-          alt="Blue Heaven Logo"
-        />
+        <img class="logo" src="logo.png/" alt="Blue Heaven Logo" />
         <div class="brand-name">Blue Heaven</div>
       </div>
 
@@ -214,7 +210,7 @@ prefix="c" %>
           <button type="submit" class="btn-register">Đăng Ký</button>
         </form>
         <p class="login-link">
-          Đã có tài khoản? <a href="../views/login.html">Đăng nhập ngay</a>
+          Đã có tài khoản? <a href="login">Đăng nhập ngay</a>
         </p>
       </div>
     </div>
