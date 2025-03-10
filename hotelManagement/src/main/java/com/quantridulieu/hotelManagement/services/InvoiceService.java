@@ -1,34 +1,27 @@
 package com.quantridulieu.hotelManagement.services;
 
-import java.util.List;
 import java.io.IOException;
 import java.util.Date;
-
-import com.quantridulieu.hotelManagement.repositories.InvoiceRepository;
-import com.quantridulieu.hotelManagement.entities.Invoice;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.quantridulieu.hotelManagement.entities.Invoice;
+import com.quantridulieu.hotelManagement.repositories.InvoiceRepository;
 
+@Service
 public class InvoiceService {
-	@Autowired
-    InvoiceRepository invoiceRepository;
-	
-	@Autowired
-	ExcelExportUtil excelExportUtil;
-	
-	// Xuất file excel
-	public byte[] exportCustomerToExcel() throws IOException {
-        return excelExportUtil.exportToExcel(invoiceRepository.findAll(), null, "Danh sách hóa đơn");
-    }
 
-    public void save(Invoice invoice) {
-        if (invoice.getInvoiceId() == null) invoice.setInvoiceId(generateId());
-        invoiceRepository.save(invoice);
-    }
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
-    public void delete(String id) {
-        invoiceRepository.deleteById(id);
+    @Autowired
+    private ExcelExportUtil excelExportUtil;
+
+    public byte[] exportInvoiceToExcelByListIds(List<String> ids) throws IOException {
+        return excelExportUtil.exportToExcel(invoiceRepository.findByInvoiceIds(ids), null, "Danh sách hóa đơn");
     }
 
     public List<Invoice> getAllInvoices() {
@@ -39,24 +32,28 @@ public class InvoiceService {
         return invoiceRepository.findById(id).orElseThrow();
     }
 
-    public List<Invoice> getInvoicesByDate(Date invoiceDate) {
-        return invoiceRepository.findByInvoiceDate(invoiceDate);
+    public List<Invoice> getInvoicesByDateRange(Date fromDate, Date toDate) {
+        return invoiceRepository.findByInvoiceDateBetween(fromDate, toDate);
     }
 
-    public List<Invoice> getInvoicesByTotalAmount(float totalAmount) {
-        return invoiceRepository.findByTotalAmount(totalAmount);
+    @Transactional
+    public void save(Invoice invoice) {
+        if (invoice.getInvoiceId() == null) invoice.setInvoiceId(generateId());
+        invoiceRepository.save(invoice);
     }
 
-    public List<Invoice> getInvoicesByUsId(String usId) {
-        return invoiceRepository.findByUsId(usId);
-    }
-
-    public List<Invoice> getInvoicesByStaffId(String staffId) {
-        return invoiceRepository.findByStaffId(staffId);
+    @Transactional
+    public void delete(String id) {
+        invoiceRepository.deleteById(id);
     }
 
     private String generateId() {
         Long count = invoiceRepository.count();
         return String.format("INV%05d", count + 1);
+    }
+
+    @Transactional
+    public List<Invoice> searchInvoices(String invoiceId, String staffId, String fromDate, String toDate) {
+        return invoiceRepository.searchInvoices(invoiceId, staffId, fromDate, toDate);
     }
 }
