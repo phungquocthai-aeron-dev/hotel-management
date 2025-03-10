@@ -15,50 +15,33 @@ public class Room {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "floor")
+    private Integer floor; // Thêm thuộc tính tầng
+
     @ManyToOne
     @JoinColumn(name = "category_id", insertable = false, updatable = false)
     private Category category;
-    
+
+    // Constructor mặc định
     public Room() {}
 
-	public Room(String roomId, Integer roomNumber, String status, Category category) {
-		super();
-		this.roomId = roomId;
-		this.roomNumber = roomNumber;
-		this.status = status;
-		this.category = category;
-	}
+    // Constructor đầy đủ
+    public Room(String roomId, Integer roomNumber, String status, Category category) {
+        this.roomId = roomId;
+        this.roomNumber = roomNumber;
+        this.status = status;
+        this.category = category;
+    }
 
-	public String getRoomId() {
-		return roomId;
-	}
-
-	public void setRoomId(String roomId) {
-		this.roomId = roomId;
-	}
-
-	public Integer getRoomNumber() {
-		return roomNumber;
-	}
-
-	public void setRoomNumber(Integer roomNumber) {
-		this.roomNumber = roomNumber;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-    
+    // Getter và Setter
+    public String getRoomId() { 
+    	return roomId; 
+    }
+    public void setRoomId(String roomId) { this.roomId = roomId; }
+    public Integer getRoomNumber() { return roomNumber; }
+    public void setRoomNumber(Integer roomNumber) { this.roomNumber = roomNumber; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 }
