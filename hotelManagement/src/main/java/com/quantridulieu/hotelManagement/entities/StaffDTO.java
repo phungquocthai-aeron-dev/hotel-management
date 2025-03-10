@@ -11,6 +11,8 @@ public class StaffDTO {
     
     private Date dateOfBirth;
     
+    private String role;
+    
     
     public StaffDTO() {}
     
@@ -19,6 +21,7 @@ public class StaffDTO {
 		this.staffName = staff.getStaffName();
 		this.staffPhone = staff.getStaffPhone();
 		this.dateOfBirth = staff.getDateOfBirth();
+		this.role = staff.getRole();
     }
 
 	public StaffDTO(String staffId, String staffName, String staffPhone, Date dateOfBirth, String password) {
@@ -43,6 +46,14 @@ public class StaffDTO {
 
 	public void setStaffName(String staffName) {
 		this.staffName = staffName;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getStaffPhone() {

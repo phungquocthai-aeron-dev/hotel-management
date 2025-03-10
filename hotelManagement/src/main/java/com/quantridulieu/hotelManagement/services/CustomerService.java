@@ -2,6 +2,7 @@ package com.quantridulieu.hotelManagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.repositories.CustomerRepository;
@@ -20,6 +21,10 @@ public class CustomerService {
 	// Xuất file excel
 	public byte[] exportCustomerToExcel() throws IOException {
         return excelExportUtil.exportToExcel(customerRepository.findAll(), null, "Danh sách khách hàng");
+    }
+	
+	public byte[] exportCustomerToExcelByListIds(List<String> ids) throws IOException {
+        return excelExportUtil.exportToExcel(customerRepository.findByCustomerIds(ids), null, "Danh sách khách hàng");
     }
 	
 	public List<Customer> getAllCustomers() {
@@ -49,6 +54,16 @@ public class CustomerService {
 	
 	public Customer findByPhone(String phone) {
 		return customerRepository.findCustomerByPhone(phone);
+	}
+	
+	@Transactional
+	public List<Customer> searchCustomers(String customerId, String customerName, String customerPhone, String address) {
+	    return customerRepository.SearchCustomer(
+	        customerId == null || customerId.isEmpty() ? null : customerId,
+	        customerName == null || customerName.isEmpty() ? null : customerName,
+	        customerPhone == null || customerPhone.isEmpty() ? null : customerPhone,
+	        address == null || address.isEmpty() ? null : address
+	    );
 	}
 	
 	// C00001

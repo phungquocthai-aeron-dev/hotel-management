@@ -7,7 +7,15 @@ import java.util.Date;
 @Table(name = "Staff")
 
 public class Staff {
-    @Id
+    public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Id
     @Column(name = "staff_id")
     private String staffId;
     
