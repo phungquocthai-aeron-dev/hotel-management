@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <a href="/logout" class="btn bg-white text-primary fw-bolder">Đăng xuất</a>
+                    <a href="logout" class="btn bg-white text-primary fw-bolder">Đăng xuất</a>
                 </div>
                 
                 <ul class="nav flex-column">
@@ -187,7 +187,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#rental" class="nav-link" data-bs-toggle="pill">
+                        <a href="rental" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-calendar-check"></i> Đặt phòng
                         </a>
                     </li>
