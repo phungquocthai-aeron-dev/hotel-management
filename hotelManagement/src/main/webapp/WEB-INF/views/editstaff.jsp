@@ -136,7 +136,6 @@ import="java.text.SimpleDateFormat" %> <%@ page import="java.util.Date" %>
             class="form-control"
             name="dateOfBirth"
             value="<%= formattedDate %>"
-            // Cập nhật những giá trị bị trống dưới csdl để ko gặp lỗi 
           />
         </div>
         <button type="submit" class="btn-submit">Cập Nhật</button>
