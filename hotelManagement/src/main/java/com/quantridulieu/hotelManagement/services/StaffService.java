@@ -18,15 +18,18 @@ public class StaffService {
 	
 	@Autowired
 	ExcelExportUtil excelExportUtil;
-	
 	// Xuất file excel
-	public byte[] exportCustomerToExcel() throws IOException {
+	public byte[] exportStaffToExcel() throws IOException {
 		List<Staff> staffList = staffRepository.findAll();
 		if(!staffList.isEmpty()) {
 			List<StaffDTO> result = staffList.stream().map(staff -> new StaffDTO(staff)).collect(Collectors.toList());
 			return excelExportUtil.exportToExcel(result, null, "Danh sách nhân viên");
 		}
 		return null;
+    }
+	
+	public byte[] exportStaffToExcelByListIds(List<String> ids) throws IOException {
+        return excelExportUtil.exportToExcel(staffRepository.findByStaffIds(ids), null, "Danh sách nhân viên");
     }
 	
 	// Lấy nhân viên theo số điện thoại
@@ -59,5 +62,13 @@ public class StaffService {
 	public Long getTotalStaff() {
 	    return staffRepository.getTotalStaff();
 	}
+	
+	public void disableStaff(String staffId) {
+        Staff staff = staffRepository.findById(staffId).orElse(null);
+        if (staff != null) {
+            staff.setRole("DISABLE");
+            staffRepository.save(staff); // Lưu thay đổi vào database
+        }
+    }
 
 }

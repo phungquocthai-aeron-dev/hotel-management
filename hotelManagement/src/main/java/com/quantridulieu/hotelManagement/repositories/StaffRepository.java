@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.entities.Staff;
 
 @Repository
@@ -20,6 +22,12 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
 	
 	@Query(value = "SELECT * FROM staff WHERE dob = :dob", nativeQuery = true)
 	List<Staff> findStaffByDOB(@Param("dob") Date dob);
+	
+	@Query(value = "SELECT * FROM staff WHERE staff_id IN (:staffIds)", nativeQuery = true)
+    List<Staff> findByStaffIds(@Param("staffIds") List<String> staffIds);
+	
+	@Query(value = "SELECT * FROM staff WHERE staff_role = :staff_role", nativeQuery = true)
+	List<Staff> findStaffByStaffRole(@Param("staffRole") String staffRole);
 	
 	@Query(value = "SELECT COUNT(*) FROM staff", nativeQuery = true)
 	Long getTotalStaff();
