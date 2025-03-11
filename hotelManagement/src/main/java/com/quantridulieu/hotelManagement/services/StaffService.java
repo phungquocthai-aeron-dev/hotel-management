@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.entities.StaffDTO;
@@ -46,7 +47,7 @@ public class StaffService {
 		staffRepository.deleteById(id);
 	}
 	
-	public List<Staff> getAllStaff() {
+	public List<Staff> getAllStaffs() {
 		return staffRepository.findAll();
 	}
 	
@@ -70,5 +71,14 @@ public class StaffService {
             staffRepository.save(staff); // Lưu thay đổi vào database
         }
     }
+	
+	@Transactional
+	public List<Staff> searchStaffs(String staffId, String staffName, String staffPhone) {
+	    return staffRepository.SearchStaff(
+	        staffId == null || staffId.isEmpty() ? null : staffId,
+	        staffName == null || staffName.isEmpty() ? null : staffName,
+	        staffPhone == null || staffPhone.isEmpty() ? null : staffPhone
+	    );
+	}
 
 }
