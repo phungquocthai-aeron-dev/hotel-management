@@ -159,58 +159,58 @@ prefix="c" %>
             >
           </div>
 
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a href="home" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-speedometer2"></i> Tổng quan
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="room" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-house-door"></i> Quản lý phòng
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#rental" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-calendar-check"></i> Đặt phòng
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="customer" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-people"></i> Khách hàng
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="service" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-basket"></i> Dịch vụ
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="staff" class="nav-link active" data-bs-toggle="pill">
-                <i class="bi bi-person-badge"></i> Nhân viên
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="invoice" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-receipt"></i> Hóa đơn
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="maintenance" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-tools"></i> Bảo trì
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="promotion" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-tag"></i> Khuyến mãi
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="statistics" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-bar-chart"></i> Báo cáo
-              </a>
-            </li>
-          </ul>
+           <ul class="nav flex-column">
+                   <li class="nav-item">
+                        <a href="home" class="nav-link active" >
+                            <i class="bi bi-speedometer2"></i> Tổng quan
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="room" class="nav-link" >
+                            <i class="bi bi-house-door"></i> Quản lý phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="rental" class="nav-link" >
+                            <i class="bi bi-calendar-check"></i> Đặt phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customer" class="nav-link" >
+                            <i class="bi bi-people"></i> Khách hàng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="service" class="nav-link" >
+                            <i class="bi bi-basket"></i> Dịch vụ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="staff" class="nav-link" >
+                            <i class="bi bi-person-badge"></i> Nhân viên
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="invoice" class="nav-link" >
+                            <i class="bi bi-receipt"></i> Hóa đơn
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="maintenance" class="nav-link" >
+                            <i class="bi bi-tools"></i> Bảo trì
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="promotion" class="nav-link" >
+                            <i class="bi bi-tag"></i> Khuyến mãi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="statistics" class="nav-link" >
+                            <i class="bi bi-bar-chart"></i> Báo cáo
+                        </a>
+                    </li>
+                </ul>
         </div>
       </nav>
 
@@ -297,21 +297,32 @@ prefix="c" %>
                   placeholder="Tìm kiếm theo tên..."
                 />
               </div>
-              <div class="col-md-3">
-                <select class="form-select">
-                  <option selected>Chọn trạng thái</option>
-                  <option>Đang làm việc</option>
-                  <option>Nghỉ phép</option>
-                  <option>Nghỉ việc</option>
-                </select>
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Tìm kiếm theo mã nhân viên..."
+                />
               </div>
               <div class="col-md-2">
-                <button class="btn btn-primary w-100">Tìm kiếm</button>
-              </div>
-              <div class="col-md-2">
-                <button id="exportExcel" class="btn btn-success mb-3">
-                  Xuất Excel
-                </button>
+                <div class="d-flex">
+                			<c:if test="${not empty staffList}">
+                			<form action="staff/export" method="post">
+                				<c:forEach var="staff" items="${staffList }" varStatus="status">
+                        			<input type="text" name="staffsExport" value="${staff.staffId}" readonly hidden/>
+
+                				</c:forEach>
+                				<button class="btn btn-success me-1">
+                               		Xuất Excel
+                            	</button>
+                          	</form>
+                          	</c:if>
+							                <a href="">
+                    			      <button class="btn btn-primary ms-1">
+                                	Xem tất cả
+                            	  </button>
+							                </a>
+                	</div>
               </div>
             </div>
 
@@ -320,35 +331,38 @@ prefix="c" %>
               <table class="table table-bordered text-center">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th>STT</th>
                     <th>Mã nhân viên</th>
                     <th>Tên nhân viên</th>
                     <th>Số điện thoại</th>
+                    <th>Ngày sinh</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <c:forEach
-                    var="staff"
-                    items="${staffList}"
-                    varStatus="status"
-                  >
-                    <tr>
-                      <td>${status.index + 1}</td>
-                      <td>${staff.staffId}</td>
-                      <td>${staff.staffName}</td>
-                      <td>${staff.staffPhone}</td>
-                      <td>
-                        <button class="btn btn-warning btn-sm">
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </c:forEach>
-                </tbody>
+                  <c:forEach var="staff" items="${staffList}" varStatus="status">
+                  <c:if test="${staff.role ne 'DISABLE'}">
+                      <tr>
+                          <td>${status.index + 1}</td>
+                          <td>${staff.staffId}</td>
+                          <td>${staff.staffName}</td>
+                          <td>${staff.staffPhone}</td>
+                          <td>${staff.dateOfBirth}</td>
+                          <td class="text-center">
+                              <div class="mx-auto d-flex" style="justify-content: center;">
+                                  <a class="d-block" href="staff/details?id=${staff.staffId}" style="text-decoration: none;">
+                                      <button class="btn btn-warning me-1">Sửa</button>
+                                  </a>
+                                  <form action="staff/delete" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                      <input type="hidden" name="id" value="${staff.staffId}">
+                                      <button type="submit" class="btn btn-danger">Xóa</button>
+                                  </form>
+                              </div>
+                          </td>
+                      </tr>
+                    </c:if>
+                    </c:forEach>
+                  </tbody>
               </table>
             </div>
           </div>
@@ -373,10 +387,11 @@ prefix="c" %>
             </div>
           </div>
 
-          <!-- Bootstrap JS -->
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         </div>
       </div>
     </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
