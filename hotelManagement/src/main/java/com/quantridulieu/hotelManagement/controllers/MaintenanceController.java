@@ -47,6 +47,8 @@ public class MaintenanceController {
 		// Nếu có dữ liệu đỗ về từ search thì bỏ qua
 		// Không có thì xu lấy tất cả
 		if(list == null) list = maintenanceService.getAllMaintenances();
+		Long totalMaintenance = maintenanceService.getTotalMaintenance();
+		model.addAttribute("totalMaintenance", totalMaintenance != null ? totalMaintenance : 0L);
 		
 		model.addAttribute("maintenances", list);
 		model.addAttribute("staff", staff);
@@ -76,10 +78,30 @@ public class MaintenanceController {
         return "editmaintenance";
     }
 	
+	@GetMapping("/maintenance/search")
+    public String searchMaintenance(
+    		RedirectAttributes redirectAttributes,
+    		@RequestParam(required = false, defaultValue = "") String mtnId,
+            @RequestParam(required = false, defaultValue = "") String room,
+            @RequestParam(required = false, defaultValue = "") String staff) {
+    	
+//		Chưa đăng nhập --> cook
+//		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+//      if(staff == null) return "redirect:/login";
+    	
+    	List<Maintenance> maintenances = maintenanceService.searchMaintenances(
+    			mtnId,
+    			room,
+    			staff
+            );
+    	
+    	redirectAttributes.addFlashAttribute("searchResult", maintenances);
+    	return "redirect:/maintenance";
+    }
+	
 	@PostMapping("/maintenance/update")
     public String getMaintenanceUpdate(
     		@ModelAttribute Maintenance maintenance) {
-		System.out.println("Cập nhật bảo trì: AAAAAAAAAAAAAAAAAAAAAAAA" + maintenance);
     		 maintenanceService.save(maintenance);
 
         
