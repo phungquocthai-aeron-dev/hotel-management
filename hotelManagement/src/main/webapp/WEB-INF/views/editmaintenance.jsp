@@ -143,7 +143,7 @@ import="java.text.SimpleDateFormat" %> <%@ page import="java.util.Date" %>
               <input
                 type="text"
                 id="room_id"
-                name="roomID"
+                name="room"
                 value="${maintenance.room.getRoomId()}"
                 required
               />
@@ -199,7 +199,7 @@ import="java.text.SimpleDateFormat" %> <%@ page import="java.util.Date" %>
               <input
                 type="text"
                 id="staff_id"
-                name="staffId"
+                name="staff"
                 value="${maintenance.staff.getStaffId()}"
                 required
               />
