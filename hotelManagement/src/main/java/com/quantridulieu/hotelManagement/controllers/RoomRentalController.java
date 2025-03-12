@@ -9,12 +9,12 @@ import com.quantridulieu.hotelManagement.entities.RoomRental;
 import java.util.List;
 
 @Controller
-public class RoomDentalController {
+public class RoomRentalController {
 
     @Autowired
     private RoomRentalRepository roomRentalRepository;
 
-    @GetMapping(value = {"/", "/roomdental"})
+    @GetMapping(value = { "/", "/roomdental" })
     public String home(Model model) {
         List<RoomRental> rentals = roomRentalRepository.findAll();
         if (rentals == null) {
