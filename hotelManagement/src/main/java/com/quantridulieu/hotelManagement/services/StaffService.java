@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.entities.StaffDTO;
@@ -18,15 +19,23 @@ public class StaffService {
 	
 	@Autowired
 	ExcelExportUtil excelExportUtil;
-	
 	// Xuất file excel
-	public byte[] exportCustomerToExcel() throws IOException {
+	public byte[] exportStaffToExcel() throws IOException {
 		List<Staff> staffList = staffRepository.findAll();
 		if(!staffList.isEmpty()) {
 			List<StaffDTO> result = staffList.stream().map(staff -> new StaffDTO(staff)).collect(Collectors.toList());
 			return excelExportUtil.exportToExcel(result, null, "Danh sách nhân viên");
 		}
 		return null;
+    }
+	
+	public byte[] exportStaffToExcelByListIds(List<String> ids) throws IOException {
+        return excelExportUtil.exportToExcel(staffRepository.findByStaffIds(ids), null, "Danh sách nhân viên");
+    }
+	
+	// Lấy nhân viên theo số điện thoại
+	public Staff getStaffByPhone(String phone) {
+        return staffRepository.findStaffByPhone(phone); 
     }
 	
 	public void save(Staff staff) {
@@ -38,7 +47,7 @@ public class StaffService {
 		staffRepository.deleteById(id);
 	}
 	
-	public List<Staff> getAllStaff() {
+	public List<Staff> getAllStaffs() {
 		return staffRepository.findAll();
 	}
 	
@@ -50,4 +59,26 @@ public class StaffService {
 		Long count = staffRepository.count();
 		return String.format("ST%05d", count + 1);
 	}
+	
+	public Long getTotalStaff() {
+	    return staffRepository.getTotalStaff();
+	}
+	
+	public void disableStaff(String staffId) {
+        Staff staff = staffRepository.findById(staffId).orElse(null);
+        if (staff != null) {
+            staff.setRole("DISABLE");
+            staffRepository.save(staff); // Lưu thay đổi vào database
+        }
+    }
+	
+	@Transactional
+	public List<Staff> searchStaffs(String staffId, String staffName, String staffPhone) {
+	    return staffRepository.SearchStaff(
+	        staffId == null || staffId.isEmpty() ? null : staffId,
+	        staffName == null || staffName.isEmpty() ? null : staffName,
+	        staffPhone == null || staffPhone.isEmpty() ? null : staffPhone
+	    );
+	}
+
 }

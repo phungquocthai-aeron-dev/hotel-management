@@ -3,11 +3,21 @@ package com.quantridulieu.hotelManagement.entities;
 import jakarta.persistence.*;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "Staff")
 
 public class Staff {
-    @Id
+    public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Id
     @Column(name = "staff_id")
     private String staffId;
     
@@ -18,6 +28,7 @@ public class Staff {
     private String staffPhone;
     
     @Column(name = "dob")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
     
     @Column(name = "password")

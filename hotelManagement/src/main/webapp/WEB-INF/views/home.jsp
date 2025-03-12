@@ -172,57 +172,57 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <a href="/logout" class="btn bg-white text-primary fw-bolder">Đăng xuất</a>
+                    <a href="logout" class="btn bg-white text-primary fw-bolder">Đăng xuất</a>
                 </div>
                 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a href="/home" class="nav-link active" data-bs-toggle="pill">
+                        <a href="home" class="nav-link active" data-bs-toggle="pill">
                             <i class="bi bi-speedometer2"></i> Tổng quan
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/room" class="nav-link" data-bs-toggle="pill">
+                        <a href="room" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-house-door"></i> Quản lý phòng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#rental" class="nav-link" data-bs-toggle="pill">
+                        <a href="rental" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-calendar-check"></i> Đặt phòng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/customer" class="nav-link" data-bs-toggle="pill">
+                        <a href="customer" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-people"></i> Khách hàng
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/service" class="nav-link" data-bs-toggle="pill">
+                        <a href="service" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-basket"></i> Dịch vụ
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/staff" class="nav-link" data-bs-toggle="pill">
+                        <a href="staff" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-person-badge"></i> Nhân viên
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/invoice" class="nav-link" data-bs-toggle="pill">
+                        <a href="invoice" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-receipt"></i> Hóa đơn
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/maintenance" class="nav-link" data-bs-toggle="pill">
+                        <a href="maintenance" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-tools"></i> Bảo trì
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/promotion" class="nav-link" data-bs-toggle="pill">
+                        <a href="promotion" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-tag"></i> Khuyến mãi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/statistics" class="nav-link" data-bs-toggle="pill">
+                        <a href="statistics" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-bar-chart"></i> Báo cáo
                         </a>
                     </li>
