@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Maintenance;
 import com.quantridulieu.hotelManagement.entities.MaintenanceExport;
+import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.repositories.MaintenanceRepository;
 
 @Service
@@ -69,6 +71,10 @@ public class MaintenanceService {
         return maintenanceRepository.findByDateRange(startDate, endDate);
     }
 
+    public Long getTotalMaintenance() {
+	    return maintenanceRepository.getTotalMaintenance();
+	}
+    
     private String generateId() {
         Long count = maintenanceRepository.count();
         return String.format("MTN%05d", count + 1);
@@ -85,4 +91,13 @@ public class MaintenanceService {
     	}
         return excelExportUtil.exportToExcel(list, null, "Danh sách hóa đơn");
     }
+    
+    @Transactional
+	public List<Maintenance> searchMaintenances(String mtnId, String room, String staff) {
+	    return maintenanceRepository.SearchMaintenance(
+	        mtnId == null || mtnId.isEmpty() ? null : mtnId,
+	        room == null || room.isEmpty() ? null : room,
+	        staff == null || staff.isEmpty() ? null : staff
+	    );
+	}
 }

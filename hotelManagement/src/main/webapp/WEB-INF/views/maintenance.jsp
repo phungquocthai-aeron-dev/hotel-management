@@ -265,8 +265,8 @@ prefix="c" %>
               <div class="col-md-3">
                 <div class="card stat-card">
                   <div class="card-body">
-                    <h5 class="card-title">Tổng nhân viên</h5>
-                    <p class="card-text fs-4 fw-bold">50</p>
+                    <h5 class="card-title">Tổng bảo trì</h5>
+                    <p class="card-text fs-4 fw-bold">${totalMaintenance}</p>
                   </div>
                 </div>
               </div>
@@ -274,16 +274,16 @@ prefix="c" %>
 
             <!-- Bộ lọc tìm kiếm -->
             <div class="row gx-2 align-items-end mb-3">
-              <form action="staff/search" method="get" class="col-md-9">
+              <form action="maintenance/search" method="get" class="col-md-9">
                 <div class="row p-3 rounded-3 ">
                   <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Mã nhân viên..." name="staffId">
+                    <input type="text" class="form-control" placeholder="Mã bảo trì..." name="mtnId">
                   </div>
                   <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Tên nhân viên..." name="staffName">
+                    <input type="text" class="form-control" placeholder="Mã phòng ..." name="room">
                   </div>
                   <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Số điện thoại..." name="staffPhone">
+                    <input type="text" class="form-control" placeholder="Nhân viên..." name="staff">
                   </div>
                   <div class="col-md-2">
                     <button type="submit" class="btn btn-primary w-100">

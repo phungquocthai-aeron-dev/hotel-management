@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.entities.Maintenance;
+import com.quantridulieu.hotelManagement.entities.Staff;
 
 @Repository
 public interface MaintenanceRepository extends JpaRepository<Maintenance, String> {
@@ -34,4 +37,15 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, String
 
     @Query(value = "SELECT * FROM maintenance WHERE mtn_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<Maintenance> findByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    
+    @Modifying
+	@Procedure(name = "SearchMaintenance")
+    List<Maintenance> SearchMaintenance(
+            @Param("p_main_id") String mainId,
+            @Param("p_room_id") String room,
+            @Param("p_staff_id") String staff
+        );
+    
+    @Query("SELECT COUNT(s) FROM Maintenance s")
+    Long getTotalMaintenance();
 }
