@@ -345,14 +345,19 @@ prefix="c" %>
                   <td>${maintenance.mtnFee}</td>
                   <td>${maintenance.staff.getStaffId()}</td>
                   <td>${maintenance.mtnStatus}</td>
-                  <td>
-                    <button class="btn btn-sm btn-primary">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </td>
+                  <%--        <c:if test="${staff.role == 'ADMIN'}"> --%> 
+                                <td class="text-center">
+                                 <div class="mx-auto d-flex" style="justify-content: center;">
+                                 	<a class="d-block" href="maintenance/details?id=${maintenance.mtnId}" style="text-decoration: none;">
+                                 		<button class="btn btn-warning me-1">Sửa</button>
+                                 	</a>
+                                 	<form action="maintenance/delete" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+    									<input type="hidden" name="id" value="${maintenance.mtnId}">
+    									<button type=submit class="btn btn-danger">Xóa</button>
+									</form>
+                                 </div>
+                                </td>
+				<%-- 				</c:if>	--%> 
                 </tr>
                 </c:forEach>
               </tbody>

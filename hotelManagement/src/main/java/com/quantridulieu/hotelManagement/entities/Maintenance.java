@@ -1,6 +1,9 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,17 +13,11 @@ public class Maintenance {
     @Column(name = "mtn_id")
     private String mtnId;
     
-    @Column(name = "mtn_date")
-    private Date mtnDate;
-    
     @Column(name = "mtn_description")
     private String mtnDescription;
     
     @Column(name = "mtn_fee")
     private Float mtnFee;
-    
-    @Column(name = "mtn_end")
-    private Date mtnEnd;
     
     @Column(name = "mtn_status")
     private String mtnStatus;
@@ -32,6 +29,14 @@ public class Maintenance {
     @ManyToOne
     @JoinColumn(name = "staff_id", insertable = false, updatable = false)
     private Staff staff;
+    
+    @Column(name = "mtn_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date mtnDate;
+    
+    @Column(name = "mtn_end")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date mtnEnd;
     
     public Maintenance() {}
 
@@ -63,6 +68,7 @@ public class Maintenance {
 	public void setMtnDate(Date mtnDate) {
 		this.mtnDate = mtnDate;
 	}
+	
 
 	public String getMtnDescription() {
 		return mtnDescription;
