@@ -111,6 +111,8 @@ public class CustomerController {
     
     @PostMapping("/customer/delete")
     public String deleteCustomer(@RequestParam("id") String customerId) {
+    System.out.println(customerId);
+    System.out.println("ID");
       customerService.delete(customerId);
       return "redirect:/customer";
     }

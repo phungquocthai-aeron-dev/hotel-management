@@ -284,10 +284,14 @@ body {
 						<i class="bi bi-list"></i>
 					</button>
 					<div class="d-flex align-items-center">
-						<div class="search-wrapper me-3">
-							<i class="bi bi-search"></i> <input type="text"
-								class="form-control" placeholder="Tìm kiếm...">
-						</div>
+						<form action="service/search" method="get">
+							<div class="search-wrapper me-3">
+								<i class="bi bi-search"></i> <input type="text"
+									class="form-control" placeholder="Tìm kiếm dịch vụ..."
+									name="serviceName">
+							</div>
+						</form>
+
 						<div class="dropdown">
 							<div class="profile-menu" data-bs-toggle="dropdown">
 								<i class="bi bi-bell position-relative"> <span
@@ -318,16 +322,33 @@ body {
 					<!-- Filter and Search Section (Moved to Top) -->
 					<div class="card mb-4 p-3">
 						<div class="row g-3 justify-content-center">
-							<div class="col-md-4">
-								<div class="search-wrapper">
-									<i class="bi bi-search"></i> <input type="text"
-										class="form-control" placeholder="Tìm kiếm dịch vụ..."
-										id="searchServiceInput">
+							<div class="col-12">
+								<!-- Chiếm toàn bộ chiều ngang -->
+								<div class="d-flex align-items-center">
+									<form action="service/search" method="get" class="d-flex w-100">
+										<input type="text" class="form-control me-2"
+											placeholder="Mã dịch vụ..." name="serviceId"> <input
+											type="text" class="form-control me-2"
+											placeholder="Tên dịch vụ..." name="serviceName"> <input
+											type="number" step="0.01" class="form-control me-2"
+											placeholder="Giá dịch vụ..." name="servicePrice">
+										<button type="submit" class="btn btn-primary">Tìm
+											kiếm</button>
+									</form>
+									<c:if test="${not empty services}">
+										<form action="service/export" method="post">
+											<c:forEach var="service" items="${services }"
+												varStatus="status">
+												<input type="hidden" name="servicesExport"
+													value="${service.serviceId}" />
+											</c:forEach>
+											<button class="btn btn-success ms-2">Xuất Excel</button>
+										</form>
+									</c:if>
 								</div>
 							</div>
 						</div>
 					</div>
-
 					<!-- Main Content with Two Columns -->
 					<div class="row">
 						<!-- Left Column: Service List -->
@@ -339,7 +360,7 @@ body {
 											<th>Mã dịch vụ</th>
 											<th>Tên dịch vụ</th>
 											<th>Giá</th>
-											<th>Chi tiết</th>
+
 											<th>Hành động</th>
 										</tr>
 									</thead>
@@ -349,17 +370,19 @@ body {
 												<td>${service.serviceId}</td>
 												<td>${service.serviceName}</td>
 												<td>${service.servicePrice}</td>
-												<td>
-													<button class="btn btn-info btn-sm"
-														onclick="viewDetails('${service.serviceId}')">Xem
-														chi tiết</button>
-												</td>
+
 												<td>
 													<button class="btn btn-warning btn-sm btn-action"
-														data-bs-toggle="modal" data-bs-target="#editServiceModal"
-														onclick="loadServiceData('${service.serviceId}')">Sửa</button>
-													<button class="btn btn-danger btn-sm btn-action"
-														onclick="deleteService('${service.serviceId}')">Xóa</button>
+														onclick="window.location.href='service/details?id=${service.serviceId}'">
+														Sửa</button>
+													<form action="service/delete" method="post"
+														onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+														<input type="hidden" name="id"
+															value="${service.serviceId}">
+														<button type="submit"
+															class="btn btn-danger btn-sm btn-action">Xóa</button>
+													</form>
+
 												</td>
 											</tr>
 										</c:forEach>
@@ -369,98 +392,34 @@ body {
 						</div>
 						<div class="col-md-6">
 							<div class="card p-3">
-								<h4 class="mb-4">Thêm/Sửa Dịch Vụ</h4>
-								<form id="serviceForm">
-									<div class="mb-3">
-										<label for="serviceId" class="form-label">Mã dịch vụ</label> <input
-											type="text" class="form-control" id="serviceId"
-											>
-									</div>
-									<div class="mb-3">
-										<label for="serviceName" class="form-label">Tên dịch
-											vụ</label> <input type="text" class="form-control" id="serviceName"
-											required>
-									</div>
-									<div class="mb-3">
-										<label for="servicePrice" class="form-label">Giá</label> <input
-											type="number" class="form-control" id="servicePrice" required>
-									</div>
+								<h4 class="mb-4">Thêm Dịch Vụ</h4>
+								<form action="service/save" method="post">
+									<label for="serviceId">Mã Dịch Vụ:</label> <input type="text"
+										id="serviceId" name="serviceId" required><br> <br>
+									<label for="serviceName">Tên Dịch Vụ:</label> <input
+										type="text" id="serviceName" name="serviceName" required><br>
+									<br> <label for="servicePrice">Giá:</label> <input
+										type="number" id="servicePrice" name="servicePrice"
+										step="0.01" required><br> <br>
 
-									<button type="button" class="btn btn-primary"
-										onclick="saveService()">Lưu dịch vụ</button>
+									<button type="submit">Lưu Dịch Vụ</button>
 								</form>
+
+
 							</div>
+							<c:if test="${not empty error}">
+								<div class="alert alert-danger">${error}</div>
+							</c:if>
 						</div>
 					</div>
 				</div>
 
-			</div>
-
-			<!-- Edit Service Modal -->
-			<div class="modal fade" id="editServiceModal" tabindex="-1"
-				aria-labelledby="editServiceModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="editServiceModalLabel">Sửa thông
-								tin dịch vụ</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form id="editServiceForm">
-								<div class="mb-3">
-									<label for="editServiceId" class="form-label">Mã dịch
-										vụ</label> <input type="text" class="form-control" id="editServiceId"
-										readonly>
-								</div>
-								<div class="mb-3">
-									<label for="editServiceName" class="form-label">Tên
-										dịch vụ</label> <input type="text" class="form-control"
-										id="editServiceName" required>
-								</div>
-								<div class="mb-3">
-									<label for="editServicePrice" class="form-label">Giá</label> <input
-										type="number" class="form-control" id="editServicePrice"
-										required>
-								</div>
-								<div class="mb-3">
-									<label for="editServiceQuantity" class="form-label">Số
-										lượng</label> <input type="number" class="form-control"
-										id="editServiceQuantity" value="0" required>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">Đóng</button>
-							<button type="button" class="btn btn-primary"
-								onclick="updateService()">Cập nhật</button>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
 
 
-<script>
-    function saveService() {
-        let serviceId = document.getElementById("serviceId").value;
-        let serviceName = document.getElementById("serviceName").value;
-        let servicePrice = document.getElementById("servicePrice").value;
 
-        fetch('/service/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `serviceId=${serviceId}&serviceName=${serviceName}&servicePrice=${servicePrice}`
-        })
-        .then(response => response.text())
-        .then(message => {
-            alert(message);
-            location.reload();
-        });
-    }
-</script>
+
 </body>
 </html>

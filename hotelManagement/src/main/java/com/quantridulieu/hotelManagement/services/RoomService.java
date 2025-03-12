@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
+import com.quantridulieu.hotelManagement.entities.HotelService;
 import com.quantridulieu.hotelManagement.entities.Room;
+import com.quantridulieu.hotelManagement.repositories.HotelServiceRepository;
 import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 
 @Service
 public class RoomService {
-    private final RoomRepository roomRepository;
 
+	@Autowired
+    private RoomRepository roomRepository;
     @Autowired
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
@@ -26,13 +29,15 @@ public class RoomService {
 	public byte[] exportRoomToExcel() throws IOException {
 		return excelExportUtil.exportToExcel(roomRepository.findAll(), null, "Danh sách bảo trì");
     }
-	
+	public byte[] exportRoomToExcelByListIds(List<String> ids) throws IOException {
+	    return excelExportUtil.exportToExcel(roomRepository.findByRoomIDs(ids), null, "Danh sách phòng");
+	}
+
     public void save(Room room) {
         if (room.getRoomId() == null) room.setRoomId(generateId());
         roomRepository.save(room);
     }
 
-  
     public void delete(String id) {
         roomRepository.deleteById(id);
     }
@@ -61,4 +66,16 @@ public class RoomService {
         Long count = roomRepository.count();
         return String.format("RM%05d", count + 1);
     }
+    @Transactional
+    public List<Room> searchRoom(String roomId, Integer roomNumber, String status, String categoryId, String categoryName) {
+        return roomRepository.searchRoom(
+            (roomId == null || roomId.isEmpty()) ? null : roomId,
+            (roomNumber == null) ? null : roomNumber, // Đã sửa
+            (status == null || status.isEmpty()) ? null : status,
+            (categoryId == null || categoryId.isEmpty()) ? null : categoryId,
+            (categoryName == null || categoryName.isEmpty()) ? null : categoryName
+        );
+    }
+
+
 }
