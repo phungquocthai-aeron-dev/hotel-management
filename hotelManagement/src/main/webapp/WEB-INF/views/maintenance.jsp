@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -160,11 +164,7 @@
         <div class="p-3">
           <div class="d-flex align-items-center mb-4 mt-2">
             <div class="bg-white p-2 rounded me-2">
-              <img
-                src="logo.png"
-                alt="Blue Heaven Logo"
-                class="hotel-logo"
-              />
+              <img src="logo.png" alt="Blue Heaven Logo" class="hotel-logo" />
             </div>
             <h4 class="mb-0">Blue Heaven</h4>
           </div>
@@ -189,43 +189,43 @@
 
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a href="/home" class="nav-link" data-bs-toggle="pill">
+              <a href="home" class="nav-link">
                 <i class="bi bi-speedometer2"></i> Tổng quan
               </a>
             </li>
             <li class="nav-item">
-              <a href="/room" class="nav-link" data-bs-toggle="pill">
+              <a href="room" class="nav-link">
                 <i class="bi bi-house-door"></i> Quản lý phòng
               </a>
             </li>
             <li class="nav-item">
-              <a href="#rental" class="nav-link" data-bs-toggle="pill">
+              <a href="rental" class="nav-link">
                 <i class="bi bi-calendar-check"></i> Đặt phòng
               </a>
             </li>
             <li class="nav-item">
-              <a href="/customer" class="nav-link" data-bs-toggle="pill">
+              <a href="customer" class="nav-link">
                 <i class="bi bi-people"></i> Khách hàng
               </a>
             </li>
             <li class="nav-item">
-              <a href="/service" class="nav-link" data-bs-toggle="pill">
+              <a href="service" class="nav-link">
                 <i class="bi bi-basket"></i> Dịch vụ
               </a>
             </li>
             <li class="nav-item">
-              <a href="/staff" class="nav-link" data-bs-toggle="pill">
+              <a href="staff" class="nav-link">
                 <i class="bi bi-person-badge"></i> Nhân viên
               </a>
             </li>
             <li class="nav-item">
-              <a href="/invoice" class="nav-link" data-bs-toggle="pill">
+              <a href="invoice" class="nav-link">
                 <i class="bi bi-receipt"></i> Hóa đơn
               </a>
             </li>
             <li class="nav-item">
               <a
-                href="/maintenance"
+                href="maintenance"
                 class="nav-link active"
                 data-bs-toggle="pill"
               >
@@ -233,12 +233,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="/promotion" class="nav-link" data-bs-toggle="pill">
+              <a href="promotion" class="nav-link">
                 <i class="bi bi-tag"></i> Khuyến mãi
               </a>
             </li>
             <li class="nav-item">
-              <a href="/statistics" class="nav-link" data-bs-toggle="pill">
+              <a href="statistics" class="nav-link" data-bs-toggle="pill">
                 <i class="bi bi-bar-chart"></i> Báo cáo
               </a>
             </li>
@@ -248,53 +248,6 @@
 
       <!-- Content -->
       <div class="content p-4">
-        <header class="mb-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <button id="sidebarToggle" class="btn btn-sm btn-outline-secondary">
-              <i class="bi bi-list"></i>
-            </button>
-            <div class="d-flex align-items-center">
-              <div class="search-wrapper me-3">
-                <i class="bi bi-search"></i>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Tìm kiếm..."
-                />
-              </div>
-              <div class="dropdown">
-                <div class="profile-menu" data-bs-toggle="dropdown">
-                  <i class="bi bi-bell position-relative">
-                    <span
-                      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                    >
-                      3
-                    </span>
-                  </i>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end alert-section">
-                  <li><h6 class="dropdown-header">Thông báo</h6></li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      >Khách mới đặt phòng 101</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      >Bảo trì phòng 205 hoàn tất</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      >Nhắc nhở: check-out phòng 304</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </header>
-
         <div class="tab-content">
           <div class="container mt-4">
             <h2 class="mb-3">Quản lý bảo trì</h2>
@@ -304,7 +257,7 @@
               data-bs-toggle="modal"
               data-bs-target="#approveMemberModal"
             >
-              <i class="bi bi-plus-lg"></i> Yêu cầu bảo trì
+              <i class="bi bi-plus-lg"></i> Thêm bảo trì
             </button>
 
             <!-- Thống kê nhân viên -->
@@ -319,40 +272,79 @@
               </div>
             </div>
 
-            <div class="mb-3">
-              <label for="statusFilter" class="form-label"
-                >Lọc theo trạng thái:</label
-              >
-              <select
-                class="form-select w-auto d-inline-block"
-                id="statusFilter"
-              >
-                <option value="">Tất cả</option>
-                <option value="pending">Chờ xử lý</option>
-                <option value="in_progress">Đang bảo trì</option>
-                <option value="completed">Hoàn thành</option>
-              </select>
+            <!-- Bộ lọc tìm kiếm -->
+            <div class="row gx-2 align-items-end mb-3">
+              <form action="staff/search" method="get" class="col-md-9">
+                <div class="row p-3 rounded-3 ">
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="Mã nhân viên..." name="staffId">
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Tên nhân viên..." name="staffName">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" placeholder="Số điện thoại..." name="staffPhone">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                      <i class="bi bi-search"></i> Tìm
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <div class="col-md-3 d-flex justify-content-end">
+                <c:if test="${not empty maintenances}">
+                  <form action="maintenance/export" method="post">
+                    <c:forEach var="maintenance" items="${maintenances}" varStatus="status">
+                      <input type="hidden" name="maintenancesExport" value="${maintenance.mtnId}">
+                    </c:forEach>
+                    <button class="btn btn-success me-2">
+                      <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+                    </button>
+                  </form>
+                </c:if>
+                <a href="">
+                  <button class="btn btn-outline-primary">
+                    <i class="bi bi-list"></i> Xem tất cả
+                  </button>
+                </a>
+              </div>
             </div>
 
             <!-- Bảng danh sách bảo trì -->
             <table class="table table-striped">
               <thead class="table-dark">
                 <tr>
-                  <th>#</th>
+                  <th>STT</th>
+                  <th>Mã bảo trì</th>
                   <th>Phòng</th>
                   <th>Mô tả</th>
                   <th>Ngày yêu cầu</th>
+                  <th>Ngày kết thúc</th>
+                  <th>Giá</th>
+                  <th>Nhân viên</th>
                   <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
-              <tbody id="maintenanceTable">
+              <tbody>
+                <c:forEach var="maintenance" items="${maintenances }" varStatus="status">
                 <tr>
-                  <td>1</td>
-                  <td>101</td>
-                  <td>Máy lạnh không hoạt động</td>
-                  <td>06/03/2025</td>
-                  <td><span class="badge bg-warning">Chờ xử lý</span></td>
+                  <%-- Dữ liệu gửi về server sẽ là 1 danh sách các id người dùng --%>
+                        <input type="hidden" name="maintenancesExport" value="${maintenance.mtnId}" />
+                  <td class="text-center">${status.count}</td>
+                  <td>${maintenance.mtnId}</td>
+                  <td>${maintenance.room.getRoomId()}</td>
+                  <td>${maintenance.mtnDescription}</td>
+                  <td>
+                  		<fmt:formatDate value="${maintenance.mtnDate }" pattern="dd/MM/yyyy" />
+                  </td>
+                  <td>
+                  		<fmt:formatDate value="${maintenance.mtnEnd }" pattern="dd/MM/yyyy" />
+                  </td>
+                  <td>${maintenance.mtnFee}</td>
+                  <td>${maintenance.staff.getStaffId()}</td>
+                  <td>${maintenance.mtnStatus}</td>
                   <td>
                     <button class="btn btn-sm btn-primary">
                       <i class="bi bi-pencil"></i>
@@ -362,21 +354,7 @@
                     </button>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>202</td>
-                  <td>Vòi nước bị rỉ</td>
-                  <td>05/03/2025</td>
-                  <td><span class="badge bg-success">Hoàn thành</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-primary">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                </c:forEach>
               </tbody>
             </table>
           </div>
