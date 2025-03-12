@@ -431,3 +431,209 @@ VALUES
 ('FB00108', 'Bữa sáng có nhiều món ngon', '2025-03-05 09:30:00', 'US00108', 'CS00002'),
 ('FB00109', 'Dịch vụ spa tuyệt vời, rất thư giãn', '2025-03-05 16:15:00', 'US00109', 'CS00002'),
 ('FB00110', 'Phòng tập gym đầy đủ thiết bị', '2025-03-05 17:30:00', 'US00110', 'CS00002');
+
+
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00201', '2025-03-05', '2025-03-10', '2025-03-15', 'Confirmed', 'RM00008', 'CS00001');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00300', 1, '2025-03-11', 'S00001', 'RR00201', NULL),
+('US00301', 2, '2025-03-12', 'S00002', 'RR00201', NULL),
+('US00302', 1, '2025-03-13', 'S00005', 'RR00201', 'P00002'),
+('US00303', 1, '2025-03-14', 'S00008', 'RR00201', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00300', '2025-03-15', 50000, 'US00300', 'ST00002'),
+('INV00301', '2025-03-15', 200000, 'US00301', 'ST00002'),
+('INV00302', '2025-03-15', 400000, 'US00302', 'ST00003'), -- 20% discount with P00002
+('INV00303', '2025-03-15', 200000, 'US00303', 'ST00003');
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00300', 'Dịch vụ phòng chậm và nhân viên không nhiệt tình. Đợi gần 1 tiếng mới có người phục vụ.', '2025-03-15 14:20:00', 'US00300', 'CS00001'),
+('FB00301', 'Dịch vụ giặt là làm hỏng áo sơ mi của tôi. Rất thất vọng!', '2025-03-15 16:45:00', 'US00301', 'CS00001');
+
+-- Additional services for CS00002 (Trần Thị Lan)
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00202', '2025-03-07', '2025-03-12', '2025-03-18', 'Confirmed', 'RM00001', 'CS00002');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00304', 1, '2025-03-13', 'S00003', 'RR00202', 'P00004'),
+('US00305', 2, '2025-03-14', 'S00004', 'RR00202', NULL),
+('US00306', 1, '2025-03-15', 'S00006', 'RR00202', NULL),
+('US00307', 1, '2025-03-16', 'S00009', 'RR00202', 'P00005'),
+('US00308', 1, '2025-03-17', 'S00010', 'RR00202', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00304', '2025-03-18', 225000, 'US00304', 'ST00001'), -- 25% discount with P00004
+('INV00305', '2025-03-18', 300000, 'US00305', 'ST00001'),
+('INV00306', '2025-03-18', 100000, 'US00306', 'ST00004'),
+('INV00307', '2025-03-18', 105000, 'US00307', 'ST00004'), -- 30% discount with P00005
+('INV00308', '2025-03-18', 200000, 'US00308', 'ST00005');
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00302', 'Xe đưa đón sân bay đến trễ hơn 30 phút, khiến tôi suýt lỡ chuyến bay. Không chuyên nghiệp!', '2025-03-18 09:30:00', 'US00304', 'CS00002'),
+('FB00303', 'Bữa sáng quá tệ, thức ăn không tươi và ít lựa chọn. Không xứng với giá tiền.', '2025-03-18 10:15:00', 'US00305', 'CS00002');
+
+-- CS00003 (Lê Minh Quân) - New booking with some unsatisfactory services
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00203', '2025-03-10', '2025-03-15', '2025-03-20', 'Confirmed', 'RM00004', 'CS00003');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00309', 1, '2025-03-16', 'S00005', 'RR00203', 'P00002'),
+('US00310', 1, '2025-03-17', 'S00006', 'RR00203', NULL),
+('US00311', 2, '2025-03-18', 'S00007', 'RR00203', 'P00003'),
+('US00312', 1, '2025-03-19', 'S00010', 'RR00203', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00309', '2025-03-20', 400000, 'US00309', 'ST00003'), -- 20% discount with P00002
+('INV00310', '2025-03-20', 100000, 'US00310', 'ST00003'),
+('INV00311', '2025-03-20', 144000, 'US00311', 'ST00002'), -- 10% discount with P00003
+('INV00312', '2025-03-20', 200000, 'US00312', 'ST00002');
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00304', 'Dịch vụ spa quá đông, phải chờ đợi rất lâu. Nhân viên massage thiếu chuyên nghiệp và không đúng kỹ thuật.', '2025-03-20 15:20:00', 'US00309', 'CS00003'),
+('FB00305', 'Thiết bị phòng gym cũ kỹ và một số đã hỏng. Kém xa so với quảng cáo.', '2025-03-20 16:40:00', 'US00310', 'CS00003');
+
+-- CS00004 (Phạm Thị Thu) - Heavy service user
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00204', '2025-03-12', '2025-03-17', '2025-03-25', 'Confirmed', 'RM00009', 'CS00004');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00313', 1, '2025-03-17', 'S00001', 'RR00204', NULL),
+('US00314', 2, '2025-03-18', 'S00002', 'RR00204', 'P00002'),
+('US00315', 1, '2025-03-19', 'S00003', 'RR00204', NULL),
+('US00316', 3, '2025-03-20', 'S00004', 'RR00204', 'P00001'),
+('US00317', 1, '2025-03-21', 'S00005', 'RR00204', NULL),
+('US00318', 1, '2025-03-22', 'S00007', 'RR00204', 'P00003'),
+('US00319', 2, '2025-03-23', 'S00008', 'RR00204', NULL),
+('US00320', 1, '2025-03-24', 'S00010', 'RR00204', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00313', '2025-03-25', 50000, 'US00313', 'ST00004'),
+('INV00314', '2025-03-25', 160000, 'US00314', 'ST00004'), -- 20% discount with P00002
+('INV00315', '2025-03-25', 300000, 'US00315', 'ST00005'),
+('INV00316', '2025-03-25', 382500, 'US00316', 'ST00005'), -- 15% discount with P00001
+('INV00317', '2025-03-25', 500000, 'US00317', 'ST00001'),
+('INV00318', '2025-03-25', 72000, 'US00318', 'ST00001'), -- 10% discount with P00003
+('INV00319', '2025-03-25', 400000, 'US00319', 'ST00002'),
+('INV00320', '2025-03-25', 200000, 'US00320', 'ST00002');
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00306', 'Nhà hàng trong phòng rất chậm phục vụ và món ăn không ngon như mô tả. Giá cao mà chất lượng kém.', '2025-03-25 19:10:00', 'US00320', 'CS00004');
+
+-- CS00005 (Hoàng Văn Nam) - Return customer with mixed feedback
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00205', '2025-03-15', '2025-03-20', '2025-03-23', 'Confirmed', 'RM00002', 'CS00005');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00321', 1, '2025-03-20', 'S00001', 'RR00205', NULL),
+('US00322', 1, '2025-03-21', 'S00004', 'RR00205', 'P00001'),
+('US00323', 1, '2025-03-21', 'S00005', 'RR00205', NULL),
+('US00324', 1, '2025-03-22', 'S00008', 'RR00205', 'P00003');
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00321', '2025-03-23', 50000, 'US00321', 'ST00003'),
+('INV00322', '2025-03-23', 127500, 'US00322', 'ST00003'), -- 15% discount with P00001
+('INV00323', '2025-03-23', 500000, 'US00323', 'ST00004'),
+('INV00324', '2025-03-23', 180000, 'US00324', 'ST00004'); -- 10% discount with P00003
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00307', 'Nhân viên dọn phòng không thay ga giường mới dù tôi đã yêu cầu. Phòng không được dọn sạch kỹ càng.', '2025-03-23 09:45:00', 'US00321', 'CS00005'),
+('FB00308', 'Rất hài lòng với bữa sáng. Đa dạng và ngon miệng!', '2025-03-23 10:30:00', 'US00322', 'CS00005'),
+('FB00309', 'Thủ tục trả phòng muộn quá phức tạp và bị tính phí cao hơn so với thông báo ban đầu. Không hài lòng!', '2025-03-23 14:20:00', 'US00324', 'CS00005');
+
+-- CS00006 (Ngô Thị Hồng) - Short stay but multiple services
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00206', '2025-03-18', '2025-03-22', '2025-03-24', 'Confirmed', 'RM00005', 'CS00006');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00325', 1, '2025-03-22', 'S00002', 'RR00206', NULL),
+('US00326', 1, '2025-03-22', 'S00003', 'RR00206', 'P00004'),
+('US00327', 2, '2025-03-23', 'S00004', 'RR00206', NULL),
+('US00328', 1, '2025-03-23', 'S00006', 'RR00206', NULL),
+('US00329', 1, '2025-03-23', 'S00010', 'RR00206', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00325', '2025-03-24', 100000, 'US00325', 'ST00005'),
+('INV00326', '2025-03-24', 225000, 'US00326', 'ST00005'), -- 25% discount with P00004
+('INV00327', '2025-03-24', 300000, 'US00327', 'ST00001'),
+('INV00328', '2025-03-24', 100000, 'US00328', 'ST00001'),
+('INV00329', '2025-03-24', 200000, 'US00329', 'ST00002');
+
+
+
+
+
+
+
+
+-- Additional stays and services for CS00001 (Nguyễn Văn Tùng)
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00071', '2025-03-08', '2025-03-10', '2025-03-15', 'Confirmed', 'RM00008', 'CS00001');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00210', 1, '2025-03-12', 'S00001', 'RR00071', NULL),
+('US00211', 2, '2025-03-12', 'S00002', 'RR00071', NULL),
+('US00212', 1, '2025-03-12', 'S00005', 'RR00071', 'P00002');
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00210', '2025-03-12', 50000, 'US00210', 'ST00002'),
+('INV00211', '2025-03-12', 200000, 'US00211', 'ST00002'),
+('INV00212', '2025-03-12', 400000, 'US00212', 'ST00003'); -- 20% discount with P00002
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00210', 'Dịch vụ phòng chậm và nhân viên không nhiệt tình. Đợi gần 1 tiếng mới có người phục vụ.', '2025-03-12 14:20:00', 'US00210', 'CS00001'),
+('FB00211', 'Dịch vụ giặt là làm hỏng áo sơ mi của tôi. Rất thất vọng!', '2025-03-12 16:45:00', 'US00211', 'CS00001');
+
+-- Additional services for CS00002 (Trần Thị Lan)
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00062', '2025-03-07', '2025-03-09', '2025-03-14', 'Confirmed', 'RM00001', 'CS00002');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00214', 1, '2025-03-12', 'S00003', 'RR00062', 'P00004'),
+('US00215', 2, '2025-03-12', 'S00004', 'RR00062', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00214', '2025-03-12', 225000, 'US00214', 'ST00001'), -- 25% discount with P00004
+('INV00215', '2025-03-12', 300000, 'US00215', 'ST00001');
+
+INSERT INTO Feedback (feedback_id, content, feedback_time, us_id, customer_id)
+VALUES
+('FB00212', 'Xe đưa đón sân bay đến trễ hơn 30 phút, khiến tôi suýt lỡ chuyến bay. Không chuyên nghiệp!', '2025-03-12 09:30:00', 'US00214', 'CS00002'),
+('FB00213', 'Bữa sáng quá tệ, thức ăn không tươi và ít lựa chọn. Không xứng với giá tiền.', '2025-03-12 10:15:00', 'US00215', 'CS00002');
+
+-- CS00003 (Lê Minh Quân) - New booking with some unsatisfactory services
+INSERT INTO Room_Rental (rent_id, rental_date, check_in_date, check_out_date, rental_status, room_id, customer_id)
+VALUES ('RR00063', '2025-03-10', '2025-03-11', '2025-03-16', 'Confirmed', 'RM00004', 'CS00003');
+
+INSERT INTO Use_Service (us_id, quantity, us_date, service_id, rent_id, promotion_id)
+VALUES 
+('US00219', 1, '2025-03-12', 'S00005', 'RR00063', 'P00002'),
+('US00220', 1, '2025-03-12', 'S00006', 'RR00063', NULL);
+
+INSERT INTO Invoice (invoice_id, invoice_date, total_amount, us_id, staff_id)
+VALUES
+('INV00219', '2025-03-12', 400000, 'US00219', 'ST00003'), -- 20% discount with P00002
+('INV00220', '2025-03-12', 100000, 'US00220', 'ST00003');

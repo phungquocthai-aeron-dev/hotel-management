@@ -1,6 +1,10 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,11 +21,13 @@ public class Feedback {
     private Date feedbackTime;
     
     @ManyToOne
-    @JoinColumn(name = "us_id", insertable = false, updatable = false)
+    @JoinColumn(name = "us_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UseService useService;
     
-    @ManyToOne
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
     
     public Feedback() {}

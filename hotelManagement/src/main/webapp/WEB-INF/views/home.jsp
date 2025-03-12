@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -231,36 +232,7 @@
         </nav>
         
         <!-- Content -->
-        <div class="content p-4">
-            <header class="mb-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <button id="sidebarToggle" class="btn btn-sm btn-outline-secondary">
-                        <i class="bi bi-list"></i>
-                    </button>
-                    <div class="d-flex align-items-center">
-                        <div class="search-wrapper me-3">
-                            <i class="bi bi-search"></i>
-                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-                        </div>
-                        <div class="dropdown">
-                            <div class="profile-menu" data-bs-toggle="dropdown">
-                                <i class="bi bi-bell position-relative">
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        3
-                                    </span>
-                                </i>
-                            </div>
-                            <ul class="dropdown-menu dropdown-menu-end alert-section">
-                                <li><h6 class="dropdown-header">Thông báo</h6></li>
-                                <li><a class="dropdown-item" href="#">Khách mới đặt phòng 101</a></li>
-                                <li><a class="dropdown-item" href="#">Bảo trì phòng 205 hoàn tất</a></li>
-                                <li><a class="dropdown-item" href="#">Nhắc nhở: check-out phòng 304</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            
+        <div class="content p-4">   
             <div class="tab-content">
                 <!-- Dashboard Tab -->
                 <div class="tab-pane pb-5 fade show active" id="dashboard">
@@ -272,11 +244,11 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <h6 class="card-title text-muted">Tổng số phòng</h6>
-                                            <h2 class="mb-0">120</h2>
+                                            <h6 class="card-title text-muted">Phòng chờ nhận</h6>
+                                            <h2 class="mb-0">${givenRooms.size() }</h2>
                                         </div>
                                         <div class="bg-light p-3 rounded-circle">
-                                            <i class="bi bi-house-door fs-3 text-primary"></i>
+                                            <i class="bi bi-clipboard-check fs-3 text-primary"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -288,7 +260,7 @@
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <h6 class="card-title text-muted">Đang sử dụng</h6>
-                                            <h2 class="mb-0">85</h2>
+                                            <h2 class="mb-0">${occupiedRooms.size() }</h2>
                                         </div>
                                         <div class="bg-light p-3 rounded-circle">
                                             <i class="bi bi-person-fill fs-3 text-success"></i>
@@ -302,11 +274,11 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <h6 class="card-title text-muted">Doanh thu hôm nay</h6>
-                                            <h2 class="mb-0">28.5M</h2>
+                                            <h6 class="card-title text-muted">Phòng chờ trả</h6>
+                                            <h2 class="mb-0">${checkOutRooms.size() }</h2>
                                         </div>
                                         <div class="bg-light p-3 rounded-circle">
-                                            <i class="bi bi-currency-dollar fs-3 text-warning"></i>
+                                        	<i class="bi bi-bell fs-3 text-danger"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -317,11 +289,11 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <h6 class="card-title text-muted">Đặt phòng mới</h6>
-                                            <h2 class="mb-0">12</h2>
+                                            <h6 class="card-title text-muted">Doanh thu hôm nay</h6>
+                                            <h2 class="mb-0">${ revenue }M</h2>
                                         </div>
                                         <div class="bg-light p-3 rounded-circle">
-                                            <i class="bi bi-calendar-plus fs-3 text-danger"></i>
+                                            <i class="bi bi-currency-dollar fs-3 text-warning"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -333,15 +305,35 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Thống kê doanh thu</h5>
-                                    <div class="btn-group">
-                                        <button class="btn btn-sm btn-outline-secondary active">Ngày</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Tuần</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Tháng</button>
-                                    </div>
+                                    <h5 class="mb-0">Feedback</h5>
                                 </div>
                                 <div class="card-body">
-                                    <img src="/api/placeholder/700/300" alt="Revenue Chart" class="img-fluid">
+                                    <div class="table-responsive" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd;">
+    									<table class="table table-hover">
+        								<thead class="text-center" style="position: sticky; top: 0; background: white; z-index: 1; text-align: center;">
+            							<tr>
+                							<th>Mã phản hồi</th>
+                							<th>Nội dung</th>
+                							<th>Thời gian</th>
+                							<th>Mã sử dụng dịch vụ</th>
+            							    <th>Mã khách hàng</th>
+   									      </tr>
+     									   </thead>
+        									<tbody>
+            								<c:forEach var="feedback" items="${feedbacks }" varStatus="status">
+                							<tr>
+                    							<td>${feedback.feedbackId }</td>
+                    							<td>${feedback.content }</td>
+                   								<td>
+                  							      <fmt:formatDate value="${feedback.feedbackTime }" pattern="dd/MM/yyyy HH:mm" />
+                    							</td>
+                    							<td>${feedback.useService.getUsId() }</td>
+             							    	<td>${feedback.customer.getCustomerId() }</td>
+                							</tr>
+ 								           </c:forEach>
+    									    </tbody>
+    									</table>
+									</div>
                                 </div>
                             </div>
                         </div>
@@ -351,23 +343,18 @@
                                     <h5 class="mb-0">Tình trạng phòng</h5>
                                 </div>
                                 <div class="card-body">
-                                    <img src="/api/placeholder/300/200" alt="Room Status Chart" class="img-fluid">
                                     <div class="mt-3">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Có sẵn</span>
-                                            <span class="badge room-available px-3">35</span>
+                                            <span class="badge room-available px-3">${totalAvailable }</span>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Đã đặt</span>
-                                            <span class="badge room-occupied px-3">65</span>
+                                            <span class="badge room-occupied px-3">${totalOccupied }</span>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span>Bảo trì</span>
-                                            <span class="badge room-maintenance px-3">12</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>Đặt trước</span>
-                                            <span class="badge room-reserved px-3">8</span>
+                                            <span class="badge room-maintenance px-3">${totalMaintenance }</span>
                                         </div>
                                     </div>
                                 </div>
@@ -380,7 +367,6 @@
                             <div class="card">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">Check-in hôm nay</h5>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -394,28 +380,27 @@
                                                     <th></th>
                                                 </tr>
                                             </thead>
+                                            
                                             <tbody>
+                                            <c:forEach var="givenRoom" items="${givenRooms }" varStatus="status">
                                                 <tr>
-                                                    <td>#RNT001</td>
-                                                    <td>Nguyễn Văn A</td>
-                                                    <td>101</td>
-                                                    <td>14:00</td>
-                                                    <td><button class="btn btn-sm btn-outline-success">Check-in</button></td>
+                                                    <td>${givenRoom.rentId }</td>
+                                                    <td>${givenRoom.customer.getCustomerName() }</td>
+                                                    <td>${givenRoom.room.getRoomId() }</td>
+                                                    <td>
+                                                    	<fmt:formatDate value="${givenRoom.rentalDate }" pattern="dd/MM/yyyy HH:mm" />
+                                                    </td>
+                                                    <td>
+                                                    	
+                                                    	<form action="checkin" method="post">
+                                                    		<input type="text" hidden name="rentId" value="${givenRoom.rentId }">
+                                                    		<button class="btn btn-sm btn-outline-success">Check-in</button>
+                                                    	</form>
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>#RNT002</td>
-                                                    <td>Trần Thị B</td>
-                                                    <td>205</td>
-                                                    <td>15:30</td>
-                                                    <td><button class="btn btn-sm btn-outline-success">Check-in</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>#RNT003</td>
-                                                    <td>Lê Văn C</td>
-                                                    <td>304</td>
-                                                    <td>16:00</td>
-                                                    <td><button class="btn btn-sm btn-outline-success">Check-in</button></td>
-                                                </tr>
+                                             </c:forEach>
+                                             
+                                 
                                             </tbody>
                                         </table>
                                     </div>
@@ -426,11 +411,10 @@
                             <div class="card">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">Check-out hôm nay</h5>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-hover">
+                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Mã đặt phòng</th>
@@ -440,28 +424,27 @@
                                                     <th></th>
                                                 </tr>
                                             </thead>
+                                            
                                             <tbody>
+                                            <c:forEach var="checkOutRoom" items="${checkOutRooms }" varStatus="status">
                                                 <tr>
-                                                    <td>#RNT004</td>
-                                                    <td>Phạm Thị D</td>
-                                                    <td>102</td>
-                                                    <td>12:00</td>
-                                                    <td><button class="btn btn-sm btn-outline-warning">Check-out</button></td>
+                                                    <td>${checkOutRoom.rentId }</td>
+                                                    <td>${checkOutRoom.customer.getCustomerName() }</td>
+                                                    <td>${checkOutRoom.room.getRoomId() }</td>
+                                                    <td>
+                                                    	<fmt:formatDate value="${checkOutRoom.rentalDate }" pattern="dd/MM/yyyy HH:mm"/>
+                                                    </td>
+                                                    <td>
+                                                    	<form action="checkout" method="post">
+                                                    		<input type="text" hidden name="rentId" value=">${checkOutRoom.rentId }">
+                                                    		<input type="text" hidden name="roomId" value="${checkOutRoom.room.getRoomId() }">
+                                                    		<input type="text" hidden name="status" value="Available">
+                                                    		<button class="btn btn-sm btn-outline-success">Check-out</button>
+                                                    	</form>
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>#RNT005</td>
-                                                    <td>Hoàng Văn E</td>
-                                                    <td>207</td>
-                                                    <td>12:00</td>
-                                                    <td><button class="btn btn-sm btn-outline-warning">Check-out</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>#RNT006</td>
-                                                    <td>Vũ Thị F</td>
-                                                    <td>306</td>
-                                                    <td>13:00</td>
-                                                    <td><button class="btn btn-sm btn-outline-warning">Check-out</button></td>
-                                                </tr>
+                                             </c:forEach>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -471,206 +454,6 @@
                     </div>
                 </div>
 
-                <!-- Rooms Tab -->
-                <div class="tab-pane pb-5 fade show active" id="rooms">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3>Quản lý phòng</h3>
-                        <button class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Thêm phòng mới
-                        </button>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3 mb-3">
-                                    <select class="form-select">
-                                        <option selected>Tất cả loại phòng</option>
-                                        <option>Phòng đơn</option>
-                                        <option>Phòng đôi</option>
-                                        <option>Phòng VIP</option>
-                                        <option>Phòng gia đình</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <select class="form-select">
-                                        <option selected>Tất cả trạng thái</option>
-                                        <option>Có sẵn</option>
-                                        <option>Đã đặt</option>
-                                        <option>Bảo trì</option>
-                                        <option>Đang dọn dẹp</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <select class="form-select">
-                                        <option selected>Số phòng</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Tìm phòng...">
-                                        <button class="btn btn-outline-secondary">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-header room-available d-flex justify-content-between align-items-center py-2">
-                                    <span class="fw-bold">101</span>
-                                    <span class="status-badge bg-white text-success">Trống</span>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Loại phòng:</small>
-                                        <span>Phòng đơn</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Giá:</small>
-                                        <span>850.000 VND</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <small class="text-muted">Tầng:</small>
-                                        <span>1</span>
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-sm btn-primary">Đặt phòng</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Chi tiết</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-header room-occupied d-flex justify-content-between align-items-center py-2">
-                                    <span class="fw-bold">102</span>
-                                    <span class="status-badge bg-white text-danger">Đã đặt</span>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Loại phòng:</small>
-                                        <span>Phòng đôi</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Giá:</small>
-                                        <span>1.200.000 VND</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <small class="text-muted">Tầng:</small>
-                                        <span>1</span>
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-sm btn-warning">Check-out</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Chi tiết</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-header room-maintenance d-flex justify-content-between align-items-center py-2">
-                                    <span class="fw-bold">103</span>
-                                    <span class="status-badge bg-white text-warning">Bảo trì</span>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Loại phòng:</small>
-                                        <span>Phòng đơn</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Giá:</small>
-                                        <span>850.000 VND</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <small class="text-muted">Tầng:</small>
-                                        <span>1</span>
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-sm btn-success">Hoàn thành</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Chi tiết</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-header room-reserved d-flex justify-content-between align-items-center py-2">
-                                    <span class="fw-bold">104</span>
-                                    <span class="status-badge bg-white text-primary">Đặt trước</span>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Loại phòng:</small>
-                                        <span>Phòng VIP</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <small class="text-muted">Giá:</small>
-                                        <span>2.500.000 VND</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <small class="text-muted">Tầng:</small>
-                                        <span>1</span>
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-sm btn-success">Check-in</button>
-                                        <button class="btn btn-sm btn-outline-secondary">Chi tiết</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Các phòng khác -->
-                    </div>
-                </div>
-                
-                <!-- Other Tabs -->
-                <div class="tab-pane pb-5 fade show active" id="reservations">
-                    <h3 class="mb-4">Quản lý đặt phòng</h3>
-                    <!-- Reservation Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="customers">
-                    <h3 class="mb-4">Quản lý khách hàng</h3>
-                    <!-- Customers Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="services">
-                    <h3 class="mb-4">Quản lý dịch vụ</h3>
-                    <!-- Services Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="staff">
-                    <h3 class="mb-4">Quản lý nhân viên</h3>
-                    <!-- Staff Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="invoices">
-                    <h3 class="mb-4">Quản lý hóa đơn</h3>
-                    <!-- Invoices Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="maintenance">
-                    <h3 class="mb-4">Quản lý bảo trì</h3>
-                    <!-- Maintenance Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="promotions">
-                    <h3 class="mb-4">Quản lý khuyến mãi</h3>
-                    <!-- Promotions Management Content -->
-                </div>
-                
-                <div class="tab-pane pb-5 fade show active" id="reports">
-                    <h3 class="mb-4">Báo cáo thống kê</h3>
-                    <!-- Reports Content -->
-                </div>
             </div>
         </div>
     </div>
