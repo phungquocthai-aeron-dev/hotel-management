@@ -94,3 +94,205 @@ CALL SearchRoom(NULL, NULL, 'Available', NULL, 'Standard');  -- Phòng "Availabl
 CALL SearchRoom('R001', NULL, NULL, NULL, NULL);  -- Tìm phòng theo ID
 
 
+
+DELIMITER $$
+
+CREATE FUNCTION getCustomerIdByInvoice(invoiceIdParam VARCHAR(255)) 
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+    DECLARE customerId VARCHAR(255);
+
+    SELECT rr.customer_id 
+    INTO customerId
+    FROM Invoice i
+    JOIN Use_Service us ON i.us_id = us.us_id
+    JOIN Room_Rental rr ON us.rent_id = rr.rent_id
+    WHERE i.invoice_id = invoiceIdParam
+    LIMIT 1;
+
+    RETURN customerId;
+END$$
+
+DELIMITER ;
+
+SELECT getCustomerIdByInvoice("INV00001");
+
+
+
+
+
+
+
+
+-- 1. Function lấy doanh thu theo ngày
+DELIMITER //
+CREATE FUNCTION GetDailyRevenue(dateParam DATE) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    WHERE DATE(i.invoice_date) = dateParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+-- 2. Function lấy doanh thu theo tháng
+DELIMITER //
+CREATE FUNCTION GetMonthlyRevenue(yearParam INT, monthParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    WHERE YEAR(i.invoice_date) = yearParam 
+      AND MONTH(i.invoice_date) = monthParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+-- 3. Function lấy doanh thu theo quý
+DELIMITER //
+CREATE FUNCTION GetQuarterlyRevenue(yearParam INT, quarterParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    WHERE YEAR(i.invoice_date) = yearParam 
+      AND QUARTER(i.invoice_date) = quarterParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+-- 4. Function lấy doanh thu theo năm
+DELIMITER //
+CREATE FUNCTION GetYearlyRevenue(yearParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    WHERE YEAR(i.invoice_date) = yearParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+-- 5. Function lấy số phòng đang được sử dụng
+DELIMITER //
+CREATE FUNCTION GetOccupiedRoomsCount() 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE room_count INT;
+    
+    SELECT COUNT(*) INTO room_count
+    FROM Room r
+    WHERE r.status = 'Occupied';
+    
+    RETURN room_count;
+END //
+DELIMITER ;
+
+-- 6. Function kiểm tra phòng có khả dụng cho đặt phòng
+DELIMITER //
+CREATE FUNCTION IsRoomAvailable(roomIdParam VARCHAR(50), checkInDate DATE, checkOutDate DATE) 
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE booking_count INT;
+    
+    SELECT COUNT(*) INTO booking_count
+    FROM Room_Rental rr
+    WHERE rr.room_id = roomIdParam
+      AND (
+          (rr.rental_date <= checkInDate AND rr.check_out_date > checkInDate) OR
+          (rr.rental_date < checkOutDate AND rr.check_out_date >= checkOutDate) OR
+          (rr.rental_date >= checkInDate AND rr.check_out_date <= checkOutDate)
+      );
+    
+    IF booking_count > 0 THEN
+        RETURN FALSE;
+    ELSE
+        RETURN TRUE;
+    END IF;
+END //
+DELIMITER ;
+
+-- 7. Function tính tổng doanh thu từ một phòng cụ thể
+DELIMITER //
+CREATE FUNCTION GetRoomRevenue(roomIdParam VARCHAR(50), startDate DATE, endDate DATE) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    JOIN Room_Rental rr ON i.rent_id = rr.rent_id
+    WHERE rr.room_id = roomIdParam
+      AND i.invoice_date BETWEEN startDate AND endDate;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+-- 8. Function tính tổng doanh thu từ một khách hàng
+DELIMITER //
+CREATE FUNCTION GetCustomerRevenue(customerIdParam VARCHAR(50)) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    JOIN Room_Rental rr ON i.rent_id = rr.rent_id
+    WHERE rr.customer_id = customerIdParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+
+
+
+
+
