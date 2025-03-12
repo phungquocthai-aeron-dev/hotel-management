@@ -2,14 +2,16 @@ package com.quantridulieu.hotelManagement.services;
 
 import java.util.List;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.quantridulieu.hotelManagement.repositories.InvoiceRepository;
 import com.quantridulieu.hotelManagement.entities.Invoice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class InvoiceService {
 	@Autowired
     InvoiceRepository invoiceRepository;
@@ -54,7 +56,11 @@ public class InvoiceService {
     public List<Invoice> getInvoicesByStaffId(String staffId) {
         return invoiceRepository.findByStaffId(staffId);
     }
-
+    
+    public double getDailyRevenue(Date date) {
+    	return invoiceRepository.getDailyRevenue(date);
+    }
+    
     private String generateId() {
         Long count = invoiceRepository.count();
         return String.format("INV%05d", count + 1);
