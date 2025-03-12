@@ -61,6 +61,10 @@ public class MaintenanceService {
     public List<Maintenance> getMaintenanceByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return maintenanceRepository.findByDateRange(startDate, endDate);
     }
+    
+    public double getMonthlyExpenses(Integer month, Integer year) {
+    	return maintenanceRepository.getMonthlyExpenses(year, month);
+    }
 
     private String generateId() {
         Long count = maintenanceRepository.count();

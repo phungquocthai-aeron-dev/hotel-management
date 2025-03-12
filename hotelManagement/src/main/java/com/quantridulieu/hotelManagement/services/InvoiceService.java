@@ -2,7 +2,6 @@ package com.quantridulieu.hotelManagement.services;
 
 import java.util.List;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.quantridulieu.hotelManagement.repositories.InvoiceRepository;
@@ -59,6 +58,10 @@ public class InvoiceService {
     
     public double getDailyRevenue(Date date) {
     	return invoiceRepository.getDailyRevenue(date);
+    }
+    
+    public double getMonthlyRevenue(Integer month, Integer year) {
+    	return invoiceRepository.getMonthlyRevenue(year, month);
     }
     
     private String generateId() {
