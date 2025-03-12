@@ -1,5 +1,6 @@
 package com.quantridulieu.hotelManagement.controllers;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.entities.Maintenance;
 import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.services.MaintenanceService;
+import com.quantridulieu.hotelManagement.services.StaffService;
 
 import org.springframework.ui.Model;
 
@@ -50,6 +53,38 @@ public class MaintenanceController {
 		
 		return "maintenance";
 	}
+	
+	@GetMapping(value = "/maintenance/details")
+    public String getMaintenanceById(@RequestParam("id") String mtnId, Model model, HttpSession session) {
+        Staff staff = (Staff)session.getAttribute("loggedInStaff");
+        
+//		Chưa đăng nhập --> cook
+        if(staff == null) return "redirect:/login";
+//		Không phải admin --> cook
+		if(!staff.getRole().equals("ADMIN")) return "redirect:/maintenance";
+        Maintenance maintenance = maintenanceService.getMaintenanceById(mtnId);
+
+        
+        model.addAttribute("maintenance", maintenance);
+        model.addAttribute("staff", staff);
+        
+		Map<String, String> errors = (Map<String, String>) model.getAttribute("errors");
+		if(errors != null) {
+			model.addAttribute("errors", errors);
+		}
+		
+        return "editmaintenance";
+    }
+	
+	@PostMapping("/maintenance/update")
+    public String getMaintenanceUpdate(
+    		@ModelAttribute Maintenance maintenance) {
+		System.out.println("Cập nhật bảo trì: AAAAAAAAAAAAAAAAAAAAAAAA" + maintenance);
+    		 maintenanceService.save(maintenance);
+
+        
+        return "redirect:/maintenance";
+    }
 	
 	@PostMapping("/maintenance/export")
     public ResponseEntity<byte[]> exportMaintenanceToExcel(

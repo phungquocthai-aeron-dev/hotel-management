@@ -79,14 +79,11 @@ import="java.text.SimpleDateFormat" %> <%@ page import="java.util.Date" %>
     </style>
   </head>
   <body>
-    <% 
-    Staff staff = (Staff) request.getAttribute("staff");
-    String rawDate = staff.getDateOfBirth().toString(); 
-    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S"); 
-    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd"); 
-    Date date = inputFormat.parse(rawDate);
-    String formattedDate = outputFormat.format(date);
-    %>
+    <% Staff staff = (Staff) request.getAttribute("staff"); String rawDate =
+    staff.getDateOfBirth().toString(); SimpleDateFormat inputFormat = new
+    SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S"); SimpleDateFormat outputFormat =
+    new SimpleDateFormat("yyyy-MM-dd"); Date date = inputFormat.parse(rawDate);
+    String formattedDate = outputFormat.format(date); %>
 
     <div class="edit-wrapper">
       <h2>Chỉnh Sửa Nhân Viên</h2>
