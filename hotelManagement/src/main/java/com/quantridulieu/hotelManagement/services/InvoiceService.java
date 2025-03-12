@@ -53,6 +53,10 @@ public class InvoiceService {
         invoiceRepository.deleteById(id);
     }
 
+    public double getDailyRevenue(Date date) {
+        return invoiceRepository.getDailyRevenue(date);
+    }
+
     private String generateId() {
         Long count = invoiceRepository.count();
         return String.format("INV%05d", count + 1);

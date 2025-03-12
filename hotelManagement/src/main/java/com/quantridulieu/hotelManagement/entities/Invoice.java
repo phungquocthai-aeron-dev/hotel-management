@@ -1,6 +1,10 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,10 +22,12 @@ public class Invoice {
     
     @ManyToOne
     @JoinColumn(name = "us_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UseService useService;
     
     @ManyToOne
     @JoinColumn(name = "staff_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Staff staff;
     
     public Invoice() {}
