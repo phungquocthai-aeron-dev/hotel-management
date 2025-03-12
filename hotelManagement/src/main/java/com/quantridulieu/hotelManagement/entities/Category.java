@@ -1,5 +1,7 @@
 package com.quantridulieu.hotelManagement.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +16,8 @@ public class Category {
     
     @Column(name = "room_price")
     private Float roomPrice;
-    
+    @OneToMany(mappedBy = "category") // Liên kết với Room
+    private List<Room> rooms;
     public Category() {}
     
 	public Category(String categoryId, String categoryName, Float roomPrice) {

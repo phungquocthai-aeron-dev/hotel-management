@@ -15,11 +15,8 @@ public class Room {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "floor")
-    private Integer floor; // Thêm thuộc tính tầng
-
     @ManyToOne
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    @JoinColumn(name = "category_id")  // Khóa ngoại liên kết với bảng Category
     private Category category;
 
     // Constructor mặc định
@@ -33,15 +30,38 @@ public class Room {
         this.category = category;
     }
 
-    // Getter và Setter
-    public String getRoomId() { 
-    	return roomId; 
-    }
+    // Getter và Setter cho Room
+    public String getRoomId() { return roomId; }
     public void setRoomId(String roomId) { this.roomId = roomId; }
+    
     public Integer getRoomNumber() { return roomNumber; }
     public void setRoomNumber(Integer roomNumber) { this.roomNumber = roomNumber; }
+    
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
+
+    // Getter cho categoryId, categoryName, roomPrice từ Category
+    public String getCategoryId() {
+        return category != null ? category.getCategoryId() : null;
+    }
+
+    public void setCategoryId(String categoryId) {
+        if (category != null) {
+            category.setCategoryId(categoryId);
+        }
+    }
+
+    public String getCategoryName() {
+        return category != null ? category.getCategoryName() : null;
+    }
+
+    public void setCategoryName(String categoryName) {
+        if (category != null) {
+            category.setCategoryName(categoryName);
+        }
+    }
+
 }
