@@ -86,6 +86,12 @@ public class MaintenanceController {
         return "redirect:/maintenance";
     }
 	
+	@PostMapping("/maintenance/delete")
+    public String deleteCustomer(@RequestParam("id") String mtnId) {
+		maintenanceService.delete(mtnId);
+      return "redirect:/maintenance";
+    }
+	
 	@PostMapping("/maintenance/export")
     public ResponseEntity<byte[]> exportMaintenanceToExcel(
     		HttpSession session,
