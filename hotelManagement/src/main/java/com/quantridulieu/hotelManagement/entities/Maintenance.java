@@ -16,6 +16,7 @@ public class Maintenance {
 	private String mtnId;
 
 	@Column(name = "mtn_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date mtnDate;
 
 	@Column(name = "mtn_description")
@@ -25,6 +26,7 @@ public class Maintenance {
 	private Float mtnFee;
 
 	@Column(name = "mtn_end")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date mtnEnd;
 
 	@Column(name = "mtn_status")

@@ -147,7 +147,7 @@ body {
 					<li class="nav-item"><a href="room" class="nav-link"> <i
 							class="bi bi-house-door"></i> Quản lý phòng
 					</a></li>
-					<li class="nav-item"><a href="#rental" class="nav-link"> <i
+					<li class="nav-item"><a href="roomrental" class="nav-link"> <i
 							class="bi bi-calendar-check"></i> Đặt phòng
 					</a></li>
 					<li class="nav-item"><a href="customer" class="nav-link">

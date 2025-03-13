@@ -199,7 +199,7 @@ prefix="c" %>
               </a>
             </li>
             <li class="nav-item">
-              <a href="rental" class="nav-link">
+              <a href="roomrental" class="nav-link">
                 <i class="bi bi-calendar-check"></i> Đặt phòng
               </a>
             </li>

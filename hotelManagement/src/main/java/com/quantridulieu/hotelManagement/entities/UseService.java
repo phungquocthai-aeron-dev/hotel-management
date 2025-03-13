@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 
@@ -18,6 +19,7 @@ public class UseService {
 	private Integer quantity;
 
 	@Column(name = "us_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date usDate;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
