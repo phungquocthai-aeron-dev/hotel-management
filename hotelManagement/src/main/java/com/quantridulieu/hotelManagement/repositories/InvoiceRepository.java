@@ -1,5 +1,6 @@
 package com.quantridulieu.hotelManagement.repositories;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     @Modifying
     @Procedure(name = "SearchInvoice")
+<<<<<<< HEAD
     List<Invoice> searchInvoices(
             @Param("p_invoice_id") String invoiceId,
             @Param("p_staff_id") String staffId,
@@ -53,4 +55,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     // Sử dụng function GetYearlyRevenue để lấy doanh thu theo năm
     @Query(value = "SELECT GetYearlyRevenue(:year)", nativeQuery = true)
     double getYearlyRevenue(@Param("year") Integer year);
+=======
+    List<Invoice> SearchInvoice(
+        @Param("p_invoice_id") String invoiceId,
+        @Param("p_staff_id") String staffId,
+        @Param("p_totalAmountRange") String totalAmountRange,
+        @Param("p_serviceDate") LocalDate serviceDate
+    );
+>>>>>>> 99c6ad8561db3f6297ebb84ae9283548647a567c
 }

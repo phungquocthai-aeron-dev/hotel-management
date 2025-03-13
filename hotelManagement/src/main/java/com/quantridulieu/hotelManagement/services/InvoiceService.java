@@ -1,6 +1,8 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Invoice;
+import com.quantridulieu.hotelManagement.entities.InvoiceExport;
 import com.quantridulieu.hotelManagement.repositories.InvoiceRepository;
 
 @Service
@@ -26,7 +29,15 @@ public class InvoiceService {
     }
 
     public byte[] exportInvoiceToExcelByListIds(List<String> ids) throws IOException {
-        return excelExportUtil.exportToExcel(invoiceRepository.findByInvoiceIds(ids), null, "Danh sách hóa đơn");
+    	List<InvoiceExport> list = new ArrayList<InvoiceExport>();
+    	List<Invoice> data = invoiceRepository.findByInvoiceIds(ids);
+    	int n = ids.size();
+    	for(int i = 0; i < n; i++) {
+    		Invoice invoice = data.get(i);
+    		InvoiceExport export = new InvoiceExport(invoice.getInvoiceId(), invoice.getInvoiceDate(), invoice.getTotalAmount(), invoice.getUseService().getUsId(), invoice.getStaff().getStaffId());
+    		list.add(export);
+    	}
+        return excelExportUtil.exportToExcel(list, null, "Danh sách hóa đơn");
     }
 
     public List<Invoice> getAllInvoices() {
@@ -63,7 +74,19 @@ public class InvoiceService {
     }
 
     @Transactional
-    public List<Invoice> searchInvoices(String invoiceId, String staffId, String fromDate, String toDate) {
-        return invoiceRepository.searchInvoices(invoiceId, staffId, fromDate, toDate);
+    public List<Invoice> searchInvoices(String invoiceId, String staffId, String totalAmountRange, String serviceDate) {
+        LocalDate parsedDate = null;
+        if (serviceDate != null && !serviceDate.isEmpty()) {
+            parsedDate = LocalDate.parse(serviceDate);
+        }
+
+        return invoiceRepository.SearchInvoice(
+            (invoiceId == null || invoiceId.isEmpty()) ? null : invoiceId,
+            (staffId == null || staffId.isEmpty()) ? null : staffId,
+            (totalAmountRange == null || totalAmountRange.isEmpty()) ? null : totalAmountRange,
+            parsedDate
+        );
     }
+
+
 }

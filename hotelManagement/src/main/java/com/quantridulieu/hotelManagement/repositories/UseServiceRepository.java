@@ -24,4 +24,7 @@ public interface UseServiceRepository extends JpaRepository<UseService, String> 
 
     @Query(value = "SELECT * FROM use_service WHERE promotion_id = :promotionId", nativeQuery = true)
     List<UseService> findByPromotionId(@Param("promotionId") String promotionId);
+
+    @Query(value = "SELECT * FROM use_service WHERE us_id NOT IN (SELECT us_id FROM invoice)", nativeQuery = true)
+    List<UseService> getAllUseServiceNotInInvoice();
 }
