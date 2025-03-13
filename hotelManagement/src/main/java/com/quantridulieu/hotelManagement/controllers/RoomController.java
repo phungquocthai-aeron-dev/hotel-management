@@ -142,6 +142,11 @@ public class RoomController {
         redirectAttributes.addFlashAttribute("searchResult", rooms);
         return "redirect:/room";
     }
+    @PostMapping("/delete")
+    public String deleteRoom(@RequestParam("id") String roomId) {
+     roomService.delete(roomId);
+      return "redirect:/room";
+    }
     @PostMapping("/export")
     public ResponseEntity<byte[]> exportRoomToExcel(
             HttpSession session,
