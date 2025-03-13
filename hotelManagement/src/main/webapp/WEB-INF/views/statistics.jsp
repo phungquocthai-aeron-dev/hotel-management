@@ -211,7 +211,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="rental" class="nav-link" data-bs-toggle="pill">
+                        <a href="roomrental" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-calendar-check"></i> Đặt phòng
                         </a>
                     </li>

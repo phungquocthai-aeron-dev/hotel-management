@@ -1,6 +1,9 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +14,7 @@ public class Invoice {
     private String invoiceId;
     
     @Column(name = "invoice_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date invoiceDate;
     
     @Column(name = "total_amount")
