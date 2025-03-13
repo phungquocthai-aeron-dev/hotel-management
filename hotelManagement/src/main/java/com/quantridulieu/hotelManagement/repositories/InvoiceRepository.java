@@ -39,9 +39,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     @Query(value = "SELECT * FROM invoice WHERE us_id = :usId", nativeQuery = true)
     List<Invoice> findByUsId(@Param("usId") String usId);
 
-    @Query(value = "SELECT * FROM invoice WHERE staff_id = :staffId", nativeQuery = true)
-    List<Invoice> findByStaffId(@Param("staffId") String staffId);
-
     @Query(value = "SELECT GetDailyRevenue(:date)", nativeQuery = true)
     double getDailyRevenue(@Param("date") Date date);
 

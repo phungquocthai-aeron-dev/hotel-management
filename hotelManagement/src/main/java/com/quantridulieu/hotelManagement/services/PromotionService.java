@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.quantridulieu.hotelManagement.entities.InvoiceExport;
 import com.quantridulieu.hotelManagement.entities.Promotion;
 import com.quantridulieu.hotelManagement.repositories.PromotionRepository;
 
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

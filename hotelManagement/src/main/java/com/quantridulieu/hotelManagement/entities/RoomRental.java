@@ -1,6 +1,9 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 
@@ -10,6 +13,10 @@ import jakarta.persistence.*;
     @Id
     @Column(name = "rent_id")
     private String rentId;
+    
+    @Column(name = "rental_status")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String rentalStatus;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -29,14 +36,13 @@ import jakarta.persistence.*;
 
 
     
-    @ManyToOne(cascade = CascadeT e.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "room_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
  
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "c
-    ustomer_id")
+    @JoinColumn(name = "customer_id")
     
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
@@ -52,92 +58,24 @@ import jakarta.persistence.*;
         this.checkOutDate = checkOutDate;
         this.rentalStatus = rentalStatus;
         this.room = room;
-        
-    
-
-        
-        
-    
-    
-
-        
-    
-
         this.customer = customer;
-        
-    
-        
-    
-        
-    
-
     }
         
     
+	public String getRentId() {
+		return rentId;
+	}
 
-        
-        
-    
-
-    
-        
-    
-
-    // Getter và Setter
-        
-    
-
-        
-        
-    
-    
-    public String getRentId
-        ) {
-    
-
-        return rentId;
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
+    public void setRentId(String rentId) {
+    	this.rentId = rentId;    
     }
-        
-    
-
-    public void setRentId(String re
-        tId) {
-    
-
-        this.rentId = rentId;
-        
-    
-    }
-
-        
-    
 
     public Date getRentalDate() {
-        
-    
-        return rentalDate;
-    }
-        
-    
-
-    
-        
+    	return rentalDate;
+    }  
     
     public void setRentalDate(Date rentalDate) {
-        this.rentalDate = rentalDat
-        ;
-    
-
+        this.rentalDate = rentalDate;
     }
         
     
@@ -174,15 +112,6 @@ import jakarta.persistence.*;
     public void setRoom(Room room) {
         this.room = room;
     }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
 
     public Customer getCustomer() {
         return customer;

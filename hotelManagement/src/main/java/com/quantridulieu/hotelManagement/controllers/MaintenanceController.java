@@ -58,7 +58,7 @@ public class MaintenanceController {
 		
 		// Nếu có dữ liệu đỗ về từ search thì bỏ qua
 		// Không có thì xu lấy tất cả
-		if(list == null) list = maintenanceService.getAllMaintenances();
+		if(list == null) list = maintenanceService.getAllMaintenance();
 		Long totalMaintenance = maintenanceService.getTotalMaintenance();
 		model.addAttribute("totalMaintenance", totalMaintenance != null ? totalMaintenance : 0L);
 		

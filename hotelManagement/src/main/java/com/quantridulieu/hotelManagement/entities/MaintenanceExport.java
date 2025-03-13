@@ -1,50 +1,29 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "Maintenance")
-public class Maintenance {
-	@Id
-	@Column(name = "mtn_id")
-	private String mtnId;
+public class MaintenanceExport {
+    private String mtnId;
 
-	@Column(name = "mtn_date")
-	private Date mtnDate;
+    private Date mtnDate;
+    
+    private String mtnDescription;
+    
+    private Float mtnFee;
+    
+    private Date mtnEnd;
+    
+    private String mtnStatus;
+    
+    private String room;
+    
+    private String staff;
+    
+    public MaintenanceExport() {}
 
-	@Column(name = "mtn_description")
-	private String mtnDescription;
-
-	@Column(name = "mtn_fee")
-	private Float mtnFee;
-
-	@Column(name = "mtn_end")
-	private Date mtnEnd;
-
-	@Column(name = "mtn_status")
-	private String mtnStatus;
-
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "room_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Room room;
-
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "staff_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Staff staff;
-
-	public Maintenance() {
-	}
-
-	public Maintenance(String mtnId, Date mtnDate, String mtnDescription, Float mtnFee, Date mtnEnd, String mtnStatus,
-			Room room, Staff staff) {
+	public MaintenanceExport(String mtnId, Date mtnDate, String mtnDescription, Float mtnFee, Date mtnEnd, String mtnStatus,
+			String room, String staff) {
 		super();
 		this.mtnId = mtnId;
 		this.mtnDate = mtnDate;
@@ -104,20 +83,30 @@ public class Maintenance {
 		this.mtnStatus = mtnStatus;
 	}
 
-	public Room getRoom() {
+	public String getRoom() {
 		return room;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoom(String room) {
 		this.room = room;
 	}
 
-	public Staff getStaff() {
+	public String getStaffId() {
 		return staff;
 	}
 
-	public void setStaff(Staff staff) {
+	public void setStaff(String staff) {
 		this.staff = staff;
 	}
-
+    
+	public MaintenanceExport(Maintenance maintenance) {
+		this.mtnId = maintenance.getMtnId();
+		this.mtnDate = maintenance.getMtnDate();
+		this.mtnDescription = maintenance.getMtnDescription();
+		this.mtnFee = maintenance.getMtnFee();
+		this.mtnEnd = maintenance.getMtnEnd();
+		this.mtnStatus = maintenance.getMtnStatus();
+		this.room = maintenance.getRoom().getRoomId();
+		this.staff = maintenance.getStaff().getStaffId();
+	}
 }
