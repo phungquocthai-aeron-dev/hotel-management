@@ -1,7 +1,6 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,15 +56,7 @@ public class RoomService {
     public List<Room> getRoomsByCategory(String categoryId) {
         return roomRepository.findByCategory(categoryId);
     }
-    
-    public List<Room> findOccupiedRooms() {
-        return roomRepository.findOccupiedRooms();
-    }
-    
-    public void updateStatus(String roomId, String status) {
-    	roomRepository.updateStatusByRoomId(roomId, status);
-    }
-    
+
     private String generateId() {
         Long count = roomRepository.count();
         return String.format("RM%05d", count + 1);

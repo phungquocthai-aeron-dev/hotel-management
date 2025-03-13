@@ -2,12 +2,17 @@ package com.quantridulieu.hotelManagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.quantridulieu.hotelManagement.entities.InvoiceExport;
 import com.quantridulieu.hotelManagement.entities.Promotion;
 import com.quantridulieu.hotelManagement.repositories.PromotionRepository;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +28,11 @@ public class PromotionService {
 	public byte[] exportPromotionToExcel() throws IOException {
         return excelExportUtil.exportToExcel(promotionRepository.findAll(), null, "Danh sách khuyến mãi");
     }
+	
+	public byte[] exportPromotionToExcelByListIds(List<String> ids) throws IOException {
+	    return excelExportUtil.exportToExcel(promotionRepository.findByPromotionIds(ids), null, "Danh sách khuyến mãi");
+	}
+
     public List<Promotion> getAllPromotions() {
         return promotionRepository.findAll();
     }
@@ -57,4 +67,18 @@ public class PromotionService {
         Long count = promotionRepository.count();
         return String.format("P%05d", count + 1);
     }
+    
+    
+    @Transactional
+    public List<Promotion> searchPromotions(String promotionId, String promotionName, String discountRange, String startDate) {
+        return promotionRepository.searchPromotion(
+            (promotionId == null || promotionId.isEmpty()) ? null : promotionId,
+            (promotionName == null || promotionName.isEmpty()) ? null : promotionName,
+            (discountRange == null || discountRange.isEmpty()) ? null : discountRange,
+            (startDate == null || startDate.isEmpty()) ? null : LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        );
+    }
+
+
+
 }

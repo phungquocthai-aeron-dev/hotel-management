@@ -3,36 +3,26 @@ package com.quantridulieu.hotelManagement.entities;
 import java.util.Date;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "invoice")
-public class Invoice {
-    @Id
-    @Column(name = "invoice_id")
+
+public class InvoiceExport {
+
     private String invoiceId;
     
-    @Column(name = "invoice_date")
     private Date invoiceDate;
     
-    @Column(name = "total_amount")
     private Float totalAmount;
-    
-    @ManyToOne
-    @JoinColumn(name = "us_id")
-    private UseService useService;
-    
-    @ManyToOne
-    @JoinColumn(name = "staff_id")
-    private Staff staff;
-    
-    public Invoice() {}
 
-	public Invoice(String invoiceId, Date invoiceDate, Float totalAmount, UseService useService, Staff staff) {
+    private String userviceId; 
+    
+    private String staffId;
+    
+	public InvoiceExport(String invoiceId, Date invoiceDate, Float totalAmount, String userviceId, String staffId) {
 		super();
 		this.invoiceId = invoiceId;
 		this.invoiceDate = invoiceDate;
 		this.totalAmount = totalAmount;
-		this.useService = useService;
-		this.staff = staff;
+		this.userviceId = userviceId;
+		this.staffId = staffId;
 	}
 
 	public String getInvoiceId() {
@@ -59,20 +49,21 @@ public class Invoice {
 		this.totalAmount = totalAmount;
 	}
 
-	public UseService getUseService() {
-		return useService;
+	public String getUserviceId() {
+		return userviceId;
 	}
 
-	public void setUseService(UseService useService) {
-		this.useService = useService;
+	public void setUserviceId(String userviceId) {
+		this.userviceId = userviceId;
 	}
 
-	public Staff getStaff() {
-		return staff;
+	public String getStaffId() {
+		return staffId;
 	}
 
-	public void setStaff(Staff staff) {
-		this.staff = staff;
+	public void setStaffId(String staffId) {
+		this.staffId = staffId;
 	}
+    
     
 }
