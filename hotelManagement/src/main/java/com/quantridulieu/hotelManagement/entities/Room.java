@@ -15,8 +15,14 @@ public class Room {
     @Column(name = "status")
     private String status;
 
+<<<<<<< HEAD
     @ManyToOne
     @JoinColumn(name = "category_id", insertable = false, updatable = false)
+=======
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+>>>>>>> origin/PhungQuocThai_V4
     private Category category;
     
     public Room() {}

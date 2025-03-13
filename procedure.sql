@@ -114,3 +114,93 @@ END $$
 
 DELIMITER ;
 
+-- 7. Function tính tổng doanh thu từ một phòng cụ thể
+DELIMITER //
+CREATE FUNCTION GetRoomRevenue(roomIdParam VARCHAR(50), startDate DATE, endDate DATE) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    JOIN Room_Rental rr ON i.rent_id = rr.rent_id
+    WHERE rr.room_id = roomIdParam
+      AND i.invoice_date BETWEEN startDate AND endDate;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+-- 8. Function tính tổng doanh thu từ một khách hàng
+DELIMITER //
+CREATE FUNCTION GetCustomerRevenue(customerIdParam VARCHAR(50)) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    JOIN Room_Rental rr ON i.rent_id = rr.rent_id
+    WHERE rr.customer_id = customerIdParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+
+
+DELIMITER //
+CREATE FUNCTION GetMonthlyRevenue(yearParam INT, monthParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    WHERE YEAR(i.invoice_date) = yearParam 
+      AND MONTH(i.invoice_date) = monthParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+SELECT GetMonthlyRevenue(2025, 3) AS DoanhThuThang3;
+SELECT GetMonthlyExpenses(2025, 1) AS DoanhThuThang3;
+
+DELIMITER //
+CREATE FUNCTION GetMonthlyExpenses(yearParam INT, monthParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_expenses DECIMAL(10,2);
+    
+    SELECT SUM(m.mtn_fee) INTO total_expenses
+    FROM Maintenance m
+    WHERE YEAR(m.mtn_date) = yearParam 
+      AND MONTH(m.mtn_date) = monthParam;
+    
+    IF total_expenses IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_expenses;
+    END IF;
+END //
+DELIMITER ;
+
+
+SELECT  GetMonthlyExpenses(2025, 1) as test;
