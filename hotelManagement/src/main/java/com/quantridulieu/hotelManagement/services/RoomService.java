@@ -8,17 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.quantridulieu.hotelManagement.entities.HotelService;
 import com.quantridulieu.hotelManagement.entities.Room;
 import com.quantridulieu.hotelManagement.entities.RoomExport;
-import com.quantridulieu.hotelManagement.repositories.HotelServiceRepository;
 import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 
 @Service
 public class RoomService {
-
-	@Autowired
+    @Autowired
     private RoomRepository roomRepository;
+    
     @Autowired
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
@@ -49,7 +47,7 @@ public class RoomService {
         return excelExportUtil.exportToExcel(list, null, "Danh sách phòng khách sạn");
     }
 
-    public void save(Room room) {
+	public void save(Room room) {
         if (room.getRoomId() == null) room.setRoomId(generateId());
         roomRepository.save(room);
     }
@@ -77,11 +75,20 @@ public class RoomService {
     public List<Room> getRoomsByCategory(String categoryId) {
         return roomRepository.findByCategory(categoryId);
     }
+    
+    public List<Room> findOccupiedRooms() {
+        return roomRepository.findOccupiedRooms();
+    }
+    
+    public void updateStatus(String roomId, String status) {
+    	roomRepository.updateStatusByRoomId(roomId, status);
+    }
 
     private String generateId() {
         Long count = roomRepository.count();
         return String.format("RM%05d", count + 1);
     }
+    
     @Transactional
     public List<Room> searchRoom(String roomId, Integer roomNumber, String status, String categoryId, String categoryName) {
         return roomRepository.searchRoom(
@@ -92,6 +99,4 @@ public class RoomService {
             (categoryName == null || categoryName.isEmpty()) ? null : categoryName
         );
     }
-
-
 }

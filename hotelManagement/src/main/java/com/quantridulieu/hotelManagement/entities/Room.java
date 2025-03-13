@@ -1,5 +1,8 @@
 package com.quantridulieu.hotelManagement.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,22 +18,22 @@ public class Room {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")  // Khóa ngoại liên kết với bảng Category
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Category category;
-
-    // Constructor mặc định
+    
     public Room() {}
 
-    // Constructor đầy đủ
-    public Room(String roomId, Integer roomNumber, String status, Category category) {
-        this.roomId = roomId;
-        this.roomNumber = roomNumber;
-        this.status = status;
-        this.category = category;
-    }
+	public Room(String roomId, Integer roomNumber, String status, Category category) {
+		super();
+		this.roomId = roomId;
+		this.roomNumber = roomNumber;
+		this.status = status;
+		this.category = category;
+	}
 
-    // Getter và Setter cho Room
+	 // Getter và Setter cho Room
     public String getRoomId() { return roomId; }
     public void setRoomId(String roomId) { this.roomId = roomId; }
     
@@ -63,5 +66,5 @@ public class Room {
             category.setCategoryName(categoryName);
         }
     }
-
+    
 }

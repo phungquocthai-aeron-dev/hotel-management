@@ -15,7 +15,7 @@ public class HotelServiceService {
 
     @Autowired
     private HotelServiceRepository serviceRepository;
-    
+
  
 	@Autowired
 	ExcelExportUtil excelExportUtil;
@@ -24,10 +24,11 @@ public class HotelServiceService {
 	public byte[] exportHotelServiceToExcel() throws IOException {
         return excelExportUtil.exportToExcel(getAllServices(), null, "Danh sách dịch vụ khách sạn");
     }
+	
 	public byte[] exportHotelServiceToExcelByListIds(List<String> ids) throws IOException {
 	    return excelExportUtil.exportToExcel(serviceRepository.findByServiceIds(ids), null, "Danh sách dịch vụ khách sạn");
 	}
-
+	
     public List<HotelService> getAllServices() {
         return serviceRepository.findAll();
     }
@@ -56,6 +57,7 @@ public class HotelServiceService {
     public List<HotelService> findByPriceLessThan(Float maxPrice) {
         return serviceRepository.findServicesByPriceLessThan(maxPrice);
     }
+    
     @Transactional
     public List<HotelService> searchServices(String serviceId, String serviceName, Float servicePrice) {
         return serviceRepository.searchService( // Sửa từ hotelServiceRepository thành serviceRepository
@@ -64,6 +66,7 @@ public class HotelServiceService {
                 servicePrice
         );
     }
+
     // S00001
     private String generateId() {
         Long count = serviceRepository.count();

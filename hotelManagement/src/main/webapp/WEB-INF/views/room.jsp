@@ -213,39 +213,35 @@ body {
 				</div>
 
 				<ul class="nav flex-column">
-					<li class="nav-item"><a href="/home" class="nav-link active"
-						data-bs-toggle="pill"> <i class="bi bi-speedometer2"></i> Tổng
-							quan
+					<li class="nav-item"><a href="home" class="nav-link active">
+							<i class="bi bi-speedometer2"></i> Tổng quan
 					</a></li>
-					<li class="nav-item"><a href="/room" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-house-door"></i> Quản
-							lý phòng
+					<li class="nav-item"><a href="room" class="nav-link">
+							<i class="bi bi-house-door"></i> Quản lý phòng
 					</a></li>
-					<li class="nav-item"><a href="#rental" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-calendar-check"></i>
-							Đặt phòng
+					<li class="nav-item"><a href="roomrental" class="nav-link">
+							<i class="bi bi-calendar-check"></i> Đặt phòng
 					</a></li>
-					<li class="nav-item"><a href="/customer" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-people"></i> Khách hàng
+					<li class="nav-item"><a href="customer" class="nav-link">
+							<i class="bi bi-people"></i> Khách hàng
 					</a></li>
-					<li class="nav-item"><a href="/service" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-basket"></i> Dịch vụ
+					<li class="nav-item"><a href="service" class="nav-link">
+							<i class="bi bi-basket"></i> Dịch vụ
 					</a></li>
-					<li class="nav-item"><a href="/staff" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-person-badge"></i> Nhân
-							viên
+					<li class="nav-item"><a href="staff" class="nav-link">
+							<i class="bi bi-person-badge"></i> Nhân viên
 					</a></li>
-					<li class="nav-item"><a href="/invoice" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-receipt"></i> Hóa đơn
+					<li class="nav-item"><a href="invoice" class="nav-link">
+							<i class="bi bi-receipt"></i> Hóa đơn
 					</a></li>
-					<li class="nav-item"><a href="/maintenance" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-tools"></i> Bảo trì
+					<li class="nav-item"><a href="maintenance" class="nav-link">
+							<i class="bi bi-tools"></i> Bảo trì
 					</a></li>
-					<li class="nav-item"><a href="/promotion" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-tag"></i> Khuyến mãi
+					<li class="nav-item"><a href="promotion" class="nav-link">
+							<i class="bi bi-tag"></i> Khuyến mãi
 					</a></li>
-					<li class="nav-item"><a href="/statistics" class="nav-link"
-						data-bs-toggle="pill"> <i class="bi bi-bar-chart"></i> Báo cáo
+					<li class="nav-item"><a href="statistics" class="nav-link">
+							<i class="bi bi-bar-chart"></i> Báo cáo
 					</a></li>
 				</ul>
 			</div>
@@ -291,36 +287,36 @@ body {
 
 					<!-- Filter and Search Section -->
 					<div class="card mb-4 p-3">
-						<div class="row g-3 align-items-center justify-content-between">
+						<div
+							class="d-flex align-items-center justify-content-between flex-wrap gap-3">
 							<!-- Form tìm kiếm -->
-							<div class="col-auto">
-								<form action="room/search" method="get"
-									class="d-flex flex-wrap align-items-center">
-									<div class="search-wrapper me-3">
-										<i class="bi bi-search"></i> <input type="text"
-											class="form-control" placeholder="Nhập số phòng..."
-											name="roomNumber">
-									</div>
-									<div class="search-wrapper me-3">
-										<i class="bi bi-filter"></i> <input type="text"
-											class="form-control" placeholder="Nhập loại phòng..."
-											name="categoryName">
-									</div>
-									<button type="submit" class="btn btn-primary">Tìm kiếm</button>
-								</form>
-							</div>
+							<form action="room/search" method="get"
+								class="d-flex flex-wrap align-items-center gap-3">
+								<div class="search-wrapper">
+									<i class="bi bi-search"></i> <input type="text"
+										class="form-control" placeholder="Nhập số phòng..."
+										name="roomNumber">
+								</div>
+								<div class="search-wrapper">
+									<i class="bi bi-filter"></i> <input type="text"
+										class="form-control" placeholder="Nhập loại phòng..."
+										name="categoryName">
+								</div>
+								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+							</form>
 
-							<!-- Nút Xuất Excel căn phải -->
-							<c:if test="${not empty rooms}">`
-									<form action="room/export" method="post">
-									<c:forEach var="room" items="${rooms }" varStatus="status">
+							<!-- Nút Xuất Excel -->
+							<c:if test="${not empty rooms}">
+								<form action="room/export" method="post">
+									<c:forEach var="room" items="${rooms}">
 										<input type="hidden" name="roomIds" value="${room.roomId}" />
 									</c:forEach>
 									<button class="btn btn-success">Xuất Excel</button>
 								</form>
+							</c:if>
 						</div>
-						</c:if>
 					</div>
+
 				</div>
 
 
