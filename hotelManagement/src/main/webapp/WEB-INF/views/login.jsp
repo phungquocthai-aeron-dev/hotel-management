@@ -92,12 +92,6 @@ prefix="c" %>
         font-weight: bold;
       }
 
-      .description {
-        font-size: 14px;
-        color: var(--text-light);
-        margin-bottom: 20px;
-      }
-
       .input-group {
         position: relative;
         margin-bottom: 15px;

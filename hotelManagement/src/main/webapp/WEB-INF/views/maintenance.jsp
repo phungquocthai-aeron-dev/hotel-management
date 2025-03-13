@@ -182,10 +182,12 @@ prefix="c" %>
             </div>
           </div>
           <div class="mb-4">
-            <a href="/logout" class="btn bg-white text-primary fw-bolder"
-              >Đăng xuất</a
-            >
-          </div>
+				    <form action="/logout" method="post">
+				        <button type="submit" class="btn bg-white text-primary fw-bolder">
+				            Đăng xuất
+				        </button>
+				    </form>
+				</div>
 
           <ul class="nav flex-column">
             <li class="nav-item">
