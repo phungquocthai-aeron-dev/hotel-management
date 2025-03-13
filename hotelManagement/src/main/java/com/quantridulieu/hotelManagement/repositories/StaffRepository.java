@@ -39,5 +39,5 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
     );
 	
 	 @Query("SELECT COUNT(s) FROM Staff s WHERE s.role <> 'DISABLE'")
-	    Long getTotalStaff();
+	    Long getTotalStaff();	
 }

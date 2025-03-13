@@ -10,9 +10,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.entities.Maintenance;
-import com.quantridulieu.hotelManagement.entities.Staff;
 
 @Repository
 public interface MaintenanceRepository extends JpaRepository<Maintenance, String> {
@@ -48,4 +46,7 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, String
     
     @Query("SELECT COUNT(s) FROM Maintenance s")
     Long getTotalMaintenance();
+    
+    @Query("SELECT MAX(m.mtnId) FROM Maintenance m")
+    String findLastMaintenanceId();
 }

@@ -195,7 +195,7 @@ import="java.text.SimpleDateFormat" %> <%@ page import="java.util.Date" %>
               />
             </div>
             <div class="form-group">
-              <label for="staff_employee">Nhân viên</label>
+              <label for="staff_id">Nhân viên</label>
               <input
                 type="text"
                 id="staff_id"
