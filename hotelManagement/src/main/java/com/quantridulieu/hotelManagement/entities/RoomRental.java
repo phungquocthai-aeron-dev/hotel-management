@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "room_rental", schema = "hotel_management")  // Thay "Room_Rental" thành "room_rental"
+@Table(name = "room_rental", schema = "hotel_management")
 public class RoomRental {
     @Id
     @Column(name = "rent_id")
@@ -30,11 +30,11 @@ public class RoomRental {
     private String rentalStatus;
     
     @ManyToOne
-    @JoinColumn(name = "room_id")  // Loại bỏ insertable = false, updatable = false nếu muốn lưu dữ liệu
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")  // Loại bỏ insertable = false, updatable = false nếu muốn lưu dữ liệu
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public RoomRental() {}
@@ -71,4 +71,35 @@ public class RoomRental {
 
     public Customer getCustomer() { return customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
+
+    // Getter và Setter bổ sung
+    public String getRoomId() {
+        return room != null ? room.getRoomId() : null;
+    }
+
+    public void setRoomId(String roomId) {
+        if (room != null) {
+            room.setRoomId(roomId);
+        }
+    }
+
+    public String getCustomerId() {
+        return customer != null ? customer.getCustomerId() : null;
+    }
+
+    public void setCustomerId(String customerId) {
+        if (customer != null) {
+            customer.setCustomerId(customerId);
+        }
+    }
+
+    public String getCustomerName() {
+        return customer != null ? customer.getCustomerName() : null;
+    }
+
+    public void setCustomerName(String customerName) {
+        if (customer != null) {
+            customer.setCustomerName(customerName);
+        }
+    }
 }

@@ -62,7 +62,6 @@ public class RoomController {
        
        // Lấy category theo ID
        Category category = categoryRepository.findById(categoryId).orElse(null);
-       System.out.println("O");
        if (category == null) {
            redirectAttributes.addFlashAttribute("error", "Mã danh mục không hợp lệ.");
            return "redirect:/room";
@@ -71,10 +70,10 @@ public class RoomController {
 
        // Gán category vào room
        room.setCategory(category);
-       System.out.println("B");
+      
        // Lưu phòng vào database
        roomService.save(room);
-       System.out.println("C");
+      
        return "redirect:/room";
    }
 
@@ -148,36 +147,31 @@ public class RoomController {
       return "redirect:/room";
     }
     @PostMapping("/export")
-    public ResponseEntity<byte[]> exportRoomToExcel(
-            HttpSession session,
-            @RequestParam("roomIds") List<String> roomIds) {
-
-    //  Kiểm tra đăng nhập (nếu cần)
-    //  Staff staff = (Staff) session.getAttribute("loggedInStaff");
-    //  if (staff == null) return "redirect:/login";
-
-        byte[] excelData = new byte[0];
+    public ResponseEntity<byte[]> exportRoomsToExcel(
+            @RequestParam("roomIds") List<String> roomIds) { // Đổi từ roomsExport sang roomIds
 
         if (roomIds == null || roomIds.isEmpty()) {
-            excelData = new byte[0];
-        } else {
-            try {
-                excelData = roomService.exportRoomToExcelByListIds(roomIds);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            return ResponseEntity.badRequest().build();
         }
 
-        // Thiết lập header cho response
+        byte[] excelData;
+        try {
+            excelData = roomService.exportRoomsToExcelByListIds(roomIds);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danh_sach_phong.xlsx");
 
-        // Trả về file Excel
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(excelData);
     }
+
+
+
 
     
 }
