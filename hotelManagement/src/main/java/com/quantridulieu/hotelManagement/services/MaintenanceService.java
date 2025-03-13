@@ -100,4 +100,17 @@ public class MaintenanceService {
 	        staff == null || staff.isEmpty() ? null : staff
 	    );
 	}
+    
+//    public String generateNewMtnId() {
+//        String lastMtnId = maintenanceRepository.findLastMtnId(); // Lấy mã bảo trì cuối cùng
+//        if (lastMtnId == null) {
+//            return "MTN001"; // Nếu chưa có dữ liệu, bắt đầu từ MTN001
+//        }
+//
+//        // Trích số từ mã cuối cùng (VD: "MTN005" -> 5)
+//        int number = Integer.parseInt(lastMtnId.replace("MTN", ""));
+//        number++; // Tăng lên 1
+//
+//        return String.format("MTN%03d", number); // Định dạng thành "MTNxxx" (VD: MTN006)
+//    }
 }

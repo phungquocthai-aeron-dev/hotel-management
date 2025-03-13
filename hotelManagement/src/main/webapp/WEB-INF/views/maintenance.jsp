@@ -252,13 +252,67 @@ prefix="c" %>
           <div class="container mt-4">
             <h2 class="mb-3">Quản lý bảo trì</h2>
 
-            <button
-              class="btn btn-primary mb-3"
-              data-bs-toggle="modal"
-              data-bs-target="#approveMemberModal"
-            >
-              <i class="bi bi-plus-lg"></i> Thêm bảo trì
-            </button>
+            <!-- Nút mở modal -->
+              <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#approveMemberModal">
+                  <i class="bi bi-plus-lg"></i> Tạo bảo trì
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="approveMemberModal" tabindex="-1" aria-labelledby="approveMemberModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="approveMemberModalLabel">Thêm Bảo Trì</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="maintenance/create" method="post">
+
+                                <div class="mb-3">
+                                    <label for="mtnId" class="form-label">Mã bảo trì</label>
+                                    <input type="text" class="form-control" id="mtnId" name="mtnId" readonly>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="room" class="form-label">Phòng</label>
+                                    <input class="form-control" id="room" name="room" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mtnDescription" class="form-label">Mô tả</label>
+                                    <textarea class="form-control" id="mtnDescription" name="mtnDescription" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fee" class="form-label">Chi phí</label>
+                                    <input type="number" class="form-control" id="fee" name="mtnFee" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mtnDate" class="form-label">Ngày bắt đầu</label>
+                                    <input type="date" class="form-control" id="mtnDate" name="mtnDate" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="mtnEnd" class="form-label">Ngày kết thúc</label>
+                                    <input type="date" class="form-control" id="mtnEnd" name="mtnEnd" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="staff" class="form-label">Nhân viên</label>
+                                    <input type="text" class="form-control" id="staff" name="staff">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mtnStatus" class="form-label">Trạng thái</label>
+                                    <select class="form-select" id="mtnStatus" name="mtnStatus" required>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                              </form>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
 
             <!-- Thống kê nhân viên -->
             <div class="row mb-4">
@@ -366,5 +420,25 @@ prefix="c" %>
         </div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Khi modal mở
+        document.getElementById("approveMemberModal").addEventListener("show.bs.modal", function () {
+            fetch("maintenance/generate-id")
+                .then(response => response.text())
+                .then(newId => {
+                    document.getElementById("mtnId").value = newId;
+                })
+                .catch(error => console.error("Lỗi lấy mã bảo trì:", error));
+        });
+
+        // Lấy ngày hôm nay
+        let today = new Date().toISOString().split("T")[0];
+
+        // Đặt giá trị mặc định cho input date
+        document.getElementById("mtnDate").value = today;
+    });
+</script>
   </body>
 </html>

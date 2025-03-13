@@ -2,12 +2,14 @@ package com.quantridulieu.hotelManagement.controllers;
 
 import java.io.Console;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.entities.Maintenance;
+import com.quantridulieu.hotelManagement.entities.Room;
 import com.quantridulieu.hotelManagement.entities.Staff;
+import com.quantridulieu.hotelManagement.repositories.MaintenanceRepository;
+import com.quantridulieu.hotelManagement.repositories.StaffRepository;
+import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 import com.quantridulieu.hotelManagement.services.MaintenanceService;
+import com.quantridulieu.hotelManagement.services.RoomService;
 import com.quantridulieu.hotelManagement.services.StaffService;
 
 import org.springframework.ui.Model;
@@ -31,10 +37,16 @@ import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/")
 public class MaintenanceController {
 	@Autowired
 	MaintenanceService maintenanceService;
+	@Autowired
+    private MaintenanceRepository maintenanceRepository;
+	@Autowired
+    private RoomRepository roomRepository;
+	@Autowired
+    private StaffRepository staffRepository;
+	
 	
 	@GetMapping(value = "/maintenance")
 	public String getPage(Model model, HttpSession session) {
@@ -113,6 +125,59 @@ public class MaintenanceController {
 		maintenanceService.delete(mtnId);
       return "redirect:/maintenance";
     }
+	
+	@GetMapping("maintenance/generate-id")
+	public ResponseEntity<String> generateMaintenanceId() {
+	    String lastId = maintenanceRepository.findLastMaintenanceId();
+
+	    if (lastId == null) {
+	        lastId = "MTN00010"; // Bắt đầu từ MTN00010
+	    }
+
+	    // Lấy số từ mã bảo trì (bỏ 'MTN')
+	    int lastNumber = Integer.parseInt(lastId.replace("MTN", ""));
+
+	    // Tăng giá trị lên 1
+	    int newNumber = lastNumber + 1;
+
+	    // Định dạng lại với 5 chữ số
+	    String newId = String.format("MTN%05d", newNumber);
+
+	    return ResponseEntity.ok(newId);
+	}
+
+
+	@PostMapping("/maintenance/create")
+	public String createMaintenance(
+	                                @RequestParam("mtnDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date mtnDate,
+	                                @RequestParam("mtnDescription") String mtnDescription,
+	                                @RequestParam("mtnFee") Float mtnFee,
+	                                @RequestParam("mtnEnd") @DateTimeFormat(pattern = "yyyy-MM-dd") Date mtnEnd,
+	                                @RequestParam("mtnStatus") String mtnStatus,
+	                                @RequestParam("room")String roomId,  // ID của phòng
+	                                @RequestParam("staff") String staffId) {  // ID của nhân viên
+
+	    // Lấy Room và Staff từ database
+//	    Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Phòng không tồn tại"));
+//	    Staff staff = staffRepository.findById(staffId).orElseThrow(() -> new RuntimeException("Nhân viên không tồn tại"));
+
+	    // Tạo đối tượng Maintenance với kiểu dữ liệu đúng
+		try {
+			Room room = roomRepository.findById(roomId).orElseThrow();
+			Staff staff = staffRepository.findById(staffId).orElseThrow();
+			
+		    Maintenance maintenance = new Maintenance(null, mtnDate, mtnDescription, mtnFee, mtnEnd, mtnStatus, room, staff);
+		    
+		    // Lưu vào database
+		    maintenanceService.save(maintenance);
+		} catch(Exception e) {
+			e.printStackTrace();
+		    return "redirect:/maintenance";
+
+		}
+	    
+	    return "redirect:/maintenance";
+	}
 	
 	@PostMapping("/maintenance/export")
     public ResponseEntity<byte[]> exportMaintenanceToExcel(
