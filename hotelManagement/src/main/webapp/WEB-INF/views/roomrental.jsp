@@ -311,6 +311,14 @@ body {
 								</div>
 								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
 							</form>
+							<form action="roomrental/export" method="post">
+								<c:forEach var="roomRental" items="${roomRentals}"
+									varStatus="status">
+									<input type="hidden" name="roomRentalIds"
+										value="${roomRental.rentId}" />
+								</c:forEach>
+								<button class="btn btn-success">Xuất Excel</button>
+							</form>
 
 						</div>
 					</div>
