@@ -12,9 +12,6 @@ import com.quantridulieu.hotelManagement.entities.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
 
-	@Query(value = "SELECT * FROM room WHERE room_id = :roomID", nativeQuery = true)
-    Room findByRoomID(@Param("roomID") int roomID);
-
     @Query(value = "SELECT * FROM room WHERE room_number = :roomNumber", nativeQuery = true)
     Room findByRoomNumber(@Param("roomNumber") int roomNumber);
 
