@@ -8,9 +8,7 @@ import com.quantridulieu.hotelManagement.repositories.FeedbackRepository;
 import com.quantridulieu.hotelManagement.entities.Feedback;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
 public class FeedbackService {
 	@Autowired
     FeedbackRepository feedbackRepository;

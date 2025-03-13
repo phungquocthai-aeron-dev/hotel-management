@@ -2,11 +2,12 @@ package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 import com.quantridulieu.hotelManagement.entities.RoomRental;
 import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
 
@@ -63,22 +64,6 @@ public class RoomRentalService {
 
     public List<RoomRental> getRentalsByCheckOutDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return roomRentalRepository.findByCheckOutDateRange(startDate, endDate);
-    }
-    
-    public List<RoomRental> findRoomsByRentalDate(Date date) {
-        return roomRentalRepository.findRoomsByRentalDate(date);
-    }
-    
-    public List<RoomRental> findRoomsByCheckOutDate(Date date) {
-        return roomRentalRepository.findRoomsByCheckOutDate(date);
-    }
-    
-    public void updateCheckOut(String id, Date date) {
-    	roomRentalRepository.updateCheckOut(id, date);
-    }
-    
-    public void updateCheckIn(String id, Date date) {
-    	roomRentalRepository.updateCheckIn(id, date);
     }
 
     private String generateId() {

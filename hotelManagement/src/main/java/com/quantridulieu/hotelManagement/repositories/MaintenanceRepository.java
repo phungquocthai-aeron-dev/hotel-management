@@ -24,7 +24,4 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, String
 
     @Query(value = "SELECT * FROM maintenance WHERE mtn_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<Maintenance> findByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-  
-    @Query(value = "SELECT GetMonthlyExpenses(:year, :month)", nativeQuery = true)
-    double getMonthlyExpenses(@Param("year") Integer year, @Param("month") Integer month);
 }

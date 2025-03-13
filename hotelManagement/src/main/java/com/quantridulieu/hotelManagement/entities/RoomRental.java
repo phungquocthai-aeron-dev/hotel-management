@@ -1,11 +1,6 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -19,25 +14,20 @@ public class RoomRental {
     private Date rentalDate;
     
     @Column(name = "check_in_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date checkInDate;
     
     @Column(name = "check_out_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date checkOutDate;
     
     @Column(name = "rental_status")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String rentalStatus;
     
     @ManyToOne
-    @JoinColumn(name = "room_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "room_id", insertable = false, updatable = false)
     private Room room;
     
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
     private Customer customer;
     
     public RoomRental() {}
