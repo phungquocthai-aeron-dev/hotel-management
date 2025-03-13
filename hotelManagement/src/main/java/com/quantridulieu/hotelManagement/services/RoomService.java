@@ -41,9 +41,6 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Room getRoomById(int roomId) {
-        return roomRepository.findByRoomID(roomId);
-    }
 
     public Room getRoomByNumber(int roomNumber) {
         return roomRepository.findByRoomNumber(roomNumber);
