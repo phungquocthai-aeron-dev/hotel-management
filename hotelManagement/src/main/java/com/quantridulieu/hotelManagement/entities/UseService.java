@@ -6,29 +6,33 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Use_Service")
 public class UseService {
-    @Id
-    @Column(name = "us_id")
-    private String usId;
-    
-    @Column(name = "quantity")
-    private Integer quantity;
-    
-    @Column(name = "us_date")
-    private Date usDate;
-    
-    @ManyToOne
-    @JoinColumn(name = "service_id", insertable = false, updatable = false)
-    private HotelService service;
-    
-    @ManyToOne
-    @JoinColumn(name = "rent_id", insertable = false, updatable = false)
-    private RoomRental roomRental;
-    
-    @ManyToOne
-    @JoinColumn(name = "promotion_id", insertable = false, updatable = false)
-    private Promotion promotion;
-    
-    public UseService() {}
+	@Id
+	@Column(name = "us_id")
+	private String usId;
+
+	@Column(name = "quantity")
+	private Integer quantity;
+
+	@Column(name = "us_date")
+	private Date usDate;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "service_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private HotelService service;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "rent_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private RoomRental roomRental;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "promotion_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Promotion promotion;
+
+	public UseService() {
+	}
 
 	public UseService(String usId, Integer quantity, Date usDate, HotelService service, RoomRental roomRental,
 			Promotion promotion) {
@@ -88,5 +92,5 @@ public class UseService {
 	public void setPromotion(Promotion promotion) {
 		this.promotion = promotion;
 	}
-    
+
 }
