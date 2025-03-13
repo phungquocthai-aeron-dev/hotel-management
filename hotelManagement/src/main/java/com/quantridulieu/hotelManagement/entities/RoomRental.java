@@ -4,9 +4,9 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "room_rental", schema = "hotel_management") // Thay "Room_Rental" thành "room_rental"
-public class RoomRental {
+@Entity 
+@Table(name = "room_rental", schema = "hotel_management")
+    public class RoomRental {
     @Id
     @Column(name = "rent_id")
     private String rentId;
@@ -26,19 +26,21 @@ public class RoomRental {
     @Column(name = "check_out_date")
     private Date checkOutDate;
 
-    @Column(name = "rental_status")
-    private String rentalStatus;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+
+    
+    @ManyToOne(cascade = CascadeT e.PERSIST)
     @JoinColumn(name = "room_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
-
+ 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "c
+    ustomer_id")
+    
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
-
+            
     public RoomRental() {
     }
 
@@ -50,25 +52,95 @@ public class RoomRental {
         this.checkOutDate = checkOutDate;
         this.rentalStatus = rentalStatus;
         this.room = room;
+        
+    
+
+        
+        
+    
+    
+
+        
+    
+
         this.customer = customer;
+        
+    
+        
+    
+        
+    
+
     }
+        
+    
+
+        
+        
+    
+
+    
+        
+    
 
     // Getter và Setter
-    public String getRentId() {
+        
+    
+
+        
+        
+    
+    
+    public String getRentId
+        ) {
+    
+
         return rentId;
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+    }
+        
+    
+
+    public void setRentId(String re
+        tId) {
+    
+
+        this.rentId = rentId;
+        
+    
     }
 
-    public void setRentId(String rentId) {
-        this.rentId = rentId;
-    }
+        
+    
 
     public Date getRentalDate() {
+        
+    
         return rentalDate;
     }
+        
+    
 
+    
+        
+    
     public void setRentalDate(Date rentalDate) {
-        this.rentalDate = rentalDate;
+        this.rentalDate = rentalDat
+        ;
+    
+
     }
+        
+    
 
     public Date getCheckInDate() {
         return checkInDate;
@@ -77,6 +149,7 @@ public class RoomRental {
     public void setCheckInDate(Date checkInDate) {
         this.checkInDate = checkInDate;
     }
+
 
     public Date getCheckOutDate() {
         return checkOutDate;
@@ -108,5 +181,45 @@ public class RoomRental {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    // Getter và Setter bổ sung
+    public String getRoomId() {
+        return room != null ? room.getRoomId() : null;
+    }
+
+    public void setRoomId(String roomId) {
+        if (room != null) {
+            room.setRoomId(roomId);
+        }
+    }
+
+    public String getCustomerId() {
+        return customer != null ? customer.getCustomerId() : null;
+    }
+
+    public void setCustomerId(String customerId) {
+        if (customer != null) {
+            customer.setCustomerId(customerId);
+        }
+    }
+
+    public String getCustomerName() {
+        return customer != null ? customer.getCustomerName() : null;
+    }
+
+    public void setCustomerName(String customerName) {
+        if (customer != null) {
+            customer.setCustomerName(customerName);
+        }
     }
 }
