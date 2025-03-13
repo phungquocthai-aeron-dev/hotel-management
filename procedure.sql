@@ -204,3 +204,31 @@ DELIMITER ;
 
 
 SELECT  GetMonthlyExpenses(2025, 1) as test;
+
+
+
+DELIMITER //
+CREATE TRIGGER check_maintenance_dates
+BEFORE INSERT ON maintenance
+FOR EACH ROW
+BEGIN
+  IF NEW.mtn_end <= NEW.mtn_date THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Ngày kết thúc phải sau ngày bảo trì';
+  END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER check_maintenance_dates_update
+BEFORE UPDATE ON maintenance
+FOR EACH ROW
+BEGIN
+  IF NEW.mtn_end <= NEW.mtn_date THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Ngày kết thúc phải sau ngày bảo trì';
+  END IF;
+END;
+//
+DELIMITER ;
