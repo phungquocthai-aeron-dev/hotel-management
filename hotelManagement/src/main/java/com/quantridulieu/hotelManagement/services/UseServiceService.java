@@ -1,6 +1,5 @@
 package com.quantridulieu.hotelManagement.services;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.io.IOException;
 import java.util.Date;
@@ -10,10 +9,6 @@ import com.quantridulieu.hotelManagement.entities.UseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.stereotype.Service;
-
-
-@Service
 public class UseServiceService {
 	@Autowired
     UseServiceRepository useServiceRepository;
@@ -61,10 +56,6 @@ public class UseServiceService {
 
     public List<UseService> getUseServiceByPromotionId(String promotionId) {
         return useServiceRepository.findByPromotionId(promotionId);
-    }
-    
-    public List<UseService> getAllUseServiceNotInInvoice() {
-        return useServiceRepository.getAllUseServiceNotInInvoice();
     }
 
     private String generateId() {

@@ -2,38 +2,31 @@ package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.quantridulieu.hotelManagement.entities.Maintenance;
-import com.quantridulieu.hotelManagement.entities.MaintenanceExport;
 import com.quantridulieu.hotelManagement.repositories.MaintenanceRepository;
 
 @Service
 public class MaintenanceService {
-	@Autowired
-    MaintenanceRepository maintenanceRepository;
-    
-    @Autowired
-	ExcelExportUtil excelExportUtil;
-    
- // Xuất file excel
- 	public byte[] exportMaintenanceToExcel() throws IOException {
-         return excelExportUtil.exportToExcel(maintenanceRepository.findAll(), null, "Danh sách bảo trì");
-     }
- 	
- 	public byte[] exportMaintenanceToExcelByListIds(List<String> ids) throws IOException {
-         return excelExportUtil.exportToExcel(maintenanceRepository.findByMaintenanceIds(ids), null, "Danh sách bảo trì");
-     }
+    private final MaintenanceRepository maintenanceRepository;
 
     @Autowired
     public MaintenanceService(MaintenanceRepository maintenanceRepository) {
         this.maintenanceRepository = maintenanceRepository;
     }
 
+    @Autowired
+	ExcelExportUtil excelExportUtil;
+	
+	// Xuất file excel
+	public byte[] exportMaintenanceToExcel() throws IOException {
+		return excelExportUtil.exportToExcel(maintenanceRepository.findAll(), null, "Danh sách bảo trì");
+    }
+	
     public void save(Maintenance maintenance) {
         if (maintenance.getMtnId() == null) maintenance.setMtnId(generateId());
         maintenanceRepository.save(maintenance);
@@ -44,7 +37,7 @@ public class MaintenanceService {
         maintenanceRepository.deleteById(id);
     }
 
-    public List<Maintenance> getAllMaintenances() {
+    public List<Maintenance> getAllMaintenance() {
         return maintenanceRepository.findAll();
     }
 
@@ -68,21 +61,13 @@ public class MaintenanceService {
     public List<Maintenance> getMaintenanceByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return maintenanceRepository.findByDateRange(startDate, endDate);
     }
+    
+    public double getMonthlyExpenses(Integer month, Integer year) {
+    	return maintenanceRepository.getMonthlyExpenses(year, month);
+    }
 
     private String generateId() {
         Long count = maintenanceRepository.count();
         return String.format("MTN%05d", count + 1);
-    }
-    
-    public byte[] exportInvoiceToExcelByListIds(List<String> ids) throws IOException {
-    	List<MaintenanceExport> list = new ArrayList<MaintenanceExport>();
-    	List<Maintenance> data = maintenanceRepository.findByMaintenanceIds(ids);
-    	int n = ids.size();
-    	for(int i = 0; i < n; i++) {
-    		Maintenance maintenance = data.get(i);
-    		MaintenanceExport export = new MaintenanceExport(maintenance);
-    		list.add(export);
-    	}
-        return excelExportUtil.exportToExcel(list, null, "Danh sách hóa đơn");
     }
 }
