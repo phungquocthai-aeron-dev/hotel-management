@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +31,10 @@ public interface RoomRentalRepository extends JpaRepository<RoomRental, String> 
 
     @Query(value = "SELECT * FROM room_rental WHERE check_out_date BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<RoomRental> findByCheckOutDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    @Procedure(name = "SearchBooking")
+    List<RoomRental> searchBooking(
+        @Param("p_rent_id") String rentId,
+        @Param("p_room_id") String roomId,
+        @Param("p_customer_name") String customerName
+    );
 }

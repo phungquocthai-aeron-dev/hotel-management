@@ -94,3 +94,23 @@ CALL SearchRoom(NULL, NULL, 'Available', NULL, 'Standard');  -- Phòng "Availabl
 CALL SearchRoom('R001', NULL, NULL, NULL, NULL);  -- Tìm phòng theo ID
 
 
+DELIMITER $$
+
+CREATE PROCEDURE SearchBooking(
+    IN p_rent_id VARCHAR(10),      -- Mã đặt phòng
+    IN p_room_id VARCHAR(10),      -- Mã số phòng
+    IN p_customer_name VARCHAR(255) -- Tên khách hàng
+)
+BEGIN
+    SELECT rr.rent_id, r.room_id, r.customer_name 
+    FROM RoomRental rr
+    JOIN Room r ON rr.room_id = r.room_id  -- Kết nối bảng Room để lấy tên khách hàng
+    WHERE 
+        (p_rent_id IS NULL OR rr.rent_id = p_rent_id)
+        AND (p_room_id IS NULL OR r.room_id LIKE CONCAT('%', p_room_id, '%'))
+        AND (p_customer_name IS NULL OR r.customer_name LIKE CONCAT('%', p_customer_name, '%'));
+END $$
+
+DELIMITER ;
+
+

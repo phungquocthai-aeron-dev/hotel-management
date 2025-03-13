@@ -13,6 +13,9 @@
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
 	rel="stylesheet">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <!-- Bootstrap Icons -->
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css"
@@ -152,31 +155,6 @@ body {
 	overflow-y: auto;
 }
 
-.search-wrapper {
-	position: relative;
-}
-
-.search-wrapper i {
-	position: absolute;
-	top: 50%;
-	left: 10px;
-	transform: translateY(-50%);
-	color: #6c757d;
-}
-
-.search-wrapper input {
-	padding-left: 35px;
-}
-/* Đảm bảo ô tìm kiếm nằm giữa và chiếm 1/3 chiều rộng */
-.row.justify-content-center {
-	display: flex;
-	justify-content: center;
-}
-
-.col-md-4 {
-	max-width: 33.333%; /* Chiếm 1/3 chiều rộng */
-}
-
 .custom-table {
 	display: block;
 	width: 100%;
@@ -194,7 +172,7 @@ body {
 
 .custom-table tbody {
 	display: block;
-	max-height: 500px;
+	max-height: 400px;
 	/* Giới hạn chiều cao để có thanh trượt dọc nếu cần */
 	overflow-y: auto; /* Thêm thanh trượt dọc nếu vượt quá chiều cao */
 }
@@ -284,14 +262,10 @@ body {
 						<i class="bi bi-list"></i>
 					</button>
 					<div class="d-flex align-items-center">
-						<form action="service/search" method="get">
-							<div class="search-wrapper me-3">
-								<i class="bi bi-search"></i> <input type="text"
-									class="form-control" placeholder="Tìm kiếm dịch vụ..."
-									name="serviceName">
-							</div>
-						</form>
-
+						<div class="search-wrapper me-3">
+							<i class="bi bi-search"></i> <input type="text"
+								class="form-control" placeholder="Tìm kiếm...">
+						</div>
 						<div class="dropdown">
 							<div class="profile-menu" data-bs-toggle="dropdown">
 								<i class="bi bi-bell position-relative"> <span
@@ -315,111 +289,174 @@ body {
 
 			<!-- Content -->
 			<div class="tab-content">
-				<!-- Service Management Section -->
-				<div class="tab-pane fade show active" id="service-management">
-					<h3 class="mb-4 text-center">Quản Lý Dịch Vụ</h3>
+				<!-- Rental Management Section -->
+				<div class="tab-pane fade show active" id="rental-management">
+					<h3 class="mb-4">Quản Lý Đặt Phòng</h3>
 
-					<!-- Filter and Search Section (Moved to Top) -->
+					<!-- Filter and Search Section -->
 					<div class="card mb-4 p-3">
-						<div class="row g-3 justify-content-center">
-							<div class="col-12">
-								<!-- Chiếm toàn bộ chiều ngang -->
-								<div class="d-flex align-items-center">
-										<form action="service/search" method="get" class="d-flex w-100">
-											<input type="text" class="form-control me-2"
-												placeholder="Mã dịch vụ..." name="serviceId"> <input
-												type="text" class="form-control me-2"
-												placeholder="Tên dịch vụ..." name="serviceName"> <input
-												type="number" step="0.01" class="form-control me-2"
-												placeholder="Giá dịch vụ..." name="servicePrice">
-											<button type="submit" class="btn btn-primary">Tìm
-												kiếm</button>
-										</form>
-									<c:if test="${not empty services}">
-										<form action="service/export" method="post">
-											<c:forEach var="service" items="${services }"
-												varStatus="status">
-												<input type="hidden" name="servicesExport"
-													value="${service.serviceId}" />
-											</c:forEach>
-											<button class="btn btn-success ms-2">Xuất Excel</button>
-										</form>
-									</c:if>
+						<div class="row g-3">
+
+							<form action="roomrental/search" method="get"
+								class="d-flex flex-wrap align-items-center">
+								<div class="search-wrapper me-3">
+									<i class="bi bi-file-earmark-text"></i> <input type="text"
+										class="form-control" placeholder="Nhập mã đặt phòng..."
+										name="rentId">
+								</div>
+								<div class="search-wrapper me-3">
+									<i class="bi bi-person"></i> <input type="text"
+										class="form-control" placeholder="Nhập tên khách hàng..."
+										name="customerName">
+								</div>
+								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+							</form>
+
+						</div>
+					</div>
+
+					<!-- Add New Rental Button -->
+					<div class="mb-4">
+						<button class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#addRoomRentalModal">Thêm đặt phòng mới</button>
+					</div>
+
+					<!-- Rental List -->
+					<div class="room-list-wrapper">
+						<table class="table table-striped table-hover custom-table">
+							<thead>
+								<tr>
+									<th>Số đặt phòng</th>
+									<th>Số phòng</th>
+									<th>Tên khách hàng</th>
+									<th>Ngày nhận phòng</th>
+									<th>Ngày trả phòng</th>
+									<th>Trạng thái</th>
+									<th>Hành động</th>
+								</tr>
+							</thead>
+							<tbody id="rentalList">
+								<c:forEach var="roomrental" items="${roomRentals}">
+									<tr>
+										<td>${roomrental.rentId}</td>
+										<td>${roomrental.room.roomId}</td>
+										<td>${roomrental.customer.customerName}</td>
+										<td>${roomrental.checkInDate}</td>
+										<td>${roomrental.checkOutDate}</td>
+
+										<%-- Xác định class dựa trên trạng thái thuê phòng --%>
+										<c:set var="statusClass" value="" />
+										<c:choose>
+											<c:when test="${roomrental.rentalStatus == 'Đang chờ'}">
+												<c:set var="statusClass" value="room-reserved" />
+											</c:when>
+											<c:when test="${roomrental.rentalStatus == 'Đã xác nhận'}">
+												<c:set var="statusClass" value="room-available" />
+											</c:when>
+											<c:when test="${roomrental.rentalStatus == 'Đã hoàn thành'}">
+												<c:set var="statusClass" value="room-occupied" />
+											</c:when>
+											<c:when test="${roomrental.rentalStatus == 'Đã hủy'}">
+												<c:set var="statusClass" value="room-maintenance" />
+											</c:when>
+										</c:choose>
+
+										<td><span class="status-badge ${statusClass}">${roomrental.rentalStatus}</span>
+										</td>
+
+										<td>
+											<button class="btn btn-warning w-100 mb-2"
+												onclick="window.location.href='roomrental/details?id=${roomrental.rentId}'">
+												Sửa</button>
+											<form action="roomrental/delete" method="post"
+												onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+												<input type="hidden" name="id" value="${roomrental.rentId}">
+												<button type="submit"
+													class="btn btn-danger btn-sm btn-action w-100 mb-2">Xóa</button>
+											</form>
+										</td>
+									</tr>
+								</c:forEach>
+
+							</tbody>
+						</table>
+					</div>
+
+					<div class="modal fade" id="addRoomRentalModal" tabindex="-1"
+						aria-labelledby="addRoomRentalModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="addRoomRentalModalLabel">Thêm
+										Phòng Thuê Mới</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+								<div class="modal-body p-3">
+									<form action="roomrental/save" method="post">
+										<div class="mb-3">
+											<label for="roomId" class="form-label">Mã phòng</label> <input
+												type="text" class="form-control" id="roomId" name="roomId"
+												required>
+										</div>
+
+										<div class="mb-3">
+											<label for="customerId" class="form-label">Mã khách
+												hàng</label> <input type="text" class="form-control" id="customerId"
+												name="customerId" required>
+										</div>
+
+										<div class="mb-3">
+											<label for="rentalDate" class="form-label">Ngày thuê</label>
+											<input type="date" class="form-control" id="rentalDate"
+												name="rentalDate" required>
+										</div>
+
+										<div class="mb-3">
+											<label for="checkInDate" class="form-label">Ngày nhận
+												phòng</label> <input type="date" class="form-control"
+												id="checkInDate" name="checkInDate" required>
+										</div>
+
+										<div class="mb-3">
+											<label for="checkOutDate" class="form-label">Ngày trả
+												phòng</label> <input type="date" class="form-control"
+												id="checkOutDate" name="checkOutDate" required>
+										</div>
+
+										<div class="mb-3">
+											<label for="rentalStatus" class="form-label">Trạng
+												thái</label> <select class="form-select" id="rentalStatus"
+												name="rentalStatus" required>
+												<option value="Pending">Pending</option>
+												<option value="Confirmed">Confirmed</option>
+												<option value="Completed">Completed</option>
+												<option value="Cancelled">Cancelled</option>
+											</select>
+										</div>
+
+										<c:if test="${not empty error}">
+											<div class="alert alert-danger">${error}</div>
+										</c:if>
+
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Đóng</button>
+											<button type="submit" class="btn btn-primary">Lưu
+												thông tin thuê</button>
+										</div>
+									</form>
+
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- Main Content with Two Columns -->
-					<div class="row">
-						<!-- Left Column: Service List -->
-						<div class="col-md-6">
-							<div class="service-list-wrapper">
-								<table class="table table-striped table-hover custom-table">
-									<thead>
-										<tr>
-											<th>Mã dịch vụ</th>
-											<th>Tên dịch vụ</th>
-											<th>Giá</th>
 
-											<th>Hành động</th>
-										</tr>
-									</thead>
-									<tbody id="serviceList">
-										<c:forEach var="service" items="${services}">
-											<tr>
-												<td>${service.serviceId}</td>
-												<td>${service.serviceName}</td>
-												<td>${service.servicePrice}</td>
+					<!-- Edit Rental Modal -->
 
-												<td>
-													<button class="btn btn-warning btn-sm btn-action"
-														onclick="window.location.href='service/details?id=${service.serviceId}'">
-														Sửa</button>
-													<form action="service/delete" method="post"
-														onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
-														<input type="hidden" name="id"
-															value="${service.serviceId}">
-														<button type="submit"
-															class="btn btn-danger btn-sm btn-action">Xóa</button>
-													</form>
-
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="card p-3">
-								<h4 class="mb-4">Thêm Dịch Vụ</h4>
-								<form action="service/save" method="post">
-									<label for="serviceId">Mã Dịch Vụ:</label> <input type="text"
-										id="serviceId" name="serviceId" required><br> <br>
-									<label for="serviceName">Tên Dịch Vụ:</label> <input
-										type="text" id="serviceName" name="serviceName" required><br>
-									<br> <label for="servicePrice">Giá:</label> <input
-										type="number" id="servicePrice" name="servicePrice"
-										step="0.01" required><br> <br>
-
-									<button type="submit">Lưu Dịch Vụ</button>
-								</form>
-
-
-							</div>
-							<c:if test="${not empty error}">
-								<div class="alert alert-danger">${error}</div>
-							</c:if>
-						</div>
-					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
-
-
-
-
 </body>
 </html>

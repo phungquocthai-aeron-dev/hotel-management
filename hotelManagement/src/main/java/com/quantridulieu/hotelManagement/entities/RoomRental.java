@@ -1,103 +1,74 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Room_Rental")
+@Table(name = "room_rental", schema = "hotel_management")  // Thay "Room_Rental" thành "room_rental"
 public class RoomRental {
     @Id
     @Column(name = "rent_id")
     private String rentId;
-    
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "rental_date")
     private Date rentalDate;
-    
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "check_in_date")
     private Date checkInDate;
-    
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "check_out_date")
     private Date checkOutDate;
-    
+
     @Column(name = "rental_status")
     private String rentalStatus;
     
     @ManyToOne
-    @JoinColumn(name = "room_id", insertable = false, updatable = false)
+    @JoinColumn(name = "room_id")  // Loại bỏ insertable = false, updatable = false nếu muốn lưu dữ liệu
     private Room room;
-    
+
     @ManyToOne
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    @JoinColumn(name = "customer_id")  // Loại bỏ insertable = false, updatable = false nếu muốn lưu dữ liệu
     private Customer customer;
-    
+
     public RoomRental() {}
 
-	public RoomRental(String rentId, Date rentalDate, Date checkInDate, Date checkOutDate, String rentalStatus,
-			Room room, Customer customer) {
-		super();
-		this.rentId = rentId;
-		this.rentalDate = rentalDate;
-		this.checkInDate = checkInDate;
-		this.checkOutDate = checkOutDate;
-		this.rentalStatus = rentalStatus;
-		this.room = room;
-		this.customer = customer;
-	}
+    public RoomRental(String rentId, Date rentalDate, Date checkInDate, Date checkOutDate, String rentalStatus,
+                      Room room, Customer customer) {
+        this.rentId = rentId;
+        this.rentalDate = rentalDate;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.rentalStatus = rentalStatus;
+        this.room = room;
+        this.customer = customer;
+    }
 
-	public String getRentId() {
-		return rentId;
-	}
+    // Getter và Setter
+    public String getRentId() { return rentId; }
+    public void setRentId(String rentId) { this.rentId = rentId; }
 
-	public void setRentId(String rentId) {
-		this.rentId = rentId;
-	}
+    public Date getRentalDate() { return rentalDate; }
+    public void setRentalDate(Date rentalDate) { this.rentalDate = rentalDate; }
 
-	public Date getRentalDate() {
-		return rentalDate;
-	}
+    public Date getCheckInDate() { return checkInDate; }
+    public void setCheckInDate(Date checkInDate) { this.checkInDate = checkInDate; }
 
-	public void setRentalDate(Date rentalDate) {
-		this.rentalDate = rentalDate;
-	}
+    public Date getCheckOutDate() { return checkOutDate; }
+    public void setCheckOutDate(Date checkOutDate) { this.checkOutDate = checkOutDate; }
 
-	public Date getCheckInDate() {
-		return checkInDate;
-	}
+    public String getRentalStatus() { return rentalStatus; }
+    public void setRentalStatus(String rentalStatus) { this.rentalStatus = rentalStatus; }
 
-	public void setCheckInDate(Date checkInDate) {
-		this.checkInDate = checkInDate;
-	}
+    public Room getRoom() { return room; }
+    public void setRoom(Room room) { this.room = room; }
 
-	public Date getCheckOutDate() {
-		return checkOutDate;
-	}
-
-	public void setCheckOutDate(Date checkOutDate) {
-		this.checkOutDate = checkOutDate;
-	}
-
-	public String getRentalStatus() {
-		return rentalStatus;
-	}
-
-	public void setRentalStatus(String rentalStatus) {
-		this.rentalStatus = rentalStatus;
-	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-    
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 }

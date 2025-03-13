@@ -313,126 +313,128 @@ body {
 							<!-- Nút Xuất Excel căn phải -->
 							<c:if test="${not empty rooms}">`
 									<form action="room/export" method="post">
-										<c:forEach var="room" items="${rooms }"
-											varStatus="status">
-											<input type="hidden" name="roomIds"
-												value="${room.roomId}" />
-										</c:forEach>
-										<button class="btn btn-success">Xuất Excel</button>
-									</form>
-								</div>
-							</c:if>
+									<c:forEach var="room" items="${rooms }" varStatus="status">
+										<input type="hidden" name="roomIds" value="${room.roomId}" />
+									</c:forEach>
+									<button class="btn btn-success">Xuất Excel</button>
+								</form>
 						</div>
+						</c:if>
 					</div>
+				</div>
 
 
 
-					<!-- Add New Room Button -->
-					<div class="mb-4">
-						<button class="btn btn-primary" data-bs-toggle="modal"
-							data-bs-target="#addRoomModal">Thêm phòng mới</button>
-					</div>
+				<!-- Add New Room Button -->
+				<div class="mb-4">
+					<button class="btn btn-primary" data-bs-toggle="modal"
+						data-bs-target="#addRoomModal">Thêm phòng mới</button>
+				</div>
 
 
-					<!-- Room List -->
+				<!-- Room List -->
 
-					<div class="room-list-wrapper">
-						<div class="row">
-							<c:forEach var="room" items="${rooms}">
-								<div class="col-md-3 mb-4">
-									<div
-										class="card ${room.status == 'Trống' ? 'room-available' : 
+				<div class="room-list-wrapper">
+					<div class="row">
+						<c:forEach var="room" items="${rooms}">
+							<div class="col-md-3 mb-4">
+								<div
+									class="card ${room.status == 'Trống' ? 'room-available' : 
                                   room.status == 'Đã đặt' ? 'room-occupied' : 
                                   room.status == 'Bảo trì' ? 'room-maintenance' : 
                                   'room-reserved'}">
-										<div class="card-body">
-											<span class="status-badge">${room.status}</span>
-											<p class="mt-2">
-												<strong>Mã phòng:</strong> ${room.roomId}
-											</p>
-											<p class="mt-2">
-												<strong>Số phòng:</strong> ${room.roomNumber}
-											</p>
+									<div class="card-body">
+										<span class="status-badge">${room.status}</span>
+										<p class="mt-2">
+											<strong>Mã phòng:</strong> ${room.roomId}
+										</p>
+										<p class="mt-2">
+											<strong>Số phòng:</strong> ${room.roomNumber}
+										</p>
 
-											<p>
-												<strong>Loại phòng:</strong> ${room.category != null ? room.category.categoryName : 'N/A'}
-											</p>
-											<p class="mt-2">
-												<strong>Giá phòng:</strong> ${room.category.roomPrice}
-											</p>
+										<p>
+											<strong>Loại phòng:</strong> ${room.category != null ? room.category.categoryName : 'N/A'}
+										</p>
+										<p class="mt-2">
+											<strong>Giá phòng:</strong> ${room.category.roomPrice}
+										</p>
 
-											<button class="btn btn-warning w-100 mb-2"
-												onclick="window.location.href='room/details?id=${room.roomId}'">
-												Sửa</button>
-											<button class="btn btn-danger w-100"
-												onclick="deleteRoom('${room.roomNumber}')">Xóa</button>
-										</div>
+										<button class="btn btn-warning w-100 mb-2"
+											onclick="window.location.href='room/details?id=${room.roomId}'">
+											Sửa</button>
+										<form action="room/delete" method="post"
+											onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+											<input type="hidden" name="id" value="${room.roomId}">
+											<button type="submit"
+												class="btn btn-danger btn-sm btn-action w-100 mb-2">Xóa</button>
+										</form>
 									</div>
 								</div>
-							</c:forEach>
-						</div>
+							</div>
+						</c:forEach>
 					</div>
+				</div>
 
 
-					<!-- Add Room Modal -->
-					<div class="modal fade" id="addRoomModal" tabindex="-1"
-						aria-labelledby="addRoomModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="addRoomModalLabel">Thêm phòng
-										mới</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								<div class="modal-body p-3">
-									<form action="room/save" method="post">
+				<!-- Add Room Modal -->
+				<div class="modal fade" id="addRoomModal" tabindex="-1"
+					aria-labelledby="addRoomModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="addRoomModalLabel">Thêm phòng
+									mới</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body p-3">
+								<form action="room/save" method="post">
 
 
-										<div class="mb-3">
-											<label for="roomNumber" class="form-label">Số phòng</label> <input
-												type="number" class="form-control" id="roomNumber"
-												name="roomNumber" required>
-										</div>
+									<div class="mb-3">
+										<label for="roomNumber" class="form-label">Số phòng</label> <input
+											type="number" class="form-control" id="roomNumber"
+											name="roomNumber" required>
+									</div>
 
-										<div class="mb-3">
-											<label for="status" class="form-label">Trạng thái</label> <select
-												class="form-select" id="status" name="status" required>
-												<option value="Available">Available</option>
-												<option value="Occupied">Occupied</option>
-												<option value="Maintenance">Maintenance</option>
-											</select>
-										</div>
+									<div class="mb-3">
+										<label for="status" class="form-label">Trạng thái</label> <select
+											class="form-select" id="status" name="status" required>
+											<option value="Available">Available</option>
+											<option value="Occupied">Occupied</option>
+											<option value="Maintenance">Maintenance</option>
+										</select>
+									</div>
 
-										<div class="mb-3">
-											<label for="categoryId" class="form-label">Mã danh
-												mục</label> <input type="text" class="form-control" id="categoryId"
-												name="categoryId" required>
-										</div>
-										<c:if test="${not empty error}">
-											<div class="alert alert-danger">${error}</div>
-										</c:if>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal">Đóng</button>
-											<button type="submit" class="btn btn-primary">Lưu
-												phòng</button>
-										</div>
-									</form>
+									<div class="mb-3">
+										<label for="categoryId" class="form-label">Mã danh mục</label>
+										<input type="text" class="form-control" id="categoryId"
+											name="categoryId" required>
+									</div>
+									<c:if test="${not empty error}">
+										<div class="alert alert-danger">${error}</div>
+									</c:if>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Đóng</button>
+										<button type="submit" class="btn btn-primary">Lưu
+											phòng</button>
+									</div>
+								</form>
 
-								</div>
 							</div>
 						</div>
 					</div>
-
-
-
-
-
-
 				</div>
+
+
+
+
+
+
 			</div>
 		</div>
+	</div>
 	</div>
 
 </body>
