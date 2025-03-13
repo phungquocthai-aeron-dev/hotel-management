@@ -30,12 +30,12 @@ public class RoomRental {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String rentalStatus;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "room_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;

@@ -29,12 +29,12 @@ public class Maintenance {
     @Column(name = "mtn_status")
     private String mtnStatus;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "room_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "staff_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Staff staff;

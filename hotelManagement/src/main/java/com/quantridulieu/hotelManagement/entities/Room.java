@@ -18,7 +18,7 @@ public class Room {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Category category;
