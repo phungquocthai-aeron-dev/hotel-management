@@ -19,6 +19,7 @@ import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
 import com.quantridulieu.hotelManagement.entities.Customer;
 import com.quantridulieu.hotelManagement.entities.Room;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
+import com.quantridulieu.hotelManagement.entities.Staff;
 
 import java.awt.SystemColor;
 import java.io.IOException;
@@ -26,6 +27,9 @@ import java.util.List;
 import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
 import com.quantridulieu.hotelManagement.services.RoomRentalService;
 import com.quantridulieu.hotelManagement.services.RoomService;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.quantridulieu.hotelManagement.services.CustomerService;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
 import org.springframework.http.MediaType;
@@ -52,9 +56,15 @@ public class RoomRentalController {
     private CustomerService customerService;
 
 	@GetMapping
-	public String getAllRoomRentals(Model model) {
+	public String getAllRoomRentals(Model model, HttpSession session) {
 		// Lấy danh sách thuê phòng từ repository
 		model.addAttribute("roomRentals", roomRentalRepository.findAll());
+		 Staff staff = (Staff) session.getAttribute("loggedInStaff");
+//			Chưa đăng nhập --> cook
+		if (staff == null)
+			return "redirect:/login";
+		
+		
 		List<RoomRental> list = (List<RoomRental>) model.getAttribute("searchResult");
 
 		// Nếu có dữ liệu từ tìm kiếm thì giữ nguyên, nếu không thì lấy toàn bộ danh

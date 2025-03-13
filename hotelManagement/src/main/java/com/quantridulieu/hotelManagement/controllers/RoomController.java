@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.quantridulieu.hotelManagement.entities.Category;
 import com.quantridulieu.hotelManagement.entities.HotelService;
 import com.quantridulieu.hotelManagement.entities.Room;
+import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.repositories.CategoryRepository;
 import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 import com.quantridulieu.hotelManagement.services.RoomService;
@@ -37,10 +38,13 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
    @GetMapping
-    public String getAllRooms(Model model) {
+    public String getAllRooms(Model model, HttpSession session) {
         // Lấy tất cả các phòng từ repository
         model.addAttribute("rooms", roomRepository.findAll());
-
+        Staff staff = (Staff) session.getAttribute("loggedInStaff");
+//		Chưa đăng nhập --> cook
+	if (staff == null)
+		return "redirect:/login";
         // Kiểm tra xem có dữ liệu tìm kiếm nào từ 'searchResult' không
         List<Room> list = (List<Room>) model.getAttribute("searchResult");
 

@@ -3,6 +3,7 @@ package com.quantridulieu.hotelManagement.services;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,23 @@ public class RoomRentalService {
         Long count = roomRentalRepository.count();
         return String.format("RR%05d", count + 1);
     }
+    
+    public List<RoomRental> findRoomsByRentalDate(Date date) {
+        return roomRentalRepository.findRoomsByRentalDate(date);
+    }
+    
+    public List<RoomRental> findRoomsByCheckOutDate(Date date) {
+        return roomRentalRepository.findRoomsByCheckOutDate(date);
+    }
+    
+    public void updateCheckOut(String id, Date date) {
+    	roomRentalRepository.updateCheckOut(id, date);
+    }
+    
+    public void updateCheckIn(String id, Date date) {
+    	roomRentalRepository.updateCheckIn(id, date);
+    }
+    
     @Transactional
     public List<RoomRental> searchBooking(String rentId, String roomId, String customerName) {
         return roomRentalRepository.searchBooking(

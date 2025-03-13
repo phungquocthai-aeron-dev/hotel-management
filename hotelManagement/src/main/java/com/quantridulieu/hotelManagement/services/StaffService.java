@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.entities.StaffDTO;
@@ -29,6 +30,31 @@ public class StaffService {
 		return null;
     }
 	
+	// Lấy nhân viên theo số điện thoại
+	public Staff getStaffByPhone(String phone) {
+        return staffRepository.findStaffByPhone(phone); 
+    }
+	
+	public byte[] exportStaffToExcelByListIds(List<String> ids) throws IOException {
+        return excelExportUtil.exportToExcel(staffRepository.findByStaffIds(ids), null, "Danh sách nhân viên");
+    }
+	
+	public void disableStaff(String staffId) {
+        Staff staff = staffRepository.findById(staffId).orElse(null);
+        if (staff != null) {
+            staff.setRole("DISABLE");
+            staffRepository.save(staff); // Lưu thay đổi vào database
+        }
+    }
+	
+	public List<Staff> getAllStaffs() {
+		return staffRepository.findAll();
+	}
+	
+	public Long getTotalStaff() {
+	    return staffRepository.getTotalStaff();
+	}
+	
 	public void save(Staff staff) {
 		if(staff.getStaffId() == null) staff.setStaffId(generateId());
 		staffRepository.save(staff);
@@ -44,6 +70,15 @@ public class StaffService {
 	
 	public Staff getStaffById(String id) {
 		return staffRepository.findById(id).orElseThrow();
+	}
+	
+	@Transactional
+	public List<Staff> searchStaffs(String staffId, String staffName, String staffPhone) {
+	    return staffRepository.SearchStaff(
+	        staffId == null || staffId.isEmpty() ? null : staffId,
+	        staffName == null || staffName.isEmpty() ? null : staffName,
+	        staffPhone == null || staffPhone.isEmpty() ? null : staffPhone
+	    );
 	}
 	
 	private String generateId() {
