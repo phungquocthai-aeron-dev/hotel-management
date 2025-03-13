@@ -31,6 +31,10 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, String
     @Query(value = "SELECT GetMonthlyExpenses(:year, :month)", nativeQuery = true)
     double getMonthlyExpenses(@Param("year") Integer year, @Param("month") Integer month);
 
+    @Query(value = "SELECT * FROM maintenance WHERE mtn_id IN (:maintenanceIds)", nativeQuery = true)
+    List<Maintenance> findByMaintenanceIds(@Param("maintenanceIds") List<String> maintenanceIds);
+    
+    
     @Modifying
     @Procedure(name = "SearchMaintenance")
     List<Maintenance> SearchMaintenance(
