@@ -20,12 +20,12 @@ public class Invoice {
     @Column(name = "total_amount")
     private Float totalAmount;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "us_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UseService useService;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "staff_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Staff staff;

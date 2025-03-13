@@ -20,12 +20,12 @@ public class Feedback {
     @Column(name = "feedback_time")
     private Date feedbackTime;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "us_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UseService useService;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;

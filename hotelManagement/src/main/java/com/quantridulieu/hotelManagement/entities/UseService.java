@@ -20,17 +20,17 @@ public class UseService {
     @Column(name = "us_date")
     private Date usDate;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "service_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private HotelService service;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "rent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private RoomRental roomRental;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "promotion_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Promotion promotion;
