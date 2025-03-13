@@ -1,6 +1,8 @@
 package com.quantridulieu.hotelManagement.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import java.util.Map;
@@ -19,10 +21,14 @@ import com.quantridulieu.hotelManagement.entities.Room;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
 
 import java.awt.SystemColor;
+import java.io.IOException;
 import java.util.List;
 import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
 import com.quantridulieu.hotelManagement.services.RoomRentalService;
+import com.quantridulieu.hotelManagement.services.RoomService;
+import com.quantridulieu.hotelManagement.services.CustomerService;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
+import org.springframework.http.MediaType;
 import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 import com.quantridulieu.hotelManagement.repositories.CustomerRepository;
 
@@ -39,6 +45,11 @@ public class RoomRentalController {
 	private	CustomerRepository customerRepository;
 	@Autowired
 	private RoomRentalService roomRentalService; // Thêm @Autowired
+	@Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private CustomerService customerService;
 
 	@GetMapping
 	public String getAllRoomRentals(Model model) {
@@ -56,15 +67,38 @@ public class RoomRentalController {
 	}
 
 	@PostMapping("/save")
-	public String saveRoomRental(@ModelAttribute RoomRental roomRental, RedirectAttributes redirectAttributes) {
-		try {
-			roomRentalService.save(roomRental);
-			redirectAttributes.addFlashAttribute("success", "Thêm phòng thuê thành công!");
-		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra! Vui lòng thử lại.");
-		}
-		return "redirect:/roomrental";
+	public String saveRoomRental(
+	        @ModelAttribute RoomRental roomRental,
+	        @RequestParam("roomId") String roomId,  // Lấy roomId từ form
+	        @RequestParam("customerId") String customerId, // Lấy customerId từ form
+	        RedirectAttributes redirectAttributes) {
+		System.out.println("roomId: " + roomId);
+	    System.out.println("customerId: " + customerId);
+	    // Lấy Room theo ID
+	    Room room = roomService.getRoomById(roomId);
+	    if (room == null) {
+	        redirectAttributes.addFlashAttribute("error", "Mã phòng không hợp lệ.");
+	        return "redirect:/roomrental";
+	    }
+
+	    // Lấy Customer theo ID
+	    Customer customer = customerService.findById(customerId).orElse(null);
+	    if (customer == null) {
+	        redirectAttributes.addFlashAttribute("error", "Mã khách hàng không hợp lệ.");
+	        return "redirect:/roomrental";
+	    }
+
+	    // Gán Room và Customer vào RoomRental
+	    roomRental.setRoom(room);
+	    roomRental.setCustomer(customer);
+
+	    // Lưu vào database
+	    roomRentalService.save(roomRental);
+
+	    redirectAttributes.addFlashAttribute("success", "Thêm phòng thuê thành công!");
+	    return "redirect:/roomrental";
 	}
+
 
 	@GetMapping(value = "/details")
 	public String getRoomRentalById(@RequestParam("id") String rentId, Model model) {
@@ -138,4 +172,27 @@ public class RoomRentalController {
       return "redirect:/roomrental";
     }
 	
+	@PostMapping("/export")
+    public ResponseEntity<byte[]> exportRoomRentalsToExcel(
+            @RequestParam("roomRentalIds") List<String> roomRentalIds) {
+
+        if (roomRentalIds == null || roomRentalIds.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        byte[] excelData;
+        try {
+            excelData = roomRentalService.exportRoomRentalsToExcelByListIds(roomRentalIds);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danh_sach_thue_phong.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(excelData);
+    }
 }

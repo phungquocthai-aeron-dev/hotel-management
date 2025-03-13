@@ -2,13 +2,17 @@ package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import com.quantridulieu.hotelManagement.entities.Room;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
+import com.quantridulieu.hotelManagement.entities.RoomRentalExport;
 import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
 
 @Service
@@ -33,7 +37,31 @@ public class RoomRentalService {
    	public byte[] exportRoomRentalToExcel() throws IOException {
    		return excelExportUtil.exportToExcel(roomRentalRepository.findAll(), null, "Danh sách mượn phòng");
        }
-  
+   	public byte[] exportRoomRentalsToExcelByListIds(List<String> roomRentalIds) throws IOException {
+   	    List<RoomRentalExport> exportList = new ArrayList<>();
+   	    List<RoomRental> roomRentals = roomRentalRepository.findByRentIdIn(roomRentalIds);
+
+   	    for (RoomRental rental : roomRentals) {
+   	        Room room = rental.getRoom(); // 🛑 Kiểm tra null trước khi gọi phương thức!
+   	        Integer roomNumber = (room != null) ? room.getRoomNumber() : null;
+
+   	        RoomRentalExport export = new RoomRentalExport(
+   	            rental.getRentId(),
+   	            rental.getRentalDate(),
+   	            rental.getCheckInDate(),
+   	            rental.getCheckOutDate(),
+   	            rental.getRentalStatus(),
+   	            rental.getRoomId(),
+   	            roomNumber, // 🛑 Tránh gọi null.getRoomNumber()
+   	            rental.getCustomerId(),
+   	            rental.getCustomerName()
+   	        );
+   	        exportList.add(export);
+   	    }
+
+   	    return excelExportUtil.exportToExcel(exportList, null, "Danh sách thuê phòng");
+   	}
+
     public void delete(String rentalId) {
         roomRentalRepository.deleteById(rentalId);
     }

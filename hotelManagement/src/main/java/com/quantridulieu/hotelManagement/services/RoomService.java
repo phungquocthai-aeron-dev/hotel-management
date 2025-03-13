@@ -1,6 +1,7 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.HotelService;
 import com.quantridulieu.hotelManagement.entities.Room;
+import com.quantridulieu.hotelManagement.entities.RoomExport;
 import com.quantridulieu.hotelManagement.repositories.HotelServiceRepository;
 import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 
@@ -29,9 +31,23 @@ public class RoomService {
 	public byte[] exportRoomToExcel() throws IOException {
 		return excelExportUtil.exportToExcel(roomRepository.findAll(), null, "Danh sách bảo trì");
     }
-	public byte[] exportRoomToExcelByListIds(List<String> ids) throws IOException {
-	    return excelExportUtil.exportToExcel(roomRepository.findByRoomIDs(ids), null, "Danh sách phòng");
-	}
+	public byte[] exportRoomsToExcelByListIds(List<String> ids) throws IOException {
+        List<RoomExport> list = new ArrayList<>();
+        List<Room> data = roomRepository.findByRoomIDs(ids);
+
+        for (Room room : data) {
+            RoomExport export = new RoomExport(
+                room.getRoomId(),
+                room.getRoomNumber(),
+                room.getStatus(),
+                room.getCategoryId(),
+                room.getCategoryName()
+            );
+            list.add(export);
+        }
+
+        return excelExportUtil.exportToExcel(list, null, "Danh sách phòng khách sạn");
+    }
 
     public void save(Room room) {
         if (room.getRoomId() == null) room.setRoomId(generateId());
