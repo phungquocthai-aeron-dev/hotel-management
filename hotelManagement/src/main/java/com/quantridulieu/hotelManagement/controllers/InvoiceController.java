@@ -18,17 +18,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.quantridulieu.hotelManagement.entities.Invoice;
 import com.quantridulieu.hotelManagement.entities.Staff;
+import com.quantridulieu.hotelManagement.entities.UseService;
 import com.quantridulieu.hotelManagement.services.InvoiceService;
+import com.quantridulieu.hotelManagement.services.StaffService;
+import com.quantridulieu.hotelManagement.services.UseServiceService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@Transactional
 public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    private StaffService staffService;
+
+    @Autowired
+   private UseServiceService useServiceService;
+//    
     @GetMapping("/invoice")
     public String listInvoices(Model model, HttpSession session) {
 //        Staff staff = (Staff) session.getAttribute("loggedInStaff");
@@ -41,16 +49,16 @@ public class InvoiceController {
 //        model.addAttribute("staff", staff);
         return "invoice";
     }
-
-    @GetMapping("invoice/search")
+    
+    @GetMapping("/invoice/search")
     public String searchInvoices(
             RedirectAttributes redirectAttributes,
-            @RequestParam(required = false) String invoiceId,
-            @RequestParam(required = false) String staffId,
-            @RequestParam(required = false) String fromDate,
-            @RequestParam(required = false) String toDate) {
-
-        List<Invoice> invoices = invoiceService.searchInvoices(invoiceId, staffId, fromDate, toDate);
+            @RequestParam(required = false, defaultValue = "") String invoiceId,
+            @RequestParam(required = false, defaultValue = "") String staffId,
+            @RequestParam(required = false, defaultValue = "") String totalAmountRange,
+            @RequestParam(required = false, defaultValue = "") String serviceDate) {
+    	
+        List<Invoice> invoices = invoiceService.searchInvoices(invoiceId, staffId, totalAmountRange, serviceDate);
         redirectAttributes.addFlashAttribute("searchResult", invoices);
         return "redirect:/invoice";
     }
@@ -73,10 +81,12 @@ public class InvoiceController {
     }
 
     @PostMapping("/invoice/delete")
-    public String deleteInvoice(@RequestParam("id") String invoiceId) {
+    public String deleteInvoice(@RequestParam("id") String invoiceId, RedirectAttributes redirectAttributes) {
         invoiceService.delete(invoiceId);
+        redirectAttributes.addFlashAttribute("message", "Xóa hóa đơn " + invoiceId + " thành công!");
         return "redirect:/invoice";
     }
+
 
     @PostMapping("/invoice/export")
     public ResponseEntity<byte[]> exportInvoicesToExcel(
@@ -95,10 +105,51 @@ public class InvoiceController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danh_sach_hoa_don.xlsx");
-
+        
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(excelData);
     }
+    
+    @GetMapping("/invoice/add")
+    public String showInvoiceForm(@RequestParam(value = "id", required = false) String id, Model model, HttpSession session) {
+        Invoice invoice;
+
+        if (id != null) {
+            // Nếu có ID -> lấy hóa đơn từ database để chỉnh sửa
+            invoice = invoiceService.getInvoiceById(id);
+        } else {
+            // Nếu không có ID -> tạo hóa đơn mới để thêm mới
+            invoice = new Invoice();
+        }
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("invoice", invoice);
+
+//      Lấy danh sách nhân viên và dịch vụ từ database
+//      Staff staff = (Staff) session.getAttribute("loggedInStaff");
+//      
+        //lấy các dịch vụ chưa có trong invoice
+        List<UseService> useServiceList = useServiceService.getAllUseServiceNotInInvoice();
+        //model.addAttribute("staff", staff);
+        model.addAttribute("useServiceList", useServiceList);
+
+        return "invoice_add"; // Hiển thị form thêm/sửa hóa đơn
+    }
+
+//    @PostMapping("/invoice/add")
+//    public String addInvoice(@ModelAttribute Invoice invoice, 
+//                             @RequestParam("staffId") Long staffId, 
+//                             @RequestParam("usId") Long serviceId, 
+//                             RedirectAttributes redirectAttributes) {
+//        try {
+//            invoiceService.saveInvoice(invoice, staffId, serviceId);
+//            redirectAttributes.addFlashAttribute("successMessage", "Thêm hóa đơn thành công!");
+//        } catch (Exception e) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi thêm hóa đơn: " + e.getMessage());
+//        }
+//        return "redirect:/invoice";
+//    }
+
 }

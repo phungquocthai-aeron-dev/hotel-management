@@ -14,7 +14,6 @@
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 <!-- Bootstrap CSS -->
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
@@ -177,7 +176,7 @@ body {
 		</nav>
 
 		<!-- Content -->
-		<div class="content  p-4">
+		<div class="content p-4">
 			<div class="tab-content">
 				<c:if test="${not empty message}">
 					<div id="message-container" class="alert alert-success">
@@ -185,42 +184,38 @@ body {
 					</div>
 				</c:if>
 				<h2 class="text-center mb-4">
-					<i class="fas fa-file-invoice"></i> Quản lý Hóa đơn
+					<i class="fas fa-tag"></i> Quản lý Khuyến mãi
 				</h2>
 
 				<!-- Thanh tìm kiếm -->
-				<!-- Thanh tìm kiếm -->
-				<form action="invoice/search" method="GET"
+				<form action="promotion/search" method="GET"
 					class="row bg-white p-3 rounded-3 mb-4">
-					<!-- Mã hóa đơn -->
+					<!-- Mã khuyến mãi -->
 					<div class="col-md-3 mb-3">
-						<input type="text" class="form-control" placeholder="Mã hóa đơn"
-							name="invoiceId">
+						<input type="text" class="form-control"
+							placeholder="Mã khuyến mãi" name="promotionId">
 					</div>
 
-					<!-- Nhân viên -->
+					<!-- Tên khuyến mãi -->
 					<div class="col-md-3 mb-3">
-						<input type="text" class="form-control" placeholder="Nhân viên"
-							name="staffId">
+						<input type="text" class="form-control"
+							placeholder="Tên khuyến mãi" name="promotionName">
 					</div>
 
-					<!-- Tìm kiếm theo khoảng Tổng Tiền -->
+					<!-- Giá trị khuyến mãi -->
 					<div class="col-md-3 mb-3">
-						<select class="form-control" name="totalAmountRange">
-							<option value="">Chọn khoảng tổng tiền</option>
-							<option value="under500">Dưới 500.000</option>
-							<option value="500to2000">Từ 500.000 đến 2.000.000</option>
-							<option value="above2000">Trên 2.000.000</option>
-						</select>
+						<input type="text" class="form-control"
+							placeholder="Giá trị khuyến mãi" name="discountRange">
 					</div>
 
-					<!-- Ngày sử dụng dịch vụ -->
+					<!-- Ngày bắt đầu khuyến mãi -->
 					<div class="col-md-3 mb-3">
-						<input type="date" class="form-control" name="serviceDate">
+						<input type="date" class="form-control" placeholder="Ngày bắt đầu"
+							name="startDate">
 					</div>
 
 					<!-- Nút tìm kiếm -->
-					<div class="col-md-12 d-flex justify-content-center  mb-3">
+					<div class="col-md-12 d-flex justify-content-center mb-3">
 						<button type="submit"
 							class="btn btn-outline-secondary btn-primary text-white mx-auto">
 							<i class="bi bi-search"></i> Tìm kiếm
@@ -228,24 +223,25 @@ body {
 					</div>
 				</form>
 
+
 				<div class="container row">
 					<div class="col-6 d-flex justify-content-start mt-3 mb-3">
 						<div class="text-center mt-3">
-							<a class="btn btn-outline-success" href="invoice/add"> <i
-								class="fas fa-plus"></i> Thêm Hóa Đơn
+							<a class="btn btn-outline-success" href="promotion/add"> <i
+								class="fas fa-plus"></i> Thêm Khuyến mãi
 							</a>
 						</div>
 					</div>
 
-					<div class="col-6  d-flex justify-content-end mt-3 mb-3">
+					<div class="col-6 d-flex justify-content-end mt-3 mb-3">
 						<!-- Nút chức năng -->
 						<div class="text-center mt-3">
-							<c:if test="${not empty invoices}">
-								<form action="invoice/export" method="post"
+							<c:if test="${not empty promotions}">
+								<form action="promotion/export" method="post"
 									style="display: inline;">
-									<c:forEach var="invoice" items="${invoices}">
-										<input type="hidden" name="invoicesExport"
-											value="${invoice.invoiceId}" />
+									<c:forEach var="promotion" items="${promotions}">
+										<input type="hidden" name="promotionsExport"
+											value="${promotion.promotionId}" />
 									</c:forEach>
 									<button type="submit" class="btn btn-success">
 										<i class="fas fa-file-excel"></i> Xuất Excel
@@ -253,18 +249,13 @@ body {
 								</form>
 							</c:if>
 
-							<!-- Nút Thêm Hóa Đơn -->
-
-
-							<!-- Nút Xem Tất Cả (đổi thành màu primary) -->
-							<a class="btn btn-primary" href="invoice"> <i
+							<!-- Nút Xem Tất Cả -->
+							<a class="btn btn-primary" href="promotion"> <i
 								class="fas fa-list"></i> Xem tất cả
 							</a>
 						</div>
 					</div>
 				</div>
-
-
 
 				<!-- Bảng dữ liệu -->
 				<div class="table-responsive">
@@ -272,49 +263,39 @@ body {
 						<thead>
 							<tr>
 								<th>STT</th>
-								<th>Mã hóa đơn</th>
-								<th>Ngày lập</th>
-								<th>Tổng tiền</th>
-								<th>Mã nhân viên</th>
-								<th>Mã dịch vụ</th>
-
+								<th>Mã khuyến mãi</th>
+								<th>Tên khuyến mãi</th>
+								<th>Mô tả</th>
+								<th>Giá trị</th>
+								<th>Ngày bắt đầu</th>
+								<th>Ngày kết thúc</th>
 								<th>Thao tác</th>
 							</tr>
 						</thead>
-						<c:forEach var="customer" items="${customers }" varStatus="status">
-							<p>STT: ${status.count}</p>
-							<p>${customer.customerName}</p>
-							<a href="/customer?id=${customer.customerId}">Xem chi tiết</a>
-
-							<form action="customer/delete" method="post"
-								onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
-								<input type="hidden" name="id" value="${customer.customerId}">
-								<button type="submit" style="color: red">Xóa khách hàng</button>
-							</form>
-						</c:forEach>
-						<tbody id="invoiceTable">
-							<c:forEach var="invoice" items="${invoices }" varStatus="status">
+						<tbody id="promotionTable">
+							<c:forEach var="promotion" items="${promotions}"
+								varStatus="status">
 								<tr>
 									<td>${status.count}</td>
-									<td>${invoice.invoiceId}</td>
-
-									<td>${invoice.invoiceDate}</td>
-									<td>${invoice.totalAmount}</td>
-									<td>${invoice.staff.getStaffId()}</td>
-									<td>${invoice.useService.getUsId()}</td>
-
-
+									<td>${promotion.promotionId}</td>
+									<td>${promotion.promotionName}</td>
+									<td>${promotion.promotionDescription}</td>
+									<td>${promotion.promotionValue}</td>
+									<td>${promotion.promotionStart}</td>
+									<td>${promotion.promotionEnd}</td>
 									<td class="action-btns d-flex justify-content-center">
-										<form action="invoice/add" method="get">
-											<input type="hidden" name="id" value="${invoice.invoiceId}">
+										<form action="promotion/add" method="get">
+											<input type="hidden" name="id"
+												value="${promotion.promotionId}">
 											<button class="btn btn-warning btn-sm">
 												<i class="fas fa-edit"></i> Sửa
 											</button>
 										</form>
 
-										<form action="invoice/delete" method="post"
-											onsubmit="return confirm('Bạn có chắc chắn muốn xóa ${invoice.invoiceId} không?');">
-											<input type="hidden" name="id" value="${invoice.invoiceId}">
+										<form action="promotion/delete" method="post"
+											onsubmit="return confirm('Bạn có chắc chắn muốn xóa ${promotion.promotionId} không?');">
+											<input type="hidden" name="id"
+												value="${promotion.promotionId}">
 											<button class="btn btn-danger btn-sm">
 												<i class="fas fa-trash"></i> Xóa
 											</button>
@@ -325,7 +306,6 @@ body {
 						</tbody>
 					</table>
 				</div>
-
 			</div>
 		</div>
 		<!-- Bootstrap & JS -->
@@ -336,40 +316,30 @@ body {
 
 		<script type="text/javascript">
 		document.addEventListener('DOMContentLoaded', function () {
-		    const form = document.querySelector('form');
-		    const inputs = document.querySelectorAll('input, select');
+		    const inputElements = document.querySelectorAll('input[type="text"], input[type="date"], select');
 
-		    inputs.forEach(input => {
-		        input.addEventListener('input', function () {
-		            if (this.value.trim() !== '') {
-		                inputs.forEach(other => {
-		                    if (other !== this) {
-		                        other.value = '';
+		    inputElements.forEach(element => {
+		        let eventType = (element.tagName.toLowerCase() === 'select') ? 'change' : 'input';
+
+		        element.addEventListener(eventType, function () {
+		            if (element.value.trim() !== '' && (element.tagName.toLowerCase() !== 'select' || element.selectedIndex !== 0)) {
+		                inputElements.forEach(otherElement => {
+		                    if (otherElement !== element) {
+		                        if (otherElement.tagName.toLowerCase() === 'select') {
+		                            otherElement.selectedIndex = 0;
+		                        } else {
+		                            otherElement.value = '';
+		                        }
 		                    }
 		                });
 		            }
 		        });
-
-		        if (input.type === 'date') {
-		            input.addEventListener('change', function () {
-		                if (this.value !== '') {
-		                    inputs.forEach(other => {
-		                        if (other !== this) {
-		                            other.value = '';
-		                        }
-		                    });
-		                }
-		            });
-		        }
 		    });
 
-		    form.addEventListener('submit', function (e) {
-		        let hasValue = false;
-
-		        inputs.forEach(input => {
-		            if (input.value.trim() !== '') {
-		                hasValue = true;
-		            }
+		    document.querySelector('form').addEventListener('submit', function (e) {
+		        let hasValue = Array.from(inputElements).some(element => {
+		            return (element.tagName.toLowerCase() === 'select' && element.selectedIndex !== 0) ||
+		                (element.tagName.toLowerCase() !== 'select' && element.value.trim() !== '');
 		        });
 
 		        if (!hasValue) {
@@ -377,18 +347,17 @@ body {
 		            alert('Vui lòng nhập ít nhất một giá trị để tìm kiếm');
 		        }
 		    });
+
+		    window.onload = function () {
+		        let messageContainer = document.getElementById("message-container");
+		        if (messageContainer) {
+		            setTimeout(() => messageContainer.style.display = "none", 3000);
+		        }
+		    };
 		});
 
-
-    window.onload = function() {
-        let messageContainer = document.getElementById("message-container");
-        if (messageContainer) {
-            setTimeout(function() {
-                messageContainer.style.display = "none";
-            }, 3000); // Ẩn sau 5 giây
-        }
-    };
-		</script>
+        </script>
+	</div>
 </body>
 
 </html>

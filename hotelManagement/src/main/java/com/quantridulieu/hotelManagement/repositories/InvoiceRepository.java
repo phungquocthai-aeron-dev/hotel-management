@@ -1,5 +1,6 @@
 package com.quantridulieu.hotelManagement.repositories;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +30,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     
     @Modifying
     @Procedure(name = "SearchInvoice")
-    List<Invoice> searchInvoices(
+    List<Invoice> SearchInvoice(
         @Param("p_invoice_id") String invoiceId,
         @Param("p_staff_id") String staffId,
-        @Param("p_from_date") String fromDate,
-        @Param("p_to_date") String toDate
+        @Param("p_totalAmountRange") String totalAmountRange,
+        @Param("p_serviceDate") LocalDate serviceDate
     );
 }
