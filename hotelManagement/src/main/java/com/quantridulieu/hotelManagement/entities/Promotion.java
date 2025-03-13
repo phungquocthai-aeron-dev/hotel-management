@@ -1,9 +1,6 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -23,11 +20,9 @@ public class Promotion {
     private String promotionDescription;
     
     @Column(name = "promotion_start")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date promotionStart;
     
     @Column(name = "promotion_end")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date promotionEnd;
     
     public Promotion() {}

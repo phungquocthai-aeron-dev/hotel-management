@@ -46,53 +46,6 @@ DELIMITER ;
 CALL SearchCustomer('CS00001',NULL, NULL, NULL);
 
 
-DELIMITER $$
-
-CREATE PROCEDURE SearchService(
-    IN p_service_id VARCHAR(10),
-    IN p_service_name VARCHAR(255),
-    IN p_service_price INT
-)
-BEGIN
-    SELECT * 
-    FROM Service
-    WHERE 
-        (p_service_id IS NULL OR service_id = p_service_id)
-        AND (p_service_name IS NULL OR service_name LIKE CONCAT('%', p_service_name, '%'))
-        AND (p_service_price IS NULL OR service_price = p_service_price);
-END $$
-
-DELIMITER ;
-
-CALL SearchService('S00006', NULL, NULL);
-
-
-DELIMITER $$
-
-CREATE PROCEDURE SearchRoom(
-    IN p_room_id VARCHAR(10),
-    IN p_room_number INT,
-    IN p_status VARCHAR(50),
-    IN p_category_id VARCHAR(10),
-    IN p_category_name VARCHAR(255)  -- Thêm tham số tìm theo tên danh mục
-)
-BEGIN
-    SELECT r.*, c.category_name
-    FROM Room r
-    JOIN Category c ON r.category_id = c.category_id
-    WHERE 
-        (p_room_id IS NULL OR r.room_id = p_room_id)
-        AND (p_room_number IS NULL OR r.room_number = p_room_number)
-        AND (p_status IS NULL OR r.status LIKE CONCAT('%', p_status, '%'))
-        AND (p_category_id IS NULL OR r.category_id = p_category_id)
-        AND (p_category_name IS NULL OR c.category_name LIKE CONCAT('%', p_category_name, '%'));  -- Tìm theo tên danh mục
-END $$
-
-DELIMITER ;
-CALL SearchRoom(NULL, NULL, NULL, NULL, 'Luxury');  -- Tìm phòng thuộc danh mục "Luxury"
-CALL SearchRoom(NULL, NULL, 'Available', NULL, 'Standard');  -- Phòng "Available" thuộc danh mục "Standard"
-CALL SearchRoom('R001', NULL, NULL, NULL, NULL);  -- Tìm phòng theo ID
-
 
 
 DELIMITER $$
@@ -293,6 +246,48 @@ DELIMITER ;
 
 
 
+DELIMITER //
+CREATE FUNCTION GetMonthlyRevenue(yearParam INT, monthParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    
+    SELECT SUM(i.total_amount) INTO total_revenue
+    FROM Invoice i
+    WHERE YEAR(i.invoice_date) = yearParam 
+      AND MONTH(i.invoice_date) = monthParam;
+    
+    IF total_revenue IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_revenue;
+    END IF;
+END //
+DELIMITER ;
+
+SELECT GetMonthlyRevenue(2025, 3) AS DoanhThuThang3;
+SELECT GetMonthlyExpenses(2025, 1) AS DoanhThuThang3;
+
+DELIMITER //
+CREATE FUNCTION GetMonthlyExpenses(yearParam INT, monthParam INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_expenses DECIMAL(10,2);
+    
+    SELECT SUM(m.mtn_fee) INTO total_expenses
+    FROM Maintenance m
+    WHERE YEAR(m.mtn_date) = yearParam 
+      AND MONTH(m.mtn_date) = monthParam;
+    
+    IF total_expenses IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN total_expenses;
+    END IF;
+END //
+DELIMITER ;
 
 
-
+SELECT  GetMonthlyExpenses(2025, 1) as test;
