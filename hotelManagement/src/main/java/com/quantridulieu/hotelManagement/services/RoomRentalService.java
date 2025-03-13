@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import org.springframework.transaction.annotation.Transactional;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
 import com.quantridulieu.hotelManagement.repositories.RoomRentalRepository;
 
@@ -38,7 +38,7 @@ public class RoomRentalService {
         roomRentalRepository.deleteById(rentalId);
     }
 
-    public List<RoomRental> getAllRentals() {
+    public List<RoomRental> getAllRoomRentals() {
         return roomRentalRepository.findAll();
     }
 
@@ -69,5 +69,13 @@ public class RoomRentalService {
     private String generateId() {
         Long count = roomRentalRepository.count();
         return String.format("RR%05d", count + 1);
+    }
+    @Transactional
+    public List<RoomRental> searchBooking(String rentId, String roomId, String customerName) {
+        return roomRentalRepository.searchBooking(
+            (rentId == null || rentId.isEmpty()) ? null : rentId,
+            (roomId == null || roomId.isEmpty()) ? null : roomId,
+            (customerName == null || customerName.isEmpty()) ? null : customerName
+        );
     }
 }
