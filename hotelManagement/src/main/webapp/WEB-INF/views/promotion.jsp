@@ -131,12 +131,12 @@ body {
 						src="https://static.vecteezy.com/system/resources/thumbnails/012/210/707/small_2x/worker-employee-businessman-avatar-profile-icon-vector.jpg"
 						alt="User" class="rounded-circle me-2">
 					<div>
-						<h6 class="mb-0">Nguyễn Văn A</h6>
-						<small>Quản lý</small>
+						<h6 class="mb-0">${staff.staffName }</h6>
+                        <small>${staff.role }</small>
 					</div>
 				</div>
 				<div class="mb-4">
-				    <form action="/logout" method="post">
+					<form action="logout" method="post">
 				        <button type="submit" class="btn bg-white text-primary fw-bolder">
 				            Đăng xuất
 				        </button>
@@ -144,7 +144,7 @@ body {
 				</div>
 
 				<ul class="nav flex-column">
-					<li class="nav-item"><a href="home" class="nav-link active">
+					<li class="nav-item"><a href="home" class="nav-link">
 							<i class="bi bi-speedometer2"></i> Tổng quan
 					</a></li>
 					<li class="nav-item"><a href="room" class="nav-link"> <i
@@ -168,7 +168,7 @@ body {
 					<li class="nav-item"><a href="maintenance" class="nav-link">
 							<i class="bi bi-tools"></i> Bảo trì
 					</a></li>
-					<li class="nav-item"><a href="promotion" class="nav-link">
+					<li class="nav-item"><a href="promotion" class="nav-link active">
 							<i class="bi bi-tag"></i> Khuyến mãi
 					</a></li>
 					<li class="nav-item"><a href="statistics" class="nav-link">
@@ -191,7 +191,7 @@ body {
 				</h2>
 
 				<!-- Thanh tìm kiếm -->
-				<form action="promotion/search" method="GET"
+				<form id="search" action="promotion/search" method="GET"
 					class="row bg-white p-3 rounded-3 mb-4">
 					<!-- Mã khuyến mãi -->
 					<div class="col-md-3 mb-3">
@@ -317,49 +317,70 @@ body {
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-		<script type="text/javascript">
-		document.addEventListener('DOMContentLoaded', function () {
-		    const inputElements = document.querySelectorAll('input[type="text"], input[type="date"], select');
-
-		    inputElements.forEach(element => {
-		        let eventType = (element.tagName.toLowerCase() === 'select') ? 'change' : 'input';
-
-		        element.addEventListener(eventType, function () {
-		            if (element.value.trim() !== '' && (element.tagName.toLowerCase() !== 'select' || element.selectedIndex !== 0)) {
-		                inputElements.forEach(otherElement => {
-		                    if (otherElement !== element) {
-		                        if (otherElement.tagName.toLowerCase() === 'select') {
-		                            otherElement.selectedIndex = 0;
-		                        } else {
-		                            otherElement.value = '';
-		                        }
-		                    }
-		                });
-		            }
-		        });
-		    });
-
-		    document.querySelector('form').addEventListener('submit', function (e) {
-		        let hasValue = Array.from(inputElements).some(element => {
-		            return (element.tagName.toLowerCase() === 'select' && element.selectedIndex !== 0) ||
-		                (element.tagName.toLowerCase() !== 'select' && element.value.trim() !== '');
-		        });
-
-		        if (!hasValue) {
-		            e.preventDefault();
-		            alert('Vui lòng nhập ít nhất một giá trị để tìm kiếm');
-		        }
-		    });
-
-		    window.onload = function () {
-		        let messageContainer = document.getElementById("message-container");
-		        if (messageContainer) {
-		            setTimeout(() => messageContainer.style.display = "none", 3000);
-		        }
-		    };
-		});
-
-        </script>
+	    <script type="text/javascript">
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Chọn tất cả các phần tử có thể nhập liệu (input, textarea, select)
+                                    const inputElements = document.querySelectorAll('input[type="text"], textarea, select');
+                                    
+                                    // Thêm sự kiện cho mỗi phần tử
+                                    inputElements.forEach(element => {
+                                        // Xác định sự kiện phù hợp cho từng loại phần tử
+                                        let eventType = 'input'; // Mặc định cho input và textarea
+                                        
+                                        if (element.tagName.toLowerCase() === 'select') {
+                                            eventType = 'change'; // Sử dụng sự kiện change cho select
+                                        }
+                                        
+                                        // Thêm người nghe sự kiện
+                                        element.addEventListener(eventType, function() {
+                                            // Kiểm tra xem phần tử này có giá trị hay không
+                                            let hasValue = false;
+                                            
+                                            if (element.tagName.toLowerCase() === 'select') {
+                                                // Với select, kiểm tra xem có option được chọn không phải là option mặc định
+                                                hasValue = element.value !== '' && element.selectedIndex !== 0;
+                                            } else {
+                                                // Với input và textarea, kiểm tra có text không
+                                                hasValue = element.value.trim() !== '';
+                                            }
+                                            
+                                            // Nếu phần tử này có giá trị, xóa giá trị của tất cả phần tử khác
+                                            if (hasValue) {
+                                                inputElements.forEach(otherElement => {
+                                                    if (otherElement !== element) {
+                                                        if (otherElement.tagName.toLowerCase() === 'select') {
+                                                            otherElement.selectedIndex = 0; // Reset select về option đầu tiên
+                                                        } else {
+                                                            otherElement.value = ''; // Xóa giá trị của input và textarea
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+                                    
+                                    // Thêm xác nhận khi submit form để đảm bảo có ít nhất một trường được nhập
+                                    document.querySelector('#search').addEventListener('submit', function(e) {
+                                        // Kiểm tra xem có ít nhất một trường có giá trị
+                                        let hasValue = false;
+                                        
+                                        inputElements.forEach(element => {
+                                            if (
+                                                (element.tagName.toLowerCase() === 'select' && element.value !== '' && element.selectedIndex !== 0) ||
+                                                (element.tagName.toLowerCase() !== 'select' && element.value.trim() !== '')
+                                            ) {
+                                                hasValue = true;
+                                            }
+                                        });
+                                        
+                                        // Nếu không có trường nào có giá trị, ngăn form submit
+                                        if (!hasValue) {
+                                            e.preventDefault();
+                                            alert('Vui lòng nhập ít nhất một giá trị để tìm kiếm');
+                                        }
+                                    });
+                                });
+                                </script>
 	</div>
 </body>
 

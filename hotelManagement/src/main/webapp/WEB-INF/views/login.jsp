@@ -92,6 +92,12 @@ prefix="c" %>
         font-weight: bold;
       }
 
+      .description {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-bottom: 20px;
+      }
+
       .input-group {
         position: relative;
         margin-bottom: 15px;
@@ -193,6 +199,7 @@ prefix="c" %>
               name="phone"
               placeholder="Số điện thoại"
               required
+              pattern="^\d{10}$" title="Số điện thoại phải là 10 ký tự số!"
             />
           </div>
           <div class="input-group">
@@ -205,19 +212,11 @@ prefix="c" %>
             />
           </div>
           <button type="submit" class="btn-login">Đăng Nhập</button>
-        </form action="login" method="oost">
-        <p class="register-link">
-          Chưa có tài khoản? <a href="register">Đăng ký ngay</a>
-        </p>
-
+      
+		</form>
         <!-- Hiển thị thông báo lỗi nếu đăng nhập thất bại -->
-        <c:if test="${param.error == 'true'}">
-          <div class="alert alert-danger">
-            Sai số điện thoại hoặc mật khẩu. Vui lòng thử lại!
-          </div>
-        </c:if>
-        <c:if test="${param.error != null}">
-          <div class="alert alert-danger">${param.error}</div>
+        <c:if test="${error != null}">
+          <div class="text-danger" style="color: red">${error}</div>
         </c:if>
       </div>
     </div>

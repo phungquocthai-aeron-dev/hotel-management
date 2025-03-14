@@ -174,17 +174,21 @@
                     style="width: 40px; height: 40px; border-radius: 50%;"
                     src="https://static.vecteezy.com/system/resources/thumbnails/012/210/707/small_2x/worker-employee-businessman-avatar-profile-icon-vector.jpg" alt="User" class="rounded-circle me-2">
                     <div>
-                        <h6 class="mb-0">Nguyễn Văn A</h6>
-                        <small>Quản lý</small>
+                        <h6 class="mb-0">${staff.staffName }</h6>
+                        <small>${staff.role }</small>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <a href="logout" class="btn bg-white text-primary fw-bolder">Đăng xuất</a>
+                    <form action="logout" method="post">
+				        <button type="submit" class="btn bg-white text-primary fw-bolder">
+				            Đăng xuất
+				        </button>
+				    </form>
                 </div>
                 
                 <ul class="nav flex-column">
                    <li class="nav-item">
-                        <a href="home" class="nav-link active" data-bs-toggle="pill">
+                        <a href="home" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-speedometer2"></i> Tổng quan
                         </a>
                     </li>
@@ -199,7 +203,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="customer" class="nav-link" data-bs-toggle="pill">
+                        <a href="customer" class="nav-link active" data-bs-toggle="pill">
                             <i class="bi bi-people"></i> Khách hàng
                         </a>
                     </li>
@@ -246,7 +250,7 @@
                 <div class="tab-pane pb-5 fade show active" id="customers">
                     <h3 class="text-center mb-5">Quản lý khách hàng</h3>
                         
-                    <form action="customer/search" method="get">
+                    <form id="search" action="customer/search" method="get">
                             <div class="row bg-white p-3 rounded-3">
                                 
                                 <div class="col-md-3 mb-3">
@@ -391,7 +395,7 @@
                                     });
                                     
                                     // Thêm xác nhận khi submit form để đảm bảo có ít nhất một trường được nhập
-                                    document.querySelector('form').addEventListener('submit', function(e) {
+                                    document.querySelector('#search').addEventListener('submit', function(e) {
                                         // Kiểm tra xem có ít nhất một trường có giá trị
                                         let hasValue = false;
                                         

@@ -39,20 +39,25 @@ public class RoomController {
     private RoomService roomService;
    @GetMapping
     public String getAllRooms(Model model, HttpSession session) {
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
         // Lấy tất cả các phòng từ repository
         model.addAttribute("rooms", roomRepository.findAll());
-        Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//		Chưa đăng nhập --> cook
-	if (staff == null)
-		return "redirect:/login";
+
         // Kiểm tra xem có dữ liệu tìm kiếm nào từ 'searchResult' không
         List<Room> list = (List<Room>) model.getAttribute("searchResult");
 
         // Nếu không có dữ liệu tìm kiếm thì lấy tất cả các phòng
         if (list == null) list = roomService.getAllRooms();
+        
+        List<Category> categories = categoryRepository.findAll();
 
         // Thêm danh sách phòng vào model
         model.addAttribute("rooms", list);
+		model.addAttribute("staff", staff);
+		model.addAttribute("categories", categories);
+
 
         // Trả về view phòng (room.jsp)
         return "room"; // Trả về file room.jsp
@@ -83,7 +88,11 @@ public class RoomController {
 
     
     @GetMapping(value = "/details")
-    public String getRoomById(@RequestParam("id") String roomId, Model model) {
+    public String getRoomById(HttpSession session, 
+    		@RequestParam("id") String roomId, Model model) {
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
         Room room = roomService.getRoomById(roomId);
         model.addAttribute("room", room);
 

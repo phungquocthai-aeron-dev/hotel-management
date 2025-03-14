@@ -57,14 +57,11 @@ public class RoomRentalController {
 
 	@GetMapping
 	public String getAllRoomRentals(Model model, HttpSession session) {
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
 		// Lấy danh sách thuê phòng từ repository
 		model.addAttribute("roomRentals", roomRentalRepository.findAll());
-		 Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//			Chưa đăng nhập --> cook
-		if (staff == null)
-			return "redirect:/login";
-		
-		
 		List<RoomRental> list = (List<RoomRental>) model.getAttribute("searchResult");
 
 		// Nếu có dữ liệu từ tìm kiếm thì giữ nguyên, nếu không thì lấy toàn bộ danh
@@ -73,6 +70,8 @@ public class RoomRentalController {
 			list = roomRentalService.getAllRoomRentals();
 
 		model.addAttribute("roomRentals", list);
+		model.addAttribute("staff", staff);
+
 		return "roomrental"; // Trả về file roomrental.jsp
 	}
 
@@ -111,7 +110,9 @@ public class RoomRentalController {
 
 
 	@GetMapping(value = "/details")
-	public String getRoomRentalById(@RequestParam("id") String rentId, Model model) {
+	public String getRoomRentalById(HttpSession session, @RequestParam("id") String rentId, Model model) {
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
 		RoomRental roomRental = roomRentalService.getRentalById(rentId);
 		model.addAttribute("roomRental", roomRental);
 		System.out.println("PhanHoangKhang");

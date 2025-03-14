@@ -39,25 +39,28 @@ public class InvoiceController {
 //    
     @GetMapping("/invoice")
     public String listInvoices(Model model, HttpSession session) {
-//        Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//        if (staff == null) return "redirect:/login";
+        Staff staff = (Staff) session.getAttribute("loggedInStaff");
+        if (staff == null) return "redirect:/login";
 
         List<Invoice> invoices = (List<Invoice>) model.getAttribute("searchResult");
         if (invoices == null) invoices = invoiceService.getAllInvoices();
 
         model.addAttribute("invoices", invoices);
-//        model.addAttribute("staff", staff);
+		model.addAttribute("staff", staff);
         return "invoice";
     }
     
     @GetMapping("/invoice/search")
     public String searchInvoices(
+    		HttpSession session,
             RedirectAttributes redirectAttributes,
             @RequestParam(required = false, defaultValue = "") String invoiceId,
             @RequestParam(required = false, defaultValue = "") String staffId,
             @RequestParam(required = false, defaultValue = "") String totalAmountRange,
             @RequestParam(required = false, defaultValue = "") String serviceDate) {
-    	
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
         List<Invoice> invoices = invoiceService.searchInvoices(invoiceId, staffId, totalAmountRange, serviceDate);
         redirectAttributes.addFlashAttribute("searchResult", invoices);
         return "redirect:/invoice";
@@ -65,8 +68,8 @@ public class InvoiceController {
 
     @GetMapping("/invoice/detail")
     public String getInvoiceById(@RequestParam("id") String invoiceId, Model model, HttpSession session) {
-//        Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//        if (staff == null) return "redirect:/login";
+        Staff staff = (Staff) session.getAttribute("loggedInStaff");
+        if (staff == null) return "redirect:/login";
 
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
         model.addAttribute("invoice", invoice);

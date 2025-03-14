@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.quantridulieu.hotelManagement.entities.Promotion;
+import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.services.PromotionService;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,22 +30,30 @@ public class PromotionController {
     private PromotionService promotionService;
 
     @GetMapping("/promotion")
-    public String listPromotions(Model model) {
+    public String listPromotions(Model model, HttpSession session) {
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
         List<Promotion> promotions = (List<Promotion>) model.getAttribute("searchResult");
         if (promotions == null) promotions = promotionService.getAllPromotions();
         
         model.addAttribute("promotions", promotions);
+		model.addAttribute("staff", staff);
+
         return "promotion";
     }
 
     @GetMapping("/promotion/search")
     public String searchPromotions(
+    		HttpSession session,
             RedirectAttributes redirectAttributes,
             @RequestParam(required = false, defaultValue = "") String promotionId,
             @RequestParam(required = false, defaultValue = "") String promotionName,
             @RequestParam(required = false, defaultValue = "") String discountRange,
             @RequestParam(required = false, defaultValue = "") String startDate) {
-
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
         List<Promotion> promotions = promotionService.searchPromotions(promotionId, promotionName, discountRange, startDate);
         redirectAttributes.addFlashAttribute("searchResult", promotions);
         return "redirect:/promotion";
@@ -52,7 +61,11 @@ public class PromotionController {
 
 
     @GetMapping("/promotion/detail")
-    public String getPromotionById(@RequestParam("id") String promotionId, Model model) {
+    public String getPromotionById(HttpSession session,
+    		@RequestParam("id") String promotionId, Model model) {
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+		
         Promotion promotion = promotionService.getPromotionById(promotionId);
         model.addAttribute("promotion", promotion);
         return "promotion_detail";

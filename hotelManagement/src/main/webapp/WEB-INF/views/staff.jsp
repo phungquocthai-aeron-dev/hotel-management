@@ -151,21 +151,21 @@ prefix="c" %>
               class="rounded-circle me-2"
             />
             <div>
-              <h6 class="mb-0">Nguyễn Văn A</h6>
-              <small>Quản lý</small>
+              <h6 class="mb-0">${staff.staffName }</h6>
+                        <small>${staff.role }</small>
             </div>
           </div>
           <div class="mb-4">
-				    <form action="/logout" method="post">
+            <form action="logout" method="post">
 				        <button type="submit" class="btn bg-white text-primary fw-bolder">
 				            Đăng xuất
 				        </button>
 				    </form>
-				</div>
+          </div>
 
            <ul class="nav flex-column">
                    <li class="nav-item">
-                        <a href="home" class="nav-link active" >
+                        <a href="home" class="nav-link" >
                             <i class="bi bi-speedometer2"></i> Tổng quan
                         </a>
                     </li>
@@ -190,7 +190,7 @@ prefix="c" %>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="staff" class="nav-link" >
+                        <a href="staff" class="nav-link active" >
                             <i class="bi bi-person-badge"></i> Nhân viên
                         </a>
                     </li>
@@ -247,7 +247,7 @@ prefix="c" %>
 
             <!-- Bộ lọc tìm kiếm -->
             <div class="row gx-2 align-items-end mb-3">
-              <form action="staff/search" method="get" class="col-md-9">
+              <form id="search" action="staff/search" method="get" class="col-md-9">
                 <div class="row p-3 rounded-3 ">
                   <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="Mã nhân viên..." name="staffId">
