@@ -118,7 +118,7 @@ body {
 <body>
 	<div class="wrapper">
 		<!-- Sidebar -->
-		<nav id="sidebar" class="sidebar" style="max-width: 250px;">
+        <nav id="sidebar" class="sidebar overflow-auto" style="max-width: 250px; height: 100vh;">
 			<div class="p-3">
 				<div class="d-flex align-items-center mb-4 mt-2">
 					<div class="bg-white p-2 rounded me-2">
@@ -154,6 +154,11 @@ body {
 					<li class="nav-item"><a href="roomrental" class="nav-link"> <i
 							class="bi bi-calendar-check"></i> Đặt phòng
 					</a></li>
+					<li class="nav-item">
+                        <a href="us" class="nav-link">
+                            <i class="bi bi-clipboard2-check"></i> Đăng ký dịch vụ
+                        </a>
+                    </li>
 					<li class="nav-item"><a href="customer" class="nav-link">
 							<i class="bi bi-people"></i> Khách hàng
 					</a></li>
@@ -270,9 +275,9 @@ body {
 
 
 				<!-- Bảng dữ liệu -->
-				<div class="table-responsive">
+				<div class="table-responsive" style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd;">
 					<table class="table table-bordered table-hover text-center">
-						<thead>
+						<thead class="text-center" style="position: sticky; top: 0; background: white; z-index: 1; text-align: center;">
 							<tr>
 								<th>STT</th>
 								<th>Mã hóa đơn</th>
@@ -284,17 +289,6 @@ body {
 								<th>Thao tác</th>
 							</tr>
 						</thead>
-						<c:forEach var="customer" items="${customers }" varStatus="status">
-							<p>STT: ${status.count}</p>
-							<p>${customer.customerName}</p>
-							<a href="/customer?id=${customer.customerId}">Xem chi tiết</a>
-
-							<form action="customer/delete" method="post"
-								onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
-								<input type="hidden" name="id" value="${customer.customerId}">
-								<button type="submit" style="color: red">Xóa khách hàng</button>
-							</form>
-						</c:forEach>
 						<tbody id="invoiceTable">
 							<c:forEach var="invoice" items="${invoices }" varStatus="status">
 								<tr>
@@ -308,12 +302,6 @@ body {
 
 
 									<td class="action-btns d-flex justify-content-center">
-										<form action="invoice/add" method="get">
-											<input type="hidden" name="id" value="${invoice.invoiceId}">
-											<button class="btn btn-warning btn-sm">
-												<i class="fas fa-edit"></i> Sửa
-											</button>
-										</form>
 
 										<form action="invoice/delete" method="post"
 											onsubmit="return confirm('Bạn có chắc chắn muốn xóa ${invoice.invoiceId} không?');">
