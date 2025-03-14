@@ -51,8 +51,7 @@ public class MaintenanceController {
 	@GetMapping(value = "/maintenance")
 	public String getPage(Model model, HttpSession session) {
 		Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//		Chưa đăng nhập --> cook
-//      if(staff == null) return "redirect:/login";
+      if(staff == null) return "redirect:/login";
 		
 		List<Maintenance> list = (List<Maintenance>) model.getAttribute("searchResult");
 		
@@ -70,12 +69,9 @@ public class MaintenanceController {
 	
 	@GetMapping(value = "/maintenance/details")
     public String getMaintenanceById(@RequestParam("id") String mtnId, Model model, HttpSession session) {
-        Staff staff = (Staff)session.getAttribute("loggedInStaff");
-        
-//		Chưa đăng nhập --> cook
+        Staff staff = (Staff)session.getAttribute("loggedInStaff");     
         if(staff == null) return "redirect:/login";
-//		Không phải admin --> cook
-		if(!staff.getRole().equals("ADMIN")) return "redirect:/maintenance";
+
         Maintenance maintenance = maintenanceService.getMaintenanceById(mtnId);
 
         
@@ -92,14 +88,14 @@ public class MaintenanceController {
 	
 	@GetMapping("/maintenance/search")
     public String searchMaintenance(
+    		HttpSession session,
     		RedirectAttributes redirectAttributes,
     		@RequestParam(required = false, defaultValue = "") String mtnId,
             @RequestParam(required = false, defaultValue = "") String room,
             @RequestParam(required = false, defaultValue = "") String staff) {
     	
-//		Chưa đăng nhập --> cook
-//		Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//      if(staff == null) return "redirect:/login";
+		Staff staffInfo = (Staff) session.getAttribute("loggedInStaff");
+		if(staffInfo == null) return "redirect:/login";
     	
     	List<Maintenance> maintenances = maintenanceService.searchMaintenances(
     			mtnId,

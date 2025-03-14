@@ -203,12 +203,12 @@ body {
 						src="https://static.vecteezy.com/system/resources/thumbnails/012/210/707/small_2x/worker-employee-businessman-avatar-profile-icon-vector.jpg"
 						alt="User" class="rounded-circle me-2">
 					<div>
-						<h6 class="mb-0">Nguyễn Văn A</h6>
-						<small>Quản lý</small>
+						<h6 class="mb-0">${staff.staffName }</h6>
+                        <small>${staff.role }</small>
 					</div>
 				</div>
 				<div class="mb-4">
-				    <form action="/logout" method="post">
+					<form action="logout" method="post">
 				        <button type="submit" class="btn bg-white text-primary fw-bolder">
 				            Đăng xuất
 				        </button>
@@ -216,11 +216,11 @@ body {
 				</div>
 
 				<ul class="nav flex-column">
-					<li class="nav-item"><a href="home" class="nav-link active"
+					<li class="nav-item"><a href="home" class="nav-link"
 						> <i class="bi bi-speedometer2"></i> Tổng
 							quan
 					</a></li>
-					<li class="nav-item"><a href="room" class="nav-link"
+					<li class="nav-item"><a href="room" class="nav-link active"
 						> <i class="bi bi-house-door"></i> Quản
 							lý phòng
 					</a></li>
@@ -294,36 +294,39 @@ body {
 
 					<!-- Filter and Search Section -->
 					<div class="card mb-4 p-3">
-						<div
-							class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+						<div class="row g-3 align-items-center justify-content-between">
 							<!-- Form tìm kiếm -->
-							<form action="room/search" method="get"
-								class="d-flex flex-wrap align-items-center gap-3">
-								<div class="search-wrapper">
-									<i class="bi bi-search"></i> <input type="text"
-										class="form-control" placeholder="Nhập số phòng..."
-										name="roomNumber">
-								</div>
-								<div class="search-wrapper">
-									<i class="bi bi-filter"></i> <input type="text"
-										class="form-control" placeholder="Nhập loại phòng..."
-										name="categoryName">
-								</div>
-								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
-							</form>
+							<div class="col-auto">
+								<form id="search" action="room/search" method="get"
+									class="d-flex flex-wrap align-items-center">
+									<div class="search-wrapper me-3">
+										<i class="bi bi-search"></i> <input type="text"
+											class="form-control" placeholder="Nhập số phòng..."
+											name="roomNumber">
+									</div>
+									<div class="search-wrapper me-3">
+										<select class="form-control" name="categoryName">
+											<option value="">Chọn loại phòng</option>
+											<c:forEach var="category" items="${categories }" varStatus="status">
+												<option value="${category.categoryId }">${category.categoryName }</option>
+											</c:forEach>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+								</form>
+							</div>
 
-							<!-- Nút Xuất Excel -->
+							<!-- Nút Xuất Excel căn phải -->
 							<c:if test="${not empty rooms}">
-								<form action="room/export" method="post">
-									<c:forEach var="room" items="${rooms}">
+									<form action="room/export" method="post">
+									<c:forEach var="room" items="${rooms }" varStatus="status">
 										<input type="hidden" name="roomIds" value="${room.roomId}" />
 									</c:forEach>
 									<button class="btn btn-success">Xuất Excel</button>
 								</form>
-							</c:if>
 						</div>
+						</c:if>
 					</div>
-
 				</div>
 
 
@@ -438,7 +441,69 @@ body {
 			</div>
 		</div>
 	</div>
-	</div>
-
+<script type="text/javascript">
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Chọn tất cả các phần tử có thể nhập liệu (input, textarea, select)
+                                    const inputElements = document.querySelectorAll('input[type="text"], textarea, select');
+                                    
+                                    // Thêm sự kiện cho mỗi phần tử
+                                    inputElements.forEach(element => {
+                                        // Xác định sự kiện phù hợp cho từng loại phần tử
+                                        let eventType = 'input'; // Mặc định cho input và textarea
+                                        
+                                        if (element.tagName.toLowerCase() === 'select') {
+                                            eventType = 'change'; // Sử dụng sự kiện change cho select
+                                        }
+                                        
+                                        // Thêm người nghe sự kiện
+                                        element.addEventListener(eventType, function() {
+                                            // Kiểm tra xem phần tử này có giá trị hay không
+                                            let hasValue = false;
+                                            
+                                            if (element.tagName.toLowerCase() === 'select') {
+                                                // Với select, kiểm tra xem có option được chọn không phải là option mặc định
+                                                hasValue = element.value !== '' && element.selectedIndex !== 0;
+                                            } else {
+                                                // Với input và textarea, kiểm tra có text không
+                                                hasValue = element.value.trim() !== '';
+                                            }
+                                            
+                                            // Nếu phần tử này có giá trị, xóa giá trị của tất cả phần tử khác
+                                            if (hasValue) {
+                                                inputElements.forEach(otherElement => {
+                                                    if (otherElement !== element) {
+                                                        if (otherElement.tagName.toLowerCase() === 'select') {
+                                                            otherElement.selectedIndex = 0; // Reset select về option đầu tiên
+                                                        } else {
+                                                            otherElement.value = ''; // Xóa giá trị của input và textarea
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+                                    
+                                    // Thêm xác nhận khi submit form để đảm bảo có ít nhất một trường được nhập
+                                    document.querySelector('#search').addEventListener('submit', function(e) {
+                                        // Kiểm tra xem có ít nhất một trường có giá trị
+                                        let hasValue = false;
+                                        
+                                        inputElements.forEach(element => {
+                                            if (
+                                                (element.tagName.toLowerCase() === 'select' && element.value !== '' && element.selectedIndex !== 0) ||
+                                                (element.tagName.toLowerCase() !== 'select' && element.value.trim() !== '')
+                                            ) {
+                                                hasValue = true;
+                                            }
+                                        });
+                                        
+                                        // Nếu không có trường nào có giá trị, ngăn form submit
+                                        if (!hasValue) {
+                                            e.preventDefault();
+                                            alert('Vui lòng nhập ít nhất một giá trị để tìm kiếm');
+                                        }
+                                    });
+                                });
+                                </script>
 </body>
 </html>

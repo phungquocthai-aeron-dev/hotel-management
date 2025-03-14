@@ -169,19 +169,18 @@
                     style="width: 40px; height: 40px; border-radius: 50%;"
                     src="https://static.vecteezy.com/system/resources/thumbnails/012/210/707/small_2x/worker-employee-businessman-avatar-profile-icon-vector.jpg" alt="User" class="rounded-circle me-2">
                     <div>
-                        <h6 class="mb-0">Nguyễn Văn A</h6>
-                        <small>Quản lý</small>
+                        <h6 class="mb-0">${staff.staffName }</h6>
+                        <small>${staff.role }</small>
                     </div>
                 </div>
                 <div class="mb-4">
-				    <form action="/logout" method="post">
+                	<form action="logout" method="post">
 				        <button type="submit" class="btn bg-white text-primary fw-bolder">
 				            Đăng xuất
 				        </button>
 				    </form>
-				</div>
+                </div>
                 
-
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a href="home" class="nav-link active" data-bs-toggle="pill">
@@ -194,7 +193,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="rental" class="nav-link" data-bs-toggle="pill">
+                        <a href="roomrental" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-calendar-check"></i> Đặt phòng
                         </a>
                     </li>

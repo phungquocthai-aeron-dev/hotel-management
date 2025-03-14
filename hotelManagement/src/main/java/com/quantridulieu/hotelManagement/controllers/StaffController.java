@@ -27,8 +27,9 @@ public class StaffController {
 
     @GetMapping("/staff")
     public String showStaff(Model model, HttpSession session) {
-    	Staff staff = (Staff) session.getAttribute("loggedInStaff");
-    
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
+    	
     	List<Staff> staffList = (List<Staff>) model.getAttribute("searchResult");
     	if(staffList == null) staffList = staffService.getAllStaffs();
     	
@@ -37,20 +38,21 @@ public class StaffController {
     	
         Long totalStaff = staffService.getTotalStaff();
         model.addAttribute("totalStaff", totalStaff != null ? totalStaff : 0L);
+		model.addAttribute("staff", staff);
 
-        return "staff"; // Tên file JSP của bạn
+        return "staff";
     }
     
     @GetMapping("/staff/search")
     public String searchStaff(
+    		HttpSession session,
     		RedirectAttributes redirectAttributes,
     		@RequestParam(required = false, defaultValue = "") String staffId,
             @RequestParam(required = false, defaultValue = "") String staffName,
             @RequestParam(required = false, defaultValue = "") String staffPhone) {
     	
-//		Chưa đăng nhập --> cook
-//		Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//      if(staff == null) return "redirect:/login";
+		Staff staff = (Staff) session.getAttribute("loggedInStaff");
+		if(staff == null) return "redirect:/login";
     	
     	List<Staff> staffList = staffService.searchStaffs(
                 staffId,

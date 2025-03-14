@@ -177,17 +177,17 @@ prefix="c" %>
               class="rounded-circle me-2"
             />
             <div>
-              <h6 class="mb-0">Nguyễn Văn A</h6>
-              <small>Quản lý</small>
+              <h6 class="mb-0">${staff.staffName }</h6>
+                        <small>${staff.role }</small>
             </div>
           </div>
           <div class="mb-4">
-				    <form action="/logout" method="post">
+            <form action="logout" method="post">
 				        <button type="submit" class="btn bg-white text-primary fw-bolder">
 				            Đăng xuất
 				        </button>
 				    </form>
-				</div>
+          </div>
 
           <ul class="nav flex-column">
             <li class="nav-item">
@@ -330,7 +330,7 @@ prefix="c" %>
 
             <!-- Bộ lọc tìm kiếm -->
             <div class="row gx-2 align-items-end mb-3">
-              <form action="maintenance/search" method="get" class="col-md-9">
+              <form id="search" action="maintenance/search" method="get" class="col-md-9">
                 <div class="row p-3 rounded-3 ">
                   <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="Mã bảo trì..." name="mtnId">
@@ -423,24 +423,86 @@ prefix="c" %>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Khi modal mở
-        document.getElementById("approveMemberModal").addEventListener("show.bs.modal", function () {
-            fetch("maintenance/generate-id")
-                .then(response => response.text())
-                .then(newId => {
-                    document.getElementById("mtnId").value = newId;
-                })
-                .catch(error => console.error("Lỗi lấy mã bảo trì:", error));
-        });
 
-        // Lấy ngày hôm nay
-        let today = new Date().toISOString().split("T")[0];
+    <script type="text/javascript">
+                                document.addEventListener('DOMContentLoaded', function() {
+                                	
+                                	document.getElementById("approveMemberModal").addEventListener("show.bs.modal", function () {
+                                        fetch("maintenance/generate-id")
+                                            .then(response => response.text())
+                                            .then(newId => {
+                                                document.getElementById("mtnId").value = newId;
+                                            })
+                                            .catch(error => console.error("Lỗi lấy mã bảo trì:", error));
+                                    });
 
-        // Đặt giá trị mặc định cho input date
-        document.getElementById("mtnDate").value = today;
-    });
-</script>
+                                    // Lấy ngày hôm nay
+                                    let today = new Date().toISOString().split("T")[0];
+
+                                    // Đặt giá trị mặc định cho input date
+                                    document.getElementById("mtnDate").value = today;
+                                    
+                                    // Chọn tất cả các phần tử có thể nhập liệu (input, textarea, select)
+                                    const inputElements = document.querySelectorAll('input[type="text"], textarea, select');
+                                    
+                                    // Thêm sự kiện cho mỗi phần tử
+                                    inputElements.forEach(element => {
+                                        // Xác định sự kiện phù hợp cho từng loại phần tử
+                                        let eventType = 'input'; // Mặc định cho input và textarea
+                                        
+                                        if (element.tagName.toLowerCase() === 'select') {
+                                            eventType = 'change'; // Sử dụng sự kiện change cho select
+                                        }
+                                        
+                                        // Thêm người nghe sự kiện
+                                        element.addEventListener(eventType, function() {
+                                            // Kiểm tra xem phần tử này có giá trị hay không
+                                            let hasValue = false;
+                                            
+                                            if (element.tagName.toLowerCase() === 'select') {
+                                                // Với select, kiểm tra xem có option được chọn không phải là option mặc định
+                                                hasValue = element.value !== '' && element.selectedIndex !== 0;
+                                            } else {
+                                                // Với input và textarea, kiểm tra có text không
+                                                hasValue = element.value.trim() !== '';
+                                            }
+                                            
+                                            // Nếu phần tử này có giá trị, xóa giá trị của tất cả phần tử khác
+                                            if (hasValue) {
+                                                inputElements.forEach(otherElement => {
+                                                    if (otherElement !== element) {
+                                                        if (otherElement.tagName.toLowerCase() === 'select') {
+                                                            otherElement.selectedIndex = 0; // Reset select về option đầu tiên
+                                                        } else {
+                                                            otherElement.value = ''; // Xóa giá trị của input và textarea
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+                                    
+                                    // Thêm xác nhận khi submit form để đảm bảo có ít nhất một trường được nhập
+                                    document.querySelector('#search').addEventListener('submit', function(e) {
+                                        // Kiểm tra xem có ít nhất một trường có giá trị
+                                        let hasValue = false;
+                                        
+                                        inputElements.forEach(element => {
+                                            if (
+                                                (element.tagName.toLowerCase() === 'select' && element.value !== '' && element.selectedIndex !== 0) ||
+                                                (element.tagName.toLowerCase() !== 'select' && element.value.trim() !== '')
+                                            ) {
+                                                hasValue = true;
+                                            }
+                                        });
+                                        
+                                        // Nếu không có trường nào có giá trị, ngăn form submit
+                                        if (!hasValue) {
+                                            e.preventDefault();
+                                            alert('Vui lòng nhập ít nhất một giá trị để tìm kiếm');
+                                        }
+                                    });
+                                });
+                                </script>
   </body>
 </html>
