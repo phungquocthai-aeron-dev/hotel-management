@@ -291,36 +291,36 @@ body {
 
 					<!-- Filter and Search Section -->
 					<div class="card mb-4 p-3">
-						<div class="row g-3 align-items-center justify-content-between">
+						<div
+							class="d-flex align-items-center justify-content-between flex-wrap gap-3">
 							<!-- Form tìm kiếm -->
-							<div class="col-auto">
-								<form action="room/search" method="get"
-									class="d-flex flex-wrap align-items-center">
-									<div class="search-wrapper me-3">
-										<i class="bi bi-search"></i> <input type="text"
-											class="form-control" placeholder="Nhập số phòng..."
-											name="roomNumber">
-									</div>
-									<div class="search-wrapper me-3">
-										<i class="bi bi-filter"></i> <input type="text"
-											class="form-control" placeholder="Nhập loại phòng..."
-											name="categoryName">
-									</div>
-									<button type="submit" class="btn btn-primary">Tìm kiếm</button>
-								</form>
-							</div>
+							<form action="room/search" method="get"
+								class="d-flex flex-wrap align-items-center gap-3">
+								<div class="search-wrapper">
+									<i class="bi bi-search"></i> <input type="text"
+										class="form-control" placeholder="Nhập số phòng..."
+										name="roomNumber">
+								</div>
+								<div class="search-wrapper">
+									<i class="bi bi-filter"></i> <input type="text"
+										class="form-control" placeholder="Nhập loại phòng..."
+										name="categoryName">
+								</div>
+								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+							</form>
 
-							<!-- Nút Xuất Excel căn phải -->
-							<c:if test="${not empty rooms}">`
-									<form action="room/export" method="post">
-									<c:forEach var="room" items="${rooms }" varStatus="status">
+							<!-- Nút Xuất Excel -->
+							<c:if test="${not empty rooms}">
+								<form action="room/export" method="post">
+									<c:forEach var="room" items="${rooms}">
 										<input type="hidden" name="roomIds" value="${room.roomId}" />
 									</c:forEach>
 									<button class="btn btn-success">Xuất Excel</button>
 								</form>
+							</c:if>
 						</div>
-						</c:if>
 					</div>
+
 				</div>
 
 

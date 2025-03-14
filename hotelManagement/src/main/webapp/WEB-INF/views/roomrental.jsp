@@ -296,32 +296,35 @@ body {
 					<!-- Filter and Search Section -->
 					<div class="card mb-4 p-3">
 						<div class="row g-3">
+							<div class="d-flex align-items-center gap-3 flex-wrap">
+								<!-- Form tìm kiếm -->
+								<form action="roomrental/search" method="get"
+									class="d-flex flex-wrap align-items-center gap-3">
+									<div class="search-wrapper">
+										<i class="bi bi-file-earmark-text"></i> <input type="text"
+											class="form-control" placeholder="Nhập mã đặt phòng..."
+											name="rentId">
+									</div>
+									<div class="search-wrapper">
+										<i class="bi bi-person"></i> <input type="text"
+											class="form-control" placeholder="Nhập tên khách hàng..."
+											name="customerName">
+									</div>
+									<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+								</form>
 
-							<form action="roomrental/search" method="get"
-								class="d-flex flex-wrap align-items-center">
-								<div class="search-wrapper me-3">
-									<i class="bi bi-file-earmark-text"></i> <input type="text"
-										class="form-control" placeholder="Nhập mã đặt phòng..."
-										name="rentId">
-								</div>
-								<div class="search-wrapper me-3">
-									<i class="bi bi-person"></i> <input type="text"
-										class="form-control" placeholder="Nhập tên khách hàng..."
-										name="customerName">
-								</div>
-								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
-							</form>
-							<form action="roomrental/export" method="post">
-								<c:forEach var="roomRental" items="${roomRentals}"
-									varStatus="status">
-									<input type="hidden" name="roomRentalIds"
-										value="${roomRental.rentId}" />
-								</c:forEach>
-								<button class="btn btn-success">Xuất Excel</button>
-							</form>
-
+								<!-- Form xuất Excel -->
+								<form action="roomrental/export" method="post">
+									<c:forEach var="roomRental" items="${roomRentals}">
+										<input type="hidden" name="roomRentalIds"
+											value="${roomRental.rentId}" />
+									</c:forEach>
+									<button class="btn btn-success">Xuất Excel</button>
+								</form>
+							</div>
 						</div>
 					</div>
+
 
 					<!-- Add New Rental Button -->
 					<div class="mb-4">

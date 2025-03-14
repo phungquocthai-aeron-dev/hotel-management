@@ -329,9 +329,7 @@ body {
 											<input type="text" class="form-control me-2"
 												placeholder="Mã dịch vụ..." name="serviceId"> <input
 												type="text" class="form-control me-2"
-												placeholder="Tên dịch vụ..." name="serviceName"> <input
-												type="number" step="0.01" class="form-control me-2"
-												placeholder="Giá dịch vụ..." name="servicePrice">
+												placeholder="Tên dịch vụ..." name="serviceName"> 
 											<button type="submit" class="btn btn-primary">Tìm
 												kiếm</button>
 										</form>
