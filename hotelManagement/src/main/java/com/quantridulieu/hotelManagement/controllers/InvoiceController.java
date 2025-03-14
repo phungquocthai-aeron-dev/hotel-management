@@ -78,8 +78,10 @@ public class InvoiceController {
     }
 
     @PostMapping("/invoice/save")
-    public String saveInvoice(@ModelAttribute Invoice invoice) {
-        invoiceService.save(invoice);
+    public String saveInvoice(@ModelAttribute Invoice invoice, @RequestParam("staffId") String staffId) {
+        Staff staffData = staffService.getStaffById(staffId);
+        invoice.setStaff(staffData);
+    	invoiceService.save(invoice);
         return "redirect:/invoice";
     }
 
@@ -136,8 +138,12 @@ public class InvoiceController {
         //lấy các dịch vụ chưa có trong invoice
         List<UseService> useServiceList = useServiceService.getAllUseServiceNotInInvoice();
         //model.addAttribute("staff", staff);
+        
+        List<Staff> staffs = staffService.getAllStaff();
+        
         model.addAttribute("useServiceList", useServiceList);
-
+        model.addAttribute("staffs", staffs);
+        
         return "invoice_add"; // Hiển thị form thêm/sửa hóa đơn
     }
 

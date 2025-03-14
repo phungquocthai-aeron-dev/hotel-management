@@ -56,12 +56,12 @@ body {
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Mã nhân viên</label>
-							<form:select path="staff.staffId" class="form-control"
+							<select name="staffId" class="form-control"
 								required="true">
-								<c:forEach var="staff" items="${staffList}">
+								<c:forEach var="staff" items="${staffs}">
 									<form:option value="${staff.staffId}" label="${staff.staffName}" />
 								</c:forEach>
-							</form:select>
+							</select>
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Mã dịch vụ</label>

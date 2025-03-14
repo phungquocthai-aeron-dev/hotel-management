@@ -118,7 +118,6 @@ public class HomeController {
 			@RequestParam(name = "year", defaultValue = "0") int year) {
         Staff staff = (Staff)session.getAttribute("loggedInStaff");
         
-//		Chưa đăng nhập --> cook
         if(staff == null) return "redirect:/login";
         
 		if(year == 0) {
@@ -147,6 +146,8 @@ public class HomeController {
 		model.addAttribute("dataExpenses", dataExpenses);
 		model.addAttribute("dataProfits", dataProfits);
 		model.addAttribute("year", year);
+		model.addAttribute("staff", staff);
+
 		
 		return "statistics";
 	}

@@ -45,7 +45,6 @@ public class HotelServiceController {
 //		Chưa đăng nhập --> cook
         if(staff == null) return "redirect:/login";
         
-            model.addAttribute("services", hotelServiceRepository.findAll());
             List<HotelService> list = (List<HotelService>) model.getAttribute("searchResult");
     		
     		// Nếu có dữ liệu đỗ về từ search thì bỏ qua
@@ -110,7 +109,7 @@ public class HotelServiceController {
     public String searchService(
     		HttpSession session,
             RedirectAttributes redirectAttributes,
-            @RequestParam(required = false, defaultValue = "") String serviceId,
+            @RequestParam(required = false,  defaultValue = "") String serviceId,
             @RequestParam(required = false, defaultValue = "") String serviceName,
             @RequestParam(required = false, defaultValue = "") String servicePrice) {
         Staff staff = (Staff)session.getAttribute("loggedInStaff");

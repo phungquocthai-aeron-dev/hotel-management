@@ -1,16 +1,20 @@
 package com.quantridulieu.hotelManagement.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.stream.Collectors;
 import java.io.IOException;
+
 import java.util.Date;
 
 import com.quantridulieu.hotelManagement.repositories.UseServiceRepository;
+import com.quantridulieu.hotelManagement.entities.USExport;
 import com.quantridulieu.hotelManagement.entities.UseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.stereotype.Service;
 
 
 @Service
@@ -22,8 +26,14 @@ public class UseServiceService {
 	ExcelExportUtil excelExportUtil;
 	
 	// Xuất file excel
-	public byte[] exportCustomerToExcel() throws IOException {
-        return excelExportUtil.exportToExcel(useServiceRepository.findAll(), null, "Danh sách sử dụng dịch vụ");
+	public byte[] exportUSToExcel() throws IOException {
+        return excelExportUtil.exportToExcel(useServiceRepository.findAll(), null, "Danh sách đăng ký dịch vụ");
+    }
+	
+	public byte[] exportUSToExcelByIds(List<String> ids) throws IOException {
+		List<UseService> usList = useServiceRepository.findAllById(ids);
+		List<USExport> list = usList.stream().map(USExport::new).collect(Collectors.toList());
+	    return excelExportUtil.exportToExcel(list, null, "Danh sách đăng ký dịch vụ");
     }
 
     public void save(UseService useService) {
@@ -66,6 +76,19 @@ public class UseServiceService {
     public List<UseService> getAllUseServiceNotInInvoice() {
         return useServiceRepository.getAllUseServiceNotInInvoice();
     }
+    
+    @Transactional
+    public List<UseService> searchUseService(String usId, Integer quantity, Date usDate, String serviceId, String rentId, String promotionId) {
+        return useServiceRepository.searchUseService(
+            (usId == null || usId.isEmpty()) ? null : usId,
+            quantity == null ? null : quantity,
+            usDate == null ? null : usDate,
+            (serviceId == null || serviceId.isEmpty()) ? null : serviceId,
+            (rentId == null || rentId.isEmpty()) ? null : rentId,
+            (promotionId == null || promotionId.isEmpty()) ? null : promotionId
+        );
+    }
+
 
     private String generateId() {
         Long count = useServiceRepository.count();

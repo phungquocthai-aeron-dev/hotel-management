@@ -55,6 +55,7 @@ public class RoomRentalController {
     @Autowired
     private CustomerService customerService;
 
+
 	@GetMapping
 	public String getAllRoomRentals(Model model, HttpSession session) {
 		Staff staff = (Staff) session.getAttribute("loggedInStaff");
@@ -81,8 +82,7 @@ public class RoomRentalController {
 	        @RequestParam("roomId") String roomId,  // Lấy roomId từ form
 	        @RequestParam("customerId") String customerId, // Lấy customerId từ form
 	        RedirectAttributes redirectAttributes) {
-		System.out.println("roomId: " + roomId);
-	    System.out.println("customerId: " + customerId);
+
 	    // Lấy Room theo ID
 	    Room room = roomService.getRoomById(roomId);
 	    if (room == null) {
@@ -103,6 +103,8 @@ public class RoomRentalController {
 
 	    // Lưu vào database
 	    roomRentalService.save(roomRental);
+	    roomService.updateStatus(roomId, "Occupied");
+	    
 
 	    redirectAttributes.addFlashAttribute("success", "Thêm phòng thuê thành công!");
 	    return "redirect:/roomrental";
