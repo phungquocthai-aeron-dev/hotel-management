@@ -46,6 +46,8 @@ public class MaintenanceController {
     private RoomRepository roomRepository;
 	@Autowired
     private StaffRepository staffRepository;
+	@Autowired
+	private RoomService roomService;
 	
 	
 	@GetMapping(value = "/maintenance")
@@ -166,6 +168,7 @@ public class MaintenanceController {
 		    
 		    // Lưu vào database
 		    maintenanceService.save(maintenance);
+		    roomService.updateStatus(roomId, "Maintenance");
 		} catch(Exception e) {
 			e.printStackTrace();
 		    return "redirect:/maintenance";

@@ -160,93 +160,71 @@ prefix="c" %>
   <body>
     <div class="wrapper">
       <!-- Sidebar -->
-      <nav id="sidebar" class="sidebar" style="max-width: 250px">
-        <div class="p-3">
-          <div class="d-flex align-items-center mb-4 mt-2">
-            <div class="bg-white p-2 rounded me-2">
-              <img src="logo.png" alt="Blue Heaven Logo" class="hotel-logo" />
-            </div>
-            <h4 class="mb-0">Blue Heaven</h4>
-          </div>
+      <nav id="sidebar" class="sidebar overflow-auto" style="max-width: 250px; height: 100vh;">
+			<div class="p-3">
+				<div class="d-flex align-items-center mb-4 mt-2">
+					<div class="bg-white p-2 rounded me-2">
+						<img src="logo.png" alt="Blue Heaven Logo" class="hotel-logo">
+					</div>
+					<h4 class="mb-0">Blue Heaven</h4>
+				</div>
 
-          <div class="user-info d-flex align-items-center mb-2">
-            <img
-              style="width: 40px; height: 40px; border-radius: 50%"
-              src="https://static.vecteezy.com/system/resources/thumbnails/012/210/707/small_2x/worker-employee-businessman-avatar-profile-icon-vector.jpg"
-              alt="User"
-              class="rounded-circle me-2"
-            />
-            <div>
-              <h6 class="mb-0">${staff.staffName }</h6>
+				<div class="user-info d-flex align-items-center mb-2">
+					<img style="width: 40px; height: 40px; border-radius: 50%;"
+						src="https://static.vecteezy.com/system/resources/thumbnails/012/210/707/small_2x/worker-employee-businessman-avatar-profile-icon-vector.jpg"
+						alt="User" class="rounded-circle me-2">
+					<div>
+						<h6 class="mb-0">${staff.staffName }</h6>
                         <small>${staff.role }</small>
-            </div>
-          </div>
-          <div class="mb-4">
-            <form action="logout" method="post">
+					</div>
+				</div>
+				<div class="mb-4">
+					<form action="logout" method="post">
 				        <button type="submit" class="btn bg-white text-primary fw-bolder">
 				            Đăng xuất
 				        </button>
 				    </form>
-          </div>
+				</div>
 
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a href="home" class="nav-link">
-                <i class="bi bi-speedometer2"></i> Tổng quan
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="room" class="nav-link">
-                <i class="bi bi-house-door"></i> Quản lý phòng
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="roomrental" class="nav-link">
-                <i class="bi bi-calendar-check"></i> Đặt phòng
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="customer" class="nav-link">
-                <i class="bi bi-people"></i> Khách hàng
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="service" class="nav-link">
-                <i class="bi bi-basket"></i> Dịch vụ
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="staff" class="nav-link">
-                <i class="bi bi-person-badge"></i> Nhân viên
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="invoice" class="nav-link">
-                <i class="bi bi-receipt"></i> Hóa đơn
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                href="maintenance"
-                class="nav-link active"
-                data-bs-toggle="pill"
-              >
-                <i class="bi bi-tools"></i> Bảo trì
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="promotion" class="nav-link">
-                <i class="bi bi-tag"></i> Khuyến mãi
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="statistics" class="nav-link" data-bs-toggle="pill">
-                <i class="bi bi-bar-chart"></i> Báo cáo
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+				<ul class="nav flex-column">
+					<li class="nav-item"><a href="home" class="nav-link">
+							<i class="bi bi-speedometer2"></i> Tổng quan
+					</a></li>
+					<li class="nav-item"><a href="room" class="nav-link"> <i
+							class="bi bi-house-door"></i> Quản lý phòng
+					</a></li>
+					<li class="nav-item"><a href="roomrental" class="nav-link"> <i
+							class="bi bi-calendar-check"></i> Đặt phòng
+					</a></li>
+					<li class="nav-item">
+                        <a href="us" class="nav-link">
+                            <i class="bi bi-clipboard2-check"></i> Đăng ký dịch vụ
+                        </a>
+                    </li>
+					<li class="nav-item"><a href="customer" class="nav-link">
+							<i class="bi bi-people"></i> Khách hàng
+					</a></li>
+					<li class="nav-item"><a href="service" class="nav-link"> <i
+							class="bi bi-basket"></i> Dịch vụ
+					</a></li>
+					<li class="nav-item"><a href="staff" class="nav-link"> <i
+							class="bi bi-person-badge"></i> Nhân viên
+					</a></li>
+					<li class="nav-item"><a href="invoice" class="nav-link"> <i
+							class="bi bi-receipt"></i> Hóa đơn
+					</a></li>
+					<li class="nav-item"><a href="maintenance" class="nav-link active">
+							<i class="bi bi-tools"></i> Bảo trì
+					</a></li>
+					<li class="nav-item"><a href="promotion" class="nav-link">
+							<i class="bi bi-tag"></i> Khuyến mãi
+					</a></li>
+					<li class="nav-item"><a href="statistics" class="nav-link">
+							<i class="bi bi-bar-chart"></i> Báo cáo
+					</a></li>
+				</ul>
+			</div>
+		</nav>
 
       <!-- Content -->
       <div class="content p-4">
@@ -443,7 +421,7 @@ prefix="c" %>
                                     document.getElementById("mtnDate").value = today;
                                     
                                     // Chọn tất cả các phần tử có thể nhập liệu (input, textarea, select)
-                                    const inputElements = document.querySelectorAll('input[type="text"], textarea, select');
+const inputElements = document.querySelectorAll('#search input[type="text"], #search textarea, #search select');
                                     
                                     // Thêm sự kiện cho mỗi phần tử
                                     inputElements.forEach(element => {
