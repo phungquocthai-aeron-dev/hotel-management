@@ -28,6 +28,7 @@ public class LoginController {
         if (staff != null && password.equals(staff.getPassword())) { 
         	 // Lưu thông tin vào session
             session.setAttribute("loggedInStaff", staff);
+            session.setMaxInactiveInterval(5*60*60);
             return "redirect:/home";
         } else {
             // Đăng nhập thất bại, trả về trang login với thông báo lỗi
@@ -38,6 +39,12 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginPage() {
         return "login"; // Chỉ ra tên của JSP hoặc view bạn muốn trả về
+    }
+    
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Hủy session
+        return "redirect:/login"; // Chuyển hướng về trang đăng nhập
     }
 
 }
