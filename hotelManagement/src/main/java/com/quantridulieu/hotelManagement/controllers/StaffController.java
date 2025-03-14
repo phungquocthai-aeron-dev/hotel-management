@@ -28,7 +28,7 @@ public class StaffController {
     @GetMapping("/staff")
     public String showStaff(Model model, HttpSession session) {
     	Staff staff = (Staff) session.getAttribute("loggedInStaff");
-    	
+    
     	List<Staff> staffList = (List<Staff>) model.getAttribute("searchResult");
     	if(staffList == null) staffList = staffService.getAllStaffs();
     	
