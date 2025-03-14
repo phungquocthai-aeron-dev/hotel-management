@@ -155,7 +155,8 @@
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        <nav id="sidebar" class="sidebar" style="max-width: 250px;">
+        <nav id="sidebar" class="sidebar overflow-auto" style="max-width: 250px; height: 100vh;">
+
             <div class="p-3">
                 <div class="d-flex align-items-center mb-4 mt-2">
                     <div class="bg-white p-2 rounded me-2">
@@ -195,6 +196,11 @@
                     <li class="nav-item">
                         <a href="roomrental" class="nav-link" data-bs-toggle="pill">
                             <i class="bi bi-calendar-check"></i> Đặt phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="us" class="nav-link" data-bs-toggle="pill">
+                            <i class="bi bi-clipboard2-check"></i> Đăng ký dịch vụ
                         </a>
                     </li>
                     <li class="nav-item">

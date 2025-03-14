@@ -192,7 +192,7 @@ body {
 <body>
 	<div class="wrapper">
 		<!-- Sidebar -->
-		<nav id="sidebar" class="sidebar" style="max-width: 250px;">
+		 <nav id="sidebar" class="sidebar overflow-auto" style="max-width: 250px; height: 100vh;">
 			<div class="p-3">
 				<div class="d-flex align-items-center mb-4 mt-2">
 					<div class="bg-white p-2 rounded me-2">
@@ -219,39 +219,40 @@ body {
 				</div>
 
 				<ul class="nav flex-column">
-					<li class="nav-item"><a href="home" class="nav-link"
-						> <i class="bi bi-speedometer2"></i> Tổng
-							quan
+					<li class="nav-item"><a href="home" class="nav-link">
+							<i class="bi bi-speedometer2"></i> Tổng quan
 					</a></li>
-					<li class="nav-item"><a href="room" class="nav-link"
-						> <i class="bi bi-house-door"></i> Quản
-							lý phòng
+					<li class="nav-item"><a href="room" class="nav-link"> <i
+							class="bi bi-house-door"></i> Quản lý phòng
 					</a></li>
-					<li class="nav-item"><a href="roomrental" class="nav-link active"
-						> <i class="bi bi-calendar-check"></i>
-							Đặt phòng
+					<li class="nav-item"><a href="roomrental" class="nav-link active"> <i
+							class="bi bi-calendar-check"></i> Đặt phòng
 					</a></li>
-					<li class="nav-item"><a href="customer" class="nav-link"
-						> <i class="bi bi-people"></i> Khách hàng
+					<li class="nav-item">
+                        <a href="us" class="nav-link">
+                            <i class="bi bi-clipboard2-check"></i> Đăng ký dịch vụ
+                        </a>
+                    </li>
+					<li class="nav-item"><a href="customer" class="nav-link">
+							<i class="bi bi-people"></i> Khách hàng
 					</a></li>
-					<li class="nav-item"><a href="service" class="nav-link"
-						> <i class="bi bi-basket"></i> Dịch vụ
+					<li class="nav-item"><a href="service" class="nav-link"> <i
+							class="bi bi-basket"></i> Dịch vụ
 					</a></li>
-					<li class="nav-item"><a href="staff" class="nav-link"
-						> <i class="bi bi-person-badge"></i> Nhân
-							viên
+					<li class="nav-item"><a href="staff" class="nav-link"> <i
+							class="bi bi-person-badge"></i> Nhân viên
 					</a></li>
-					<li class="nav-item"><a href="invoice" class="nav-link"
-						> <i class="bi bi-receipt"></i> Hóa đơn
+					<li class="nav-item"><a href="invoice" class="nav-link"> <i
+							class="bi bi-receipt"></i> Hóa đơn
 					</a></li>
-					<li class="nav-item"><a href="maintenance" class="nav-link"
-						> <i class="bi bi-tools"></i> Bảo trì
+					<li class="nav-item"><a href="maintenance" class="nav-link">
+							<i class="bi bi-tools"></i> Bảo trì
 					</a></li>
-					<li class="nav-item"><a href="promotion" class="nav-link"
-						> <i class="bi bi-tag"></i> Khuyến mãi
+					<li class="nav-item"><a href="promotion" class="nav-link">
+							<i class="bi bi-tag"></i> Khuyến mãi
 					</a></li>
-					<li class="nav-item"><a href="statistics" class="nav-link"
-						> <i class="bi bi-bar-chart"></i> Báo cáo
+					<li class="nav-item"><a href="statistics" class="nav-link">
+							<i class="bi bi-bar-chart"></i> Báo cáo
 					</a></li>
 				</ul>
 			</div>
@@ -259,36 +260,7 @@ body {
 
 		<!-- Content -->
 		<div class="content p-4">
-			<header class="mb-4">
-				<div class="d-flex justify-content-between align-items-center">
-					<button id="sidebarToggle" class="btn btn-sm btn-outline-secondary">
-						<i class="bi bi-list"></i>
-					</button>
-					<div class="d-flex align-items-center">
-						<div class="search-wrapper me-3">
-							<i class="bi bi-search"></i> <input type="text"
-								class="form-control" placeholder="Tìm kiếm...">
-						</div>
-						<div class="dropdown">
-							<div class="profile-menu" data-bs-toggle="dropdown">
-								<i class="bi bi-bell position-relative"> <span
-									class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-										3 </span>
-								</i>
-							</div>
-							<ul class="dropdown-menu dropdown-menu-end alert-section">
-								<li><h6 class="dropdown-header">Thông báo</h6></li>
-								<li><a class="dropdown-item" href="#">Khách mới đặt
-										phòng 101</a></li>
-								<li><a class="dropdown-item" href="#">Bảo trì phòng 205
-										hoàn tất</a></li>
-								<li><a class="dropdown-item" href="#">Nhắc nhở:
-										check-out phòng 304</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</header>
+			
 
 			<!-- Content -->
 			<div class="tab-content">
@@ -313,7 +285,11 @@ body {
 										name="customerName">
 								</div>
 								<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+									<a class="btn btn-primary ms-2" href=""> <i
+								class="fas fa-list"></i> Xem tất cả
+							</a>
 							</form>
+
 							<form action="roomrental/export" method="post">
 								<c:forEach var="roomRental" items="${roomRentals}"
 									varStatus="status">
@@ -473,7 +449,7 @@ body {
 	<script type="text/javascript">
                                 document.addEventListener('DOMContentLoaded', function() {
                                     // Chọn tất cả các phần tử có thể nhập liệu (input, textarea, select)
-                                    const inputElements = document.querySelectorAll('input[type="text"], textarea, select');
+const inputElements = document.querySelectorAll('#search input[type="text"], #search textarea, #search select');
                                     
                                     // Thêm sự kiện cho mỗi phần tử
                                     inputElements.forEach(element => {
