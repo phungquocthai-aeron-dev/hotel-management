@@ -4,42 +4,46 @@ import java.util.Date;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Maintenance")
 public class Maintenance {
-    @Id
-    @Column(name = "mtn_id")
-    private String mtnId;
-    
-    @Column(name = "mtn_date")
-    private Date mtnDate;
-    
-    @Column(name = "mtn_description")
-    private String mtnDescription;
-    
-    @Column(name = "mtn_fee")
-    private Float mtnFee;
-    
-    @Column(name = "mtn_end")
-    private Date mtnEnd;
-    
-    @Column(name = "mtn_status")
-    private String mtnStatus;
-    
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "room_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Room room;
-    
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "staff_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Staff staff;
-    
-    public Maintenance() {}
+	@Id
+	@Column(name = "mtn_id")
+	private String mtnId;
+
+	@Column(name = "mtn_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date mtnDate;
+
+	@Column(name = "mtn_description")
+	private String mtnDescription;
+
+	@Column(name = "mtn_fee")
+	private Float mtnFee;
+
+	@Column(name = "mtn_end")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date mtnEnd;
+
+	@Column(name = "mtn_status")
+	private String mtnStatus;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "room_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Room room;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "staff_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Staff staff;
+
+	public Maintenance() {
+	}
 
 	public Maintenance(String mtnId, Date mtnDate, String mtnDescription, Float mtnFee, Date mtnEnd, String mtnStatus,
 			Room room, Staff staff) {
@@ -117,5 +121,5 @@ public class Maintenance {
 	public void setStaff(Staff staff) {
 		this.staff = staff;
 	}
-    
+
 }

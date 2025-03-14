@@ -33,7 +33,7 @@ public class CustomerController {
 	public String getPage(Model model, HttpSession session) {
 		Staff staff = (Staff) session.getAttribute("loggedInStaff");
 //		Chưa đăng nhập --> cook
-//      if(staff == null) return "redirect:/login";
+      if(staff == null) return "redirect:/login";
 		
 		List<Customer> list = (List<Customer>) model.getAttribute("searchResult");
 		
@@ -49,6 +49,7 @@ public class CustomerController {
 	
 	 @GetMapping("/customer/search")
 	    public String searchCustomer(
+	    		HttpSession session,
 	    		RedirectAttributes redirectAttributes,
 	    		@RequestParam(required = false, defaultValue = "") String customerId,
 	            @RequestParam(required = false, defaultValue = "") String customerName,
@@ -56,8 +57,8 @@ public class CustomerController {
 	            @RequestParam(required = false, defaultValue = "") String address) {
 	    	
 //			Chưa đăng nhập --> cook
-//			Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//	      if(staff == null) return "redirect:/login";
+			Staff staff = (Staff) session.getAttribute("loggedInStaff");
+	      if(staff == null) return "redirect:/login";
 	    	
 	    	List<Customer> customers = customerService.searchCustomers(
 	                customerId,
@@ -75,9 +76,9 @@ public class CustomerController {
         Staff staff = (Staff)session.getAttribute("loggedInStaff");
         
 //		Chưa đăng nhập --> cook
-//        if(staff == null) return "redirect:/login";
+        if(staff == null) return "redirect:/login";
 //		Không phải admin --> cook
-//		if(!staff.getRole().equals("ADMIN") return "redirect:/home";
+		if(!staff.getRole().equals("ADMIN")) return "redirect:/home";
         Customer customer = customerService.getCustomerById(customerId);
         model.addAttribute("customer", customer);
         model.addAttribute("staff", staff);
@@ -119,9 +120,6 @@ public class CustomerController {
     public ResponseEntity<byte[]> exportCustomerToExcel(
     		HttpSession session,
     		@RequestParam("customersExport") List<String> customerIds) {
-//		Chưa đăng nhập --> cook
-//		Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//      if(staff == null) return "redirect:/login";
     	
     	byte[] excelData = new byte[0];;
     	

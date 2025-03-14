@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.quantridulieu.hotelManagement.entities.Feedback;
 import com.quantridulieu.hotelManagement.entities.Room;
 import com.quantridulieu.hotelManagement.entities.RoomRental;
+import com.quantridulieu.hotelManagement.entities.Staff;
 import com.quantridulieu.hotelManagement.entities.StatisticsExport;
 import com.quantridulieu.hotelManagement.services.ExcelExportUtil;
 import com.quantridulieu.hotelManagement.services.FeedbackService;
@@ -53,7 +54,10 @@ public class HomeController {
 	
 	@GetMapping(value = {"/", "/home"})
 	public String home(Model model, HttpSession session) throws ParseException {
-
+        Staff staff = (Staff)session.getAttribute("loggedInStaff");
+        
+//		Chưa đăng nhập --> cook
+        if(staff == null) return "redirect:/login";
         
 		double revenueData = invoiceService.getDailyRevenue(new Date()) / 1000000;
 		double revenue = Math.round(revenueData * 100.0) / 100.0;
@@ -85,7 +89,8 @@ public class HomeController {
 		model.addAttribute("totalMaintenance", totalMaintenance);
 		model.addAttribute("totalRooms", listRoomSize);
 		model.addAttribute("feedbacks", feedbacks);
-		
+		model.addAttribute("staff", staff);
+
 		return "home";
 	}
 	
@@ -109,8 +114,13 @@ public class HomeController {
 	
 	@GetMapping(value = "/statistics")
 	public String getStatisticPage(
-			Model model,
+			Model model, HttpSession session,
 			@RequestParam(name = "year", defaultValue = "0") int year) {
+        Staff staff = (Staff)session.getAttribute("loggedInStaff");
+        
+//		Chưa đăng nhập --> cook
+        if(staff == null) return "redirect:/login";
+        
 		if(year == 0) {
 			year = LocalDate.now().getYear();
 		}

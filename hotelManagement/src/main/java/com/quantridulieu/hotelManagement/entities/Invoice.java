@@ -2,8 +2,7 @@ package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 
@@ -15,6 +14,7 @@ public class Invoice {
     private String invoiceId;
     
     @Column(name = "invoice_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date invoiceDate;
     
     @Column(name = "total_amount")
@@ -22,12 +22,10 @@ public class Invoice {
     
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "us_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private UseService useService;
     
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "staff_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Staff staff;
     
     public Invoice() {}

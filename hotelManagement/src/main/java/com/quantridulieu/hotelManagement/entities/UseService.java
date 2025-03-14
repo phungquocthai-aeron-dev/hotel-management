@@ -4,38 +4,41 @@ import java.util.Date;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Use_Service")
 public class UseService {
-    @Id
-    @Column(name = "us_id")
-    private String usId;
-    
-    @Column(name = "quantity")
-    private Integer quantity;
-    
-    @Column(name = "us_date")
-    private Date usDate;
-    
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "service_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private HotelService service;
-    
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "rent_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private RoomRental roomRental;
-    
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "promotion_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Promotion promotion;
-    
-    public UseService() {}
+	@Id
+	@Column(name = "us_id")
+	private String usId;
+
+	@Column(name = "quantity")
+	private Integer quantity;
+
+	@Column(name = "us_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date usDate;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "service_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private HotelService service;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "rent_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private RoomRental roomRental;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "promotion_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Promotion promotion;
+
+	public UseService() {
+	}
 
 	public UseService(String usId, Integer quantity, Date usDate, HotelService service, RoomRental roomRental,
 			Promotion promotion) {
@@ -95,5 +98,5 @@ public class UseService {
 	public void setPromotion(Promotion promotion) {
 		this.promotion = promotion;
 	}
-    
+
 }

@@ -1,20 +1,22 @@
 package com.quantridulieu.hotelManagement.services;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import com.quantridulieu.hotelManagement.entities.Room;
+import com.quantridulieu.hotelManagement.entities.RoomExport;
 import com.quantridulieu.hotelManagement.repositories.RoomRepository;
 
 @Service
 public class RoomService {
-    private final RoomRepository roomRepository;
-
+    @Autowired
+    private RoomRepository roomRepository;
+    
     @Autowired
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
@@ -27,13 +29,29 @@ public class RoomService {
 	public byte[] exportRoomToExcel() throws IOException {
 		return excelExportUtil.exportToExcel(roomRepository.findAll(), null, "Danh sách bảo trì");
     }
-	
-    public void save(Room room) {
+	public byte[] exportRoomsToExcelByListIds(List<String> ids) throws IOException {
+        List<RoomExport> list = new ArrayList<>();
+        List<Room> data = roomRepository.findByRoomIDs(ids);
+
+        for (Room room : data) {
+            RoomExport export = new RoomExport(
+                room.getRoomId(),
+                room.getRoomNumber(),
+                room.getStatus(),
+                room.getCategoryId(),
+                room.getCategoryName()
+            );
+            list.add(export);
+        }
+
+        return excelExportUtil.exportToExcel(list, null, "Danh sách phòng khách sạn");
+    }
+
+	public void save(Room room) {
         if (room.getRoomId() == null) room.setRoomId(generateId());
         roomRepository.save(room);
     }
 
-  
     public void delete(String id) {
         roomRepository.deleteById(id);
     }
@@ -42,7 +60,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public Room getRoomById(int roomId) {
+    public Room getRoomById(String roomId) {
         return roomRepository.findByRoomID(roomId);
     }
 
@@ -65,9 +83,20 @@ public class RoomService {
     public void updateStatus(String roomId, String status) {
     	roomRepository.updateStatusByRoomId(roomId, status);
     }
-    
+
     private String generateId() {
         Long count = roomRepository.count();
         return String.format("RM%05d", count + 1);
+    }
+    
+    @Transactional
+    public List<Room> searchRoom(String roomId, Integer roomNumber, String status, String categoryId, String categoryName) {
+        return roomRepository.searchRoom(
+            (roomId == null || roomId.isEmpty()) ? null : roomId,
+            (roomNumber == null) ? null : roomNumber, // Đã sửa
+            (status == null || status.isEmpty()) ? null : status,
+            (categoryId == null || categoryId.isEmpty()) ? null : categoryId,
+            (categoryName == null || categoryName.isEmpty()) ? null : categoryName
+        );
     }
 }
