@@ -148,7 +148,7 @@ body {
 					<li class="nav-item"><a href="room" class="nav-link"> <i
 							class="bi bi-house-door"></i> Quản lý phòng
 					</a></li>
-					<li class="nav-item"><a href="#rental" class="nav-link"> <i
+					<li class="nav-item"><a href="roomrental" class="nav-link"> <i
 							class="bi bi-calendar-check"></i> Đặt phòng
 					</a></li>
 					<li class="nav-item"><a href="customer" class="nav-link">
@@ -305,12 +305,7 @@ body {
 
 
 									<td class="action-btns d-flex justify-content-center">
-										<form action="invoice/add" method="get">
-											<input type="hidden" name="id" value="${invoice.invoiceId}">
-											<button class="btn btn-warning btn-sm">
-												<i class="fas fa-edit"></i> Sửa
-											</button>
-										</form>
+								
 
 										<form action="invoice/delete" method="post"
 											onsubmit="return confirm('Bạn có chắc chắn muốn xóa ${invoice.invoiceId} không?');">

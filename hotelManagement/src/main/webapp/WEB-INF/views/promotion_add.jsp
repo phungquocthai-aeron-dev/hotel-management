@@ -44,11 +44,19 @@ body {
 			<div class="col-md-8">
 				<div class="card p-4">
 					<h2 class="text-center mb-4">
-						<i class="fas fa-tags"></i> Thêm Khuyến Mãi
+						<i class="fas fa-tags"></i> Khuyến Mãi
 					</h2>
 
 					<form:form action="../promotion/save" method="post"
 						modelAttribute="promotion">
+
+						<div class="mb-3 d-none">
+							<label class="form-label">Mã Khuyến Mãi</label>
+							<c:if test="${not empty promotion.promotionId}">
+								<form:input path="promotionId" class="form-control"
+									readonly="true" />
+							</c:if>
+						</div>
 
 
 						<div class="mb-3">

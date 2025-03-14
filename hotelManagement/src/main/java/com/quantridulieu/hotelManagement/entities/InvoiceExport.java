@@ -1,8 +1,6 @@
 package com.quantridulieu.hotelManagement.entities;
 
 import java.util.Date;
-import jakarta.persistence.*;
-
 
 public class InvoiceExport {
 

@@ -1,5 +1,8 @@
 package com.quantridulieu.hotelManagement.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,8 +18,9 @@ public class Room {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Category category;
     
     public Room() {}
@@ -29,36 +33,38 @@ public class Room {
 		this.category = category;
 	}
 
-	public String getRoomId() {
-		return roomId;
-	}
+	 // Getter và Setter cho Room
+    public String getRoomId() { return roomId; }
+    public void setRoomId(String roomId) { this.roomId = roomId; }
+    
+    public Integer getRoomNumber() { return roomNumber; }
+    public void setRoomNumber(Integer roomNumber) { this.roomNumber = roomNumber; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 
-	public void setRoomId(String roomId) {
-		this.roomId = roomId;
-	}
+    // Getter cho categoryId, categoryName, roomPrice từ Category
+    public String getCategoryId() {
+        return category != null ? category.getCategoryId() : null;
+    }
 
-	public Integer getRoomNumber() {
-		return roomNumber;
-	}
+    public void setCategoryId(String categoryId) {
+        if (category != null) {
+            category.setCategoryId(categoryId);
+        }
+    }
 
-	public void setRoomNumber(Integer roomNumber) {
-		this.roomNumber = roomNumber;
-	}
+    public String getCategoryName() {
+        return category != null ? category.getCategoryName() : null;
+    }
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+    public void setCategoryName(String categoryName) {
+        if (category != null) {
+            category.setCategoryName(categoryName);
+        }
+    }
     
 }

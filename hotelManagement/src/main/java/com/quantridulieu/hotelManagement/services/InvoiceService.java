@@ -3,6 +3,7 @@ package com.quantridulieu.hotelManagement.services;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 
@@ -24,14 +25,15 @@ public class InvoiceService {
     private ExcelExportUtil excelExportUtil;
 
     public byte[] exportInvoiceToExcelByListIds(List<String> ids) throws IOException {
-    	List<InvoiceExport> list = new ArrayList<InvoiceExport>();
-    	List<Invoice> data = invoiceRepository.findByInvoiceIds(ids);
-    	int n = ids.size();
-    	for(int i = 0; i < n; i++) {
-    		Invoice invoice = data.get(i);
-    		InvoiceExport export = new InvoiceExport(invoice.getInvoiceId(), invoice.getInvoiceDate(), invoice.getTotalAmount(), invoice.getUseService().getUsId(), invoice.getStaff().getStaffId());
-    		list.add(export);
-    	}
+        List<InvoiceExport> list = new ArrayList<InvoiceExport>();
+        List<Invoice> data = invoiceRepository.findByInvoiceIds(ids);
+        int n = ids.size();
+        for (int i = 0; i < n; i++) {
+            Invoice invoice = data.get(i);
+            InvoiceExport export = new InvoiceExport(invoice.getInvoiceId(), invoice.getInvoiceDate(),
+                    invoice.getTotalAmount(), invoice.getUseService().getUsId(), invoice.getStaff().getStaffId());
+            list.add(export);
+        }
         return excelExportUtil.exportToExcel(list, null, "Danh sách hóa đơn");
     }
 
@@ -49,13 +51,26 @@ public class InvoiceService {
 
     @Transactional
     public void save(Invoice invoice) {
-        if (invoice.getInvoiceId() == null) invoice.setInvoiceId(generateId());
+        if (invoice.getInvoiceId() == null)
+            invoice.setInvoiceId(generateId());
         invoiceRepository.save(invoice);
     }
 
     @Transactional
     public void delete(String id) {
         invoiceRepository.deleteById(id);
+    }
+
+    public List<Invoice> getInvoicesByStaffId(String staffId) {
+        return invoiceRepository.findByStaffId(staffId);
+    }
+
+    public double getDailyRevenue(Date date) {
+        return invoiceRepository.getDailyRevenue(date);
+    }
+
+    public double getMonthlyRevenue(Integer month, Integer year) {
+        return invoiceRepository.getMonthlyRevenue(year, month);
     }
 
     private String generateId() {
@@ -71,11 +86,10 @@ public class InvoiceService {
         }
 
         return invoiceRepository.SearchInvoice(
-            (invoiceId == null || invoiceId.isEmpty()) ? null : invoiceId,
-            (staffId == null || staffId.isEmpty()) ? null : staffId,
-            (totalAmountRange == null || totalAmountRange.isEmpty()) ? null : totalAmountRange,
-            parsedDate
-        );
+                (invoiceId == null || invoiceId.isEmpty()) ? null : invoiceId,
+                (staffId == null || staffId.isEmpty()) ? null : staffId,
+                (totalAmountRange == null || totalAmountRange.isEmpty()) ? null : totalAmountRange,
+                parsedDate);
     }
 
 

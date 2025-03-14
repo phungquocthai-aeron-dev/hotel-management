@@ -126,4 +126,35 @@ END $$
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER trg_update_total_amount
+BEFORE INSERT ON invoice
+FOR EACH ROW
+BEGIN
+    DECLARE v_quantity INT;
+    DECLARE v_service_price FLOAT;
+    DECLARE v_room_price FLOAT;
+    DECLARE v_promotion_value FLOAT;
+
+    -- Lấy thông tin từ bảng use_service
+    SELECT us.quantity, s.service_price, c.room_price, COALESCE(p.promotion_value, 0)
+    INTO v_quantity, v_service_price, v_room_price, v_promotion_value
+    FROM use_service us
+    JOIN service s ON us.service_id = s.service_id
+    JOIN room_rental rr ON us.rent_id = rr.rent_id
+    JOIN room r ON rr.room_id = r.room_id
+    JOIN category c ON r.category_id = c.category_id
+    LEFT JOIN promotion p ON us.promotion_id = p.promotion_id
+    WHERE us.us_id = NEW.us_id;
+
+    -- Tính toán total_amount theo công thức
+    SET NEW.total_amount = (v_quantity * v_service_price + v_room_price * (1 - (v_promotion_value / 100)));
+END;
+
+//
+
+DELIMITER ;
+
+
 

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.quantridulieu.hotelManagement.entities.InvoiceExport;
 import com.quantridulieu.hotelManagement.entities.Promotion;
 import com.quantridulieu.hotelManagement.repositories.PromotionRepository;
 
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,6 +77,28 @@ public class PromotionService {
         );
     }
 
+    
+    @Transactional
+    public void update(Promotion promotion) {
+        // Kiểm tra ID có hợp lệ không
+        if (promotion.getPromotionId() == null || promotion.getPromotionId().isEmpty()) {
+            throw new IllegalArgumentException("ID khuyến mãi không được để trống!");
+        }
+
+        // Tìm khuyến mãi trong database
+        Promotion existingPromotion = promotionRepository.findById(promotion.getPromotionId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy khuyến mãi với ID: " + promotion.getPromotionId()));
+
+        // Cập nhật thông tin
+        existingPromotion.setPromotionName(promotion.getPromotionName());
+        existingPromotion.setPromotionDescription(promotion.getPromotionDescription());
+        existingPromotion.setPromotionStart(promotion.getPromotionStart());
+        existingPromotion.setPromotionEnd(promotion.getPromotionEnd());
+        existingPromotion.setPromotionValue(promotion.getPromotionValue());
+
+        // Lưu thay đổi
+        promotionRepository.save(existingPromotion);
+    }
 
 
 }

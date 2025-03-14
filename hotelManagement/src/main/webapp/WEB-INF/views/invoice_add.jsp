@@ -48,28 +48,23 @@ body {
 
 					<form:form action="../invoice/save" method="post"
 						modelAttribute="invoice">
-						
+
 						<div class="mb-3">
-							<label class="form-label">Ngày lập</label>
+							<label class="form-label">Ngày lập (*)</label>
 							<form:input type="date" path="invoiceDate" class="form-control"
 								required="true" />
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Mã nhân viên</label>
-							<form:select path="staff.staffId" class="form-control"
-								required="true">
-								<c:forEach var="staff" items="${staffList}">
-									<form:option value="${staff.staffId}" label="${staff.staffName}" />
-								</c:forEach>
-							</form:select>
+							<form:input type="text" path="staff.staffId"
+								value="${staff.staffId}" class="form-control" readonly="true" />
 						</div>
 						<div class="mb-3">
-							<label class="form-label">Mã dịch vụ</label>
+							<label class="form-label">Mã dịch vụ (*)</label>
 							<form:select path="useService.usId" class="form-control"
 								required="true">
 								<c:forEach var="service" items="${useServiceList}">
-									<form:option value="${service.usId}"
-										label="${service.usId}" />
+									<form:option value="${service.usId}" label="${service.usId}" />
 								</c:forEach>
 							</form:select>
 						</div>

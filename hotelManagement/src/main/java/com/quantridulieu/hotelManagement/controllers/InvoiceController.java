@@ -76,13 +76,20 @@ public class InvoiceController {
 
     @PostMapping("/invoice/save")
     public String saveInvoice(@ModelAttribute Invoice invoice) {
-        invoiceService.save(invoice);
+        
+    	
+    	invoiceService.save(invoice);
         return "redirect:/invoice";
     }
 
     @PostMapping("/invoice/delete")
-    public String deleteInvoice(@RequestParam("id") String invoiceId, RedirectAttributes redirectAttributes) {
-        invoiceService.delete(invoiceId);
+    public String deleteInvoice(@RequestParam("id") String invoiceId, RedirectAttributes redirectAttributes, HttpSession session) {
+    	 Staff staff = (Staff) session.getAttribute("loggedInStaff");
+    	 
+    	 if (staff == null)
+ 			return "redirect:/login";
+    	invoiceService.delete(invoiceId);
+        
         redirectAttributes.addFlashAttribute("message", "Xóa hóa đơn " + invoiceId + " thành công!");
         return "redirect:/invoice";
     }
@@ -113,43 +120,24 @@ public class InvoiceController {
     }
     
     @GetMapping("/invoice/add")
-    public String showInvoiceForm(@RequestParam(value = "id", required = false) String id, Model model, HttpSession session) {
+    public String showInvoiceForm(Model model, HttpSession session) {
         Invoice invoice;
-
-        if (id != null) {
-            // Nếu có ID -> lấy hóa đơn từ database để chỉnh sửa
-            invoice = invoiceService.getInvoiceById(id);
-        } else {
-            // Nếu không có ID -> tạo hóa đơn mới để thêm mới
             invoice = new Invoice();
-        }
 
         // Thêm dữ liệu vào model
         model.addAttribute("invoice", invoice);
-
-//      Lấy danh sách nhân viên và dịch vụ từ database
-//      Staff staff = (Staff) session.getAttribute("loggedInStaff");
-//      
+        
+        Staff staff = (Staff) session.getAttribute("loggedInStaff");
+        if (staff == null)
+			return "redirect:/login";
+        
+        
         //lấy các dịch vụ chưa có trong invoice
         List<UseService> useServiceList = useServiceService.getAllUseServiceNotInInvoice();
-        //model.addAttribute("staff", staff);
+        model.addAttribute("staff", staff);
         model.addAttribute("useServiceList", useServiceList);
 
         return "invoice_add"; // Hiển thị form thêm/sửa hóa đơn
     }
-
-//    @PostMapping("/invoice/add")
-//    public String addInvoice(@ModelAttribute Invoice invoice, 
-//                             @RequestParam("staffId") Long staffId, 
-//                             @RequestParam("usId") Long serviceId, 
-//                             RedirectAttributes redirectAttributes) {
-//        try {
-//            invoiceService.saveInvoice(invoice, staffId, serviceId);
-//            redirectAttributes.addFlashAttribute("successMessage", "Thêm hóa đơn thành công!");
-//        } catch (Exception e) {
-//            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi thêm hóa đơn: " + e.getMessage());
-//        }
-//        return "redirect:/invoice";
-//    }
 
 }

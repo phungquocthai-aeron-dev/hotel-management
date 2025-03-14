@@ -77,7 +77,7 @@ public class CustomerController {
 //		Chưa đăng nhập --> cook
 //        if(staff == null) return "redirect:/login";
 //		Không phải admin --> cook
-//		if(!staff.getRole().equals("ADMIN") return "redirect:/home";
+//		if(!staff.getRole().equals("ADMIN")) return "redirect:/home";
         Customer customer = customerService.getCustomerById(customerId);
         model.addAttribute("customer", customer);
         model.addAttribute("staff", staff);
