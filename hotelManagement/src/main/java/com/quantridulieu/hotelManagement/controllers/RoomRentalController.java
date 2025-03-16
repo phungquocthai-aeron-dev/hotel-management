@@ -65,6 +65,8 @@ public class RoomRentalController {
 		model.addAttribute("roomRentals", roomRentalRepository.findAll());
 		List<RoomRental> list = (List<RoomRental>) model.getAttribute("searchResult");
 
+		List<Room> rooms = roomService.findAvailableRoom();
+		
 		// Nếu có dữ liệu từ tìm kiếm thì giữ nguyên, nếu không thì lấy toàn bộ danh
 		// sách
 		if (list == null)
@@ -72,7 +74,8 @@ public class RoomRentalController {
 
 		model.addAttribute("roomRentals", list);
 		model.addAttribute("staff", staff);
-
+		model.addAttribute("rooms", rooms);
+		
 		return "roomrental"; // Trả về file roomrental.jsp
 	}
 

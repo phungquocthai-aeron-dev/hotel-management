@@ -50,6 +50,7 @@ public class UserServiceController {
 
     @Autowired
     private HotelServiceService hotelServiceService;
+    
 
     @GetMapping
     public String getAllServices(Model model, HttpSession session) {
@@ -68,7 +69,7 @@ public class UserServiceController {
     	if(error != null) model.addAttribute("error", error);
     	
     	List<HotelService> services = hotelServiceService.getAllServices();
-    	List<Promotion> promotions = promotionService.getAllPromotions();
+    	List<Promotion> promotions = promotionService.findActivePromotions();
     	List<RoomRental> rents = roomRentalService.getAllRoomRentals();
     	
     	model.addAttribute("services", services);
