@@ -59,6 +59,32 @@ public class PromotionService {
     public List<Promotion> findActivePromotions(Date startDate, Date endDate) {
         return promotionRepository.findActivePromotions(startDate, endDate);
     }
+    
+    public List<Promotion> findActivePromotions() {
+    	return promotionRepository.findActivePromotions();
+    }
+    
+    @Transactional
+    public void update(Promotion promotion) {
+        // Kiểm tra ID có hợp lệ không
+        if (promotion.getPromotionId() == null || promotion.getPromotionId().isEmpty()) {
+            throw new IllegalArgumentException("ID khuyến mãi không được để trống!");
+        }
+
+        // Tìm khuyến mãi trong database
+        Promotion existingPromotion = promotionRepository.findById(promotion.getPromotionId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy khuyến mãi với ID: " + promotion.getPromotionId()));
+
+        // Cập nhật thông tin
+        existingPromotion.setPromotionName(promotion.getPromotionName());
+        existingPromotion.setPromotionDescription(promotion.getPromotionDescription());
+        existingPromotion.setPromotionStart(promotion.getPromotionStart());
+        existingPromotion.setPromotionEnd(promotion.getPromotionEnd());
+        existingPromotion.setPromotionValue(promotion.getPromotionValue());
+
+        // Lưu thay đổi
+        promotionRepository.save(existingPromotion);
+    }
 
     // P00001
     private String generateId() {

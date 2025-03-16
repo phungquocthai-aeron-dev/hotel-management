@@ -80,6 +80,10 @@ public class RoomService {
         return roomRepository.findOccupiedRooms();
     }
     
+    public List<Room> findAvailableRoom(){
+    	return roomRepository.findAvailableRoom();
+    }
+    
     public void updateStatus(String roomId, String status) {
     	roomRepository.updateStatusByRoomId(roomId, status);
     }

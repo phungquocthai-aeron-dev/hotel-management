@@ -296,7 +296,9 @@ body {
 									<input type="hidden" name="roomRentalIds"
 										value="${roomRental.rentId}" />
 								</c:forEach>
+								<c:if test="${not empty customers}">
 								<button class="btn btn-success">Xuất Excel</button>
+								</c:if>
 							</form>
 
 						</div>
@@ -313,8 +315,8 @@ body {
 						<table class="table table-striped table-hover custom-table">
 							<thead>
 								<tr>
-									<th>Số đặt phòng</th>
-									<th>Số phòng</th>
+									<th>Mã đặt phòng</th>
+									<th>Mã phòng</th>
 									<th>Tên khách hàng</th>
 									<th>Ngày nhận phòng</th>
 									<th>Ngày trả phòng</th>
@@ -382,9 +384,13 @@ body {
 								<div class="modal-body p-3">
 									<form action="roomrental/save" method="post">
 										<div class="mb-3">
-											<label for="roomId" class="form-label">Mã phòng</label> <input
-												type="text" class="form-control" id="roomId" name="roomId"
-												required>
+											<label for="rentId">Mã phòng:</label> 
+									<select id="roomId" class="form-control" name="roomId" required>
+											<option value="">Chọn mã phòng</option>
+											<c:forEach var="room" items="${rooms }">
+												<option value="${room.roomId }">${room.roomId }</option>
+											</c:forEach>
+									</select>
 										</div>
 
 										<div class="mb-3">
@@ -402,7 +408,7 @@ body {
 										<div class="mb-3">
 											<label for="checkInDate" class="form-label">Ngày nhận
 												phòng</label> <input type="date" class="form-control"
-												id="checkInDate" name="checkInDate" required>
+												id="checkInDate" name="checkInDate">
 										</div>
 
 										<div class="mb-3">
