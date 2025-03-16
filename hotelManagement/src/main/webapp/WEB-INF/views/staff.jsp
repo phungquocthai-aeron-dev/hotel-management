@@ -206,14 +206,6 @@ prefix="c" %>
           <div class="container mt-4">
             <h2 class="mb-3">Quản lý nhân viên</h2>
 
-            <!-- Nút Duyệt thành viên -->
-            <button
-              class="btn btn-primary mb-3"
-              data-bs-toggle="modal"
-              data-bs-target="#approveMemberModal"
-            >
-              <i class="bi bi-check-circle"></i> Duyệt thành viên
-            </button>
 
             <!-- Thống kê nhân viên -->
             <div class="row mb-4">

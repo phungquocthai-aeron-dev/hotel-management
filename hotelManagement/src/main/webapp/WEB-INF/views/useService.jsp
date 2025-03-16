@@ -411,9 +411,9 @@ body {
 								<form action="us/save" method="post">
 									<label for="serviceName">Tên dịch vụ:</label> 
 									<select id="serviceName" class="form-control" name="serviceId" required>
-											<option value="">Chọn mã phòng</option>
+											<option value="">Chọn dịch vụ</option>
 											<c:forEach var="service" items="${services }" varStatus="status">
-												<option value="${service.serviceId }">${service.serviceId }</option>
+												<option value="${service.serviceId }">${service.serviceName }</option>
 											</c:forEach>
 									</select>
 									
@@ -422,7 +422,7 @@ body {
 									
 									<label for="rentId">Mã đặt phòng:</label> 
 									<select id="rentId" class="form-control" name="rentId" required>
-											<option value="">Chọn mã phòng</option>
+											<option value="">Chọn mã đặt phòng</option>
 											<c:forEach var="rent" items="${rents }">
 												<option value="${rent.rentId }">${rent.rentId }</option>
 											</c:forEach>

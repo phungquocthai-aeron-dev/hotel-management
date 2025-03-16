@@ -34,6 +34,9 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             "WHERE r.status LIKE '%Occupied%'", nativeQuery = true)
 	List<Room> findOccupiedRooms();
 	
+	@Query(value = "SELECT r.* FROM room r WHERE r.status LIKE '%Available%'", nativeQuery =  true)
+	List<Room> findAvailableRoom();
+	
 	@Modifying
 	@Transactional
 	@Query(value = "UPDATE room SET status = :status WHERE room_id = :room_id", nativeQuery = true)
