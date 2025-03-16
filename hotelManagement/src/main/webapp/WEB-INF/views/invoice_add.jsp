@@ -55,11 +55,11 @@ body {
 								required="true" />
 						</div>
 						<div class="mb-3">
-							<label class="form-label">Mã nhân viên</label>
+							<label class="form-label">Tên nhân viên</label>
 							<select name="staffId" class="form-control"
 								required="true">
 								<c:forEach var="staff" items="${staffs}">
-									<form:option value="${staff.staffId}" label="${staff.staffName}" />
+									<option value="${staff.staffId}">${staff.staffName}</option>
 								</c:forEach>
 							</select>
 						</div>

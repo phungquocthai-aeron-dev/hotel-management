@@ -34,5 +34,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, String> {
         @Param("p_startDate") LocalDate startDate
     );
 
+    @Query(value = "SELECT * FROM promotion WHERE CURDATE() BETWEEN promotion_start AND promotion_end", nativeQuery = true)
+    List<Promotion> findActivePromotions();
 
 }

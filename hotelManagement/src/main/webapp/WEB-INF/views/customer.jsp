@@ -318,9 +318,9 @@
                                 <th>Tên khách hàng</th>
                                 <th>Địa chỉ</th>
                                 <th>Số điện thoại</th>
-                        <%-- <c:if test="${staff.role == 'ADMIN'}"> --%>
+                        <c:if test="${staff.role == 'ADMIN'}">
                                 <th>Thao tác</th>
-                         <%--       </c:if> --%>
+                         </c:if>
                             </tr>
                         </thead>
                         <tbody>
@@ -335,7 +335,7 @@
                                 <td>${customer.customerName}</td>
                                 <td>${customer.address}</td>
                                 <td>${customer.customerPhone}</td>
-                        <%--        <c:if test="${staff.role == 'ADMIN'}"> --%> 
+                               <c:if test="${staff.role == 'ADMIN'}"> 
                                 <td class="text-center">
                                  <div class="mx-auto d-flex" style="justify-content: center;">
                                  	<a class="d-block" href="customer/details?id=${customer.customerId}" style="text-decoration: none;">
@@ -347,7 +347,7 @@
 									</form>
                                  </div>
                                 </td>
-				<%-- 				</c:if>	--%> 
+							</c:if>	
                             </tr>
                         	</c:forEach>
             

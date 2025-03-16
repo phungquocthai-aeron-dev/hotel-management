@@ -183,6 +183,7 @@ body {
 			</div>
 		</nav>
 
+	
 		<!-- Content -->
 		<div class="content p-4">
 			<div class="tab-content">
@@ -196,7 +197,7 @@ body {
 				</h2>
 
 				<!-- Thanh tìm kiếm -->
-				<form id="search" action="promotion/search" method="GET"
+				<form action="promotion/search" method="GET"
 					class="row bg-white p-3 rounded-3 mb-4">
 					<!-- Mã khuyến mãi -->
 					<div class="col-md-3 mb-3">
@@ -292,13 +293,15 @@ body {
 									<td>${promotion.promotionStart}</td>
 									<td>${promotion.promotionEnd}</td>
 									<td class="action-btns d-flex justify-content-center">
-										<form action="promotion/add" method="get">
-											<input type="hidden" name="id"
+
+										<form action="promotion/add" method="post">
+											<input type="hidden" name="promotionId"
 												value="${promotion.promotionId}">
 											<button class="btn btn-warning btn-sm">
-												<i class="fas fa-edit"></i> Sửa
+												<i class="fas fa-edit"></i> sửa
 											</button>
 										</form>
+
 
 										<form action="promotion/delete" method="post"
 											onsubmit="return confirm('Bạn có chắc chắn muốn xóa ${promotion.promotionId} không?');">
@@ -313,6 +316,20 @@ body {
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="editPromotionModal" tabindex="-1"
+			aria-labelledby="editPromotionModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editPromotionModalLabel">Thêm/Chỉnh
+							sửa Khuyến Mãi</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
 				</div>
 			</div>
 		</div>
